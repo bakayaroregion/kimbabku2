@@ -1,0 +1,1406 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="robots" content="noindex,nofollow" />
+        <title>KIMBABKU — Admin</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: #faf9f6;
+                color: #191919;
+                font-family:
+                    Inter,
+                    ui-sans-serif,
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    'Segoe UI',
+                    sans-serif;
+                line-height: 1.5;
+            }
+            button,
+            input,
+            textarea,
+            select {
+                font: inherit;
+            }
+            button,
+            a {
+                touch-action: manipulation;
+            }
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+            .container {
+                width: min(1120px, calc(100% - 32px));
+                margin: auto;
+            }
+            .admin-body {
+                background: #f5f4f0;
+            }
+            .admin-login {
+                min-height: 100vh;
+                display: grid;
+                place-items: center;
+                padding: 20px;
+            }
+            .login-card {
+                width: min(430px, 100%);
+                background: #fff;
+                padding: 34px;
+                border: 1px solid #e5e1d9;
+                border-radius: 22px;
+            }
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 850;
+                letter-spacing: -0.03em;
+            }
+            .brand-mark {
+                display: grid;
+                place-items: center;
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                background: #171717;
+                color: #fff;
+                font-weight: 900;
+            }
+            .eyebrow {
+                font-size: 11px;
+                letter-spacing: 0.18em;
+                font-weight: 850;
+                color: #a27618;
+            }
+            .login-card h1 {
+                margin: 7px 0 25px;
+                letter-spacing: -0.04em;
+            }
+            .btn {
+                border: 0;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: 750;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 18px;
+            }
+            .btn-primary {
+                background: #f4c84a;
+                color: #151515;
+            }
+            .btn-secondary {
+                background: #f1f0ec;
+                color: #222;
+            }
+            .full {
+                width: 100%;
+            }
+            .form {
+                display: grid;
+                gap: 15px;
+            }
+            .form label,
+            .settings-form label {
+                display: grid;
+                gap: 7px;
+                font-size: 13px;
+                font-weight: 700;
+            }
+            .form input,
+            .form textarea,
+            .form select,
+            .settings-form input,
+            .settings-form textarea,
+            .inline-form input {
+                width: 100%;
+                border: 1px solid #ddd9d1;
+                border-radius: 10px;
+                padding: 11px;
+                outline: none;
+                background: #fff;
+            }
+            .form textarea,
+            .settings-form textarea {
+                min-height: 92px;
+                resize: vertical;
+            }
+            .alert {
+                padding: 11px;
+                border-radius: 10px;
+                margin-top: 12px;
+                font-size: 13px;
+            }
+            .alert.error {
+                background: #fff0f0;
+                color: #a11;
+            }
+            .admin-shell {
+                min-height: 100vh;
+                display: grid;
+                grid-template-columns: 240px 1fr;
+            }
+            .sidebar {
+                background: #171717;
+                color: #fff;
+                padding: 24px 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+            .sidebar .brand {
+                padding: 0 10px;
+            }
+            .sidebar .brand-mark {
+                background: #f4c84a;
+                color: #111;
+            }
+            .sidebar nav {
+                display: grid;
+                gap: 5px;
+            }
+            .side-link {
+                background: transparent;
+                color: #aaa;
+                border: 0;
+                text-align: left;
+                padding: 11px 12px;
+                border-radius: 9px;
+                cursor: pointer;
+                font-weight: 650;
+            }
+            .side-link.active,
+            .side-link:hover {
+                background: #2a2a2a;
+                color: #fff;
+            }
+            .logout {
+                margin-top: auto;
+            }
+            .admin-main {
+                padding: 30px;
+                max-width: 1500px;
+                width: 100%;
+                margin: auto;
+            }
+            .admin-top {
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                gap: 20px;
+                margin-bottom: 25px;
+            }
+            .admin-top h1 {
+                margin: 4px 0 0;
+                font-size: 34px;
+                letter-spacing: -0.05em;
+            }
+            .admin-actions {
+                display: flex;
+                gap: 8px;
+            }
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+                margin-bottom: 20px;
+            }
+            .stat-card,
+            .panel {
+                background: #fff;
+                border: 1px solid #e4e1da;
+                border-radius: 16px;
+            }
+            .stat-card {
+                padding: 20px;
+            }
+            .stat-card span {
+                font-size: 12px;
+                color: #777;
+            }
+            .stat-card strong {
+                display: block;
+                font-size: 30px;
+                margin-top: 6px;
+            }
+            .panel {
+                padding: 22px;
+                margin-bottom: 20px;
+            }
+            .panel-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
+                margin-bottom: 18px;
+            }
+            .panel-head h2 {
+                margin: 0;
+                font-size: 20px;
+            }
+            .panel-head p {
+                margin: 4px 0 0;
+                color: #777;
+                font-size: 13px;
+            }
+            .table-wrap {
+                overflow: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 13px;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 12px;
+                border-bottom: 1px solid #eee;
+                white-space: nowrap;
+            }
+            th {
+                color: #777;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .thumb {
+                width: 46px;
+                height: 46px;
+                border-radius: 8px;
+                object-fit: cover;
+                background: #eee;
+            }
+            .badge {
+                display: inline-block;
+                border-radius: 999px;
+                padding: 5px 9px;
+                font-size: 11px;
+                font-weight: 800;
+            }
+            .badge.active {
+                background: #e7f7ed;
+                color: #17713a;
+            }
+            .badge.inactive {
+                background: #f2f2f2;
+                color: #777;
+            }
+            .table-actions {
+                display: flex;
+                gap: 5px;
+            }
+            .small-btn {
+                border: 1px solid #ddd;
+                background: #fff;
+                padding: 6px 8px;
+                border-radius: 7px;
+                cursor: pointer;
+            }
+            .small-btn.danger {
+                color: #a11;
+            }
+            .narrow-panel {
+                max-width: 650px;
+            }
+            .inline-form {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 18px;
+            }
+            .category-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .settings-form {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .settings-form label:nth-child(3),
+            .settings-form label:nth-child(4) {
+                grid-column: span 2;
+            }
+            .two-col {
+                grid-template-columns: 1fr 1fr;
+            }
+            .full-field {
+                grid-column: span 2;
+            }
+            .image-preview {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 10px;
+                border: 1px dashed #d8d3ca;
+                border-radius: 14px;
+                background: #faf9f6;
+                min-height: 120px;
+            }
+            .image-preview img {
+                width: 180px;
+                height: 180px;
+                max-width: 100%;
+                border-radius: 14px;
+                object-fit: cover;
+                box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
+            }
+            .image-preview:empty::before {
+                content: 'Preview foto menu akan tampil di sini';
+                color: #888;
+                font-size: 12px;
+            }
+            .asset-card {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                flex-wrap: wrap;
+                padding: 16px;
+                border: 1px solid #eee;
+                border-radius: 14px;
+                margin-bottom: 14px;
+            }
+            .asset-card:last-child {
+                margin-bottom: 0;
+            }
+            .asset-preview {
+                width: 120px;
+                height: 78px;
+                border-radius: 10px;
+                background: #f2f1ed no-repeat center/contain;
+                border: 1px dashed #d8d3ca;
+                flex-shrink: 0;
+                display: grid;
+                place-items: center;
+                color: #999;
+                font-size: 11px;
+                text-align: center;
+            }
+            .asset-preview.logo-preview {
+                background-size: contain;
+                width: 90px;
+                height: 90px;
+            }
+            .asset-info {
+                flex: 1;
+                min-width: 160px;
+            }
+            .asset-info strong {
+                display: block;
+                margin-bottom: 3px;
+            }
+            .asset-info small {
+                color: #777;
+            }
+            .asset-actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .cat-thumb {
+                width: 34px;
+                height: 34px;
+                border-radius: 8px;
+                object-fit: cover;
+                background: #f2f1ed;
+                flex-shrink: 0;
+            }
+            .category-item {
+                gap: 10px;
+            }
+            .category-item .cat-name-wrap {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex: 1;
+                min-width: 0;
+            }
+            .category-item .cat-name-wrap span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .form small {
+                font-weight: 400;
+                color: #777;
+            }
+            .modal-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 80;
+                padding: 18px;
+                display: grid;
+                place-items: center;
+            }
+            .modal {
+                width: min(520px, 100%);
+                max-height: 92vh;
+                overflow: auto;
+                background: #fff;
+                border-radius: 20px;
+                padding: 22px;
+                box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
+            }
+            .wide-modal {
+                width: min(760px, 100%);
+            }
+            .modal-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+            .modal-head h2 {
+                margin: 0;
+                font-size: 24px;
+            }
+            .icon-button {
+                border: 0;
+                background: #f2f1ed;
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            .toast {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                background: #171717;
+                color: #fff;
+                padding: 12px 16px;
+                border-radius: 10px;
+                z-index: 100;
+                box-shadow: 0 10px 30px #0002;
+            }
+            .toast.error {
+                background: #9b2525;
+            }
+            .recent-list {
+                display: grid;
+            }
+            .recent-row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 11px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .recent-row div {
+                flex: 1;
+            }
+            .recent-row strong {
+                display: block;
+            }
+            .recent-row small {
+                color: #777;
+            }
+            [hidden] {
+                display: none !important;
+            }
+            @media (max-width: 900px) {
+                .admin-shell {
+                    grid-template-columns: 1fr;
+                }
+                .sidebar {
+                    position: sticky;
+                    top: 0;
+                    z-index: 40;
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 10px 14px;
+                    overflow: auto;
+                }
+                .sidebar nav {
+                    display: flex;
+                }
+                .sidebar .logout {
+                    margin: 0;
+                }
+                .admin-main {
+                    padding: 18px;
+                }
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (max-width: 600px) {
+                .admin-top {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+                .admin-actions {
+                    width: 100%;
+                }
+                .admin-actions .btn {
+                    flex: 1;
+                }
+                .panel {
+                    padding: 15px;
+                }
+                .panel-head {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+                .stats-grid {
+                    gap: 8px;
+                }
+                .stat-card {
+                    padding: 14px;
+                }
+                .stat-card strong {
+                    font-size: 24px;
+                }
+                .sidebar nav {
+                    display: none;
+                }
+                .sidebar {
+                    justify-content: space-between;
+                }
+                .inline-form {
+                    flex-direction: column;
+                }
+                .table-actions {
+                    flex-direction: column;
+                }
+                .two-col,
+                .settings-form {
+                    grid-template-columns: 1fr;
+                }
+                .full-field,
+                .settings-form label:nth-child(3),
+                .settings-form label:nth-child(4) {
+                    grid-column: span 1;
+                }
+            }
+        </style>
+    </head>
+    <body class="admin-body">
+        <div id="loginView" class="admin-login">
+            <div class="login-card">
+                <div class="brand"><span class="brand-mark">K</span><span>KIMBABKU</span></div>
+                <span class="eyebrow">ADMIN PANEL</span>
+                <h1>Masuk ke Dashboard</h1>
+                <form id="loginForm" class="form">
+                    <label>Username<input name="username" required autocomplete="username" /></label>
+                    <label
+                        >Password<input name="password" type="password" required autocomplete="current-password"
+                    /></label>
+                    <button class="btn btn-primary full" type="submit">Login</button>
+                </form>
+                <div id="loginError" class="alert error" hidden></div>
+            </div>
+        </div>
+
+        <div id="adminApp" class="admin-shell" hidden>
+            <aside class="sidebar">
+                <a class="brand" href="index.html"><span class="brand-mark">K</span><span>KIMBABKU</span></a>
+                <nav>
+                    <button class="side-link active" data-view="dashboard">Dashboard</button
+                    ><button class="side-link" data-view="menus">Menu</button
+                    ><button class="side-link" data-view="categories">Kategori</button
+                    ><button class="side-link" data-view="settings">Pengaturan</button>
+                </nav>
+                <button class="side-link logout" id="logoutBtn">Keluar</button>
+            </aside>
+            <main class="admin-main">
+                <header class="admin-top">
+                    <div>
+                        <span class="eyebrow">ADMINISTRATOR</span>
+                        <h1 id="viewTitle">Dashboard</h1>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary" id="refreshBtn">Refresh Data</button
+                        ><button class="btn btn-secondary" id="clearCacheBtn">Clear Cache</button>
+                    </div>
+                </header>
+
+                <section class="admin-view" data-section="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card"><span>Total Menu</span><strong id="statTotal">0</strong></div>
+                        <div class="stat-card"><span>Menu Aktif</span><strong id="statActive">0</strong></div>
+                        <div class="stat-card"><span>Menu Nonaktif</span><strong id="statInactive">0</strong></div>
+                        <div class="stat-card"><span>Total Kategori</span><strong id="statCategories">0</strong></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Menu terbaru</h2>
+                                <p>Kelola produk dari satu tempat.</p>
+                            </div>
+                            <button class="btn btn-primary" id="newMenuBtn">+ Tambah Menu</button>
+                        </div>
+                        <div id="dashboardRecent"></div>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="menus" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Daftar Menu</h2>
+                                <p>Menu inactive tidak akan tampil di halaman pelanggan.</p>
+                            </div>
+                            <button class="btn btn-primary" id="newMenuBtn2">+ Tambah Menu</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Gambar</th>
+                                        <th>Nama</th>
+                                        <th>Kategori</th>
+                                        <th>Harga</th>
+                                        <th>Status</th>
+                                        <th>Label</th>
+                                        <th>Urutan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="menuTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="categories" hidden>
+                    <div class="panel narrow-panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Kategori</h2>
+                                <p>Kelola filter menu pelanggan.</p>
+                            </div>
+                        </div>
+                        <form id="categoryForm" class="inline-form">
+                            <input name="name" required maxlength="50" placeholder="Nama kategori" /><button
+                                class="btn btn-primary"
+                            >
+                                Tambah
+                            </button>
+                        </form>
+                        <input type="file" id="categoryImageInput" accept="image/jpeg,image/png,image/webp" hidden />
+                        <div id="categoryList"></div>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="settings" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Logo &amp; Banner</h2>
+                                <p>Tampil di halaman pelanggan. Maksimal 2 MB, format JPG/PNG/WEBP.</p>
+                            </div>
+                        </div>
+                        <div class="asset-card">
+                            <div class="asset-preview logo-preview" id="logoPreview">Belum ada logo</div>
+                            <div class="asset-info">
+                                <strong>Logo Toko</strong>
+                                <small>Tampil di header &amp; footer halaman pelanggan.</small>
+                            </div>
+                            <div class="asset-actions">
+                                <input type="file" id="logoInput" accept="image/jpeg,image/png,image/webp" hidden />
+                                <button type="button" class="btn btn-secondary" id="logoUploadBtn">
+                                    Upload / Ganti
+                                </button>
+                                <button type="button" class="small-btn danger" id="logoDeleteBtn" hidden>Hapus</button>
+                            </div>
+                        </div>
+                        <div class="asset-card">
+                            <div class="asset-preview" id="bannerPreview">Belum ada banner</div>
+                            <div class="asset-info">
+                                <strong>Banner Hero</strong>
+                                <small>Gambar besar di bagian atas halaman pelanggan.</small>
+                            </div>
+                            <div class="asset-actions">
+                                <input type="file" id="bannerInput" accept="image/jpeg,image/png,image/webp" hidden />
+                                <button type="button" class="btn btn-secondary" id="bannerUploadBtn">
+                                    Upload / Ganti
+                                </button>
+                                <button type="button" class="small-btn danger" id="bannerDeleteBtn" hidden>
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Pengaturan Toko</h2>
+                                <p>Nomor WhatsApp dan informasi toko tersimpan di database.</p>
+                            </div>
+                        </div>
+                        <form id="settingsForm" class="settings-form">
+                            <label>Nama Toko<input name="storeName" required /></label
+                            ><label
+                                >Nomor WhatsApp<input
+                                    name="whatsappNumber"
+                                    required
+                                    placeholder="628xxxxxxxxxx" /></label
+                            ><label>Alamat Toko<textarea name="storeAddress"></textarea></label
+                            ><label>Info Pengantaran<textarea name="deliveryInfo"></textarea></label
+                            ><label>Jam Operasional<input name="openingHours" /></label
+                            ><label>Mata Uang<input name="currency" value="IDR" /></label
+                            ><button class="btn btn-primary">Simpan Pengaturan</button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <div class="modal-backdrop" id="menuModal" hidden>
+            <div class="modal wide-modal" role="dialog" aria-modal="true">
+                <div class="modal-head">
+                    <h2 id="menuModalTitle">Tambah Menu</h2>
+                    <button class="icon-button" id="closeMenuModal">×</button>
+                </div>
+                <form id="menuForm" class="form two-col">
+                    <input type="hidden" name="id" />
+                    <label>Nama Menu<input name="name" required maxlength="100" /></label>
+                    <label>Kategori<select name="category" id="menuCategory" required></select></label>
+                    <label>Harga<input name="price" required type="number" min="0" step="1" /></label>
+                    <label
+                        >Status<select name="status">
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Nonaktif</option>
+                        </select></label
+                    >
+                    <label
+                        >Label Menu<select name="label">
+                            <option value="">Tanpa Label</option>
+                            <option value="BEST SELLER">BEST SELLER</option>
+                            <option value="PROMO">PROMO</option>
+                        </select>
+                        <small>Atur label yang tampil pada foto menu di halaman pelanggan.</small>
+                    </label>
+                    <label>Urutan<input name="sortOrder" type="number" min="0" step="1" value="1" /></label>
+                    <label
+                        >Gambar<input
+                            name="image"
+                            id="imageInput"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                        /><small>Maksimal 2 MB. WEBP disarankan.</small></label
+                    >
+                    <label class="full-field">Deskripsi<textarea name="description" maxlength="500"></textarea></label>
+                    <div class="image-preview full-field" id="imagePreview"></div>
+                    <div class="form-actions full-field" style="display: flex; justify-content: flex-end; gap: 10px">
+                        <button type="button" class="btn btn-secondary" id="cancelMenu">Batal</button
+                        ><button class="btn btn-primary" type="submit">Simpan Menu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="toast" class="toast" hidden></div>
+        <script>
+            /* KIMBABKU admin app */
+            // =====================================================================
+            // PENTING: API_URL DI SINI HARUS SAMA PERSIS dengan CONFIG.apiUrl di
+            // index.html. Keduanya harus menunjuk ke satu Web App Apps Script yang
+            // sama (satu spreadsheet yang sama). Kalau berbeda, menu/gambar/
+            // pengaturan yang kamu simpan di sini TIDAK akan muncul di halaman
+            // pelanggan, karena keduanya membaca database yang berbeda.
+            // =====================================================================
+            const CONFIG = Object.freeze({
+                API_URL:
+                    'https://script.google.com/macros/s/AKfycbyP5_m7LRjOvSvYqYYpBL1yVIt9fXNhqZrVWvOsyuWK73AgOZJS1GtdXirUT8GTYllslg/exec',
+            });
+            const state = {
+                token: sessionStorage.getItem('kimbabku_admin_token') || '',
+                menus: [],
+                categories: [],
+                settings: {},
+            };
+            const $ = (s) => document.querySelector(s);
+            const money = (n, c = 'IDR') =>
+                new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: c,
+                    maximumFractionDigits: 0,
+                }).format(Number(n) || 0);
+            async function api(action, data = {}) {
+                if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('PASTE_URL') === 0)
+                    throw new Error('API_URL belum dikonfigurasi.');
+                const body = new URLSearchParams();
+                body.set('action', action);
+                if (state.token) body.set('token', state.token);
+                Object.entries(data).forEach(([k, v]) => {
+                    if (v !== undefined && v !== null) body.set(k, String(v));
+                });
+                const r = await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    },
+                    body,
+                });
+                const j = await r.json();
+                if (!j.success) throw new Error(j.error || 'Request gagal');
+                return j.data;
+            }
+            function toast(msg, error = false) {
+                const t = $('#toast');
+                t.textContent = msg;
+                t.className = 'toast' + (error ? ' error' : '');
+                t.hidden = false;
+                setTimeout(() => (t.hidden = true), 3000);
+            }
+            function showApp() {
+                $('#loginView').hidden = true;
+                $('#adminApp').hidden = false;
+                loadAll().catch((e) => {
+                    toast(e.message, true);
+                    if (/login|token|auth/i.test(e.message)) logout();
+                });
+            }
+            function logout() {
+                state.token = '';
+                sessionStorage.removeItem('kimbabku_admin_token');
+                $('#adminApp').hidden = true;
+                $('#loginView').hidden = false;
+            }
+            async function login(e) {
+                e.preventDefault();
+                const f = Object.fromEntries(new FormData(e.currentTarget));
+                $('#loginError').hidden = true;
+                try {
+                    const d = await api('loginAdmin', {
+                        username: f.username,
+                        password: f.password,
+                    });
+                    state.token = d.token;
+                    sessionStorage.setItem('kimbabku_admin_token', state.token);
+                    showApp();
+                } catch (err) {
+                    $('#loginError').textContent = err.message;
+                    $('#loginError').hidden = false;
+                }
+            }
+            async function loadAll() {
+                const d = await api('getAdminData');
+                state.menus = d.menus || [];
+                state.categories = d.categories || [];
+                state.settings = d.settings || {};
+                renderDashboard();
+                renderMenus();
+                renderCategories();
+                renderSettings();
+                renderBrandAssets();
+                populateCategorySelect();
+            }
+            function renderDashboard() {
+                $('#statTotal').textContent = state.menus.length;
+                $('#statActive').textContent = state.menus.filter((x) => x.status === 'active').length;
+                $('#statInactive').textContent = state.menus.filter((x) => x.status === 'inactive').length;
+                $('#statCategories').textContent = state.categories.length;
+                const box = $('#dashboardRecent');
+                box.className = 'recent-list';
+                box.replaceChildren(
+                    ...state.menus
+                        .slice()
+                        .sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)))
+                        .slice(0, 6)
+                        .map((m) => {
+                            const r = document.createElement('div');
+                            r.className = 'recent-row';
+                            const img = document.createElement('img');
+                            img.className = 'thumb';
+                            img.src = m.imageUrl || '';
+                            const d = document.createElement('div'),
+                                s = document.createElement('strong');
+                            s.textContent = m.name;
+                            const sm = document.createElement('small');
+                            sm.textContent = `${m.category || '-'} · ${money(m.price, state.settings.currency || 'IDR')}`;
+                            d.append(s, sm);
+                            r.append(img, d);
+                            return r;
+                        })
+                );
+            }
+            function renderMenus() {
+                const body = $('#menuTable');
+                body.replaceChildren();
+                state.menus
+                    .slice()
+                    .sort((a, b) => (Number(a.sortOrder) || 0) - (Number(b.sortOrder) || 0))
+                    .forEach((m) => {
+                        const tr = document.createElement('tr');
+                        const img = document.createElement('img');
+                        img.className = 'thumb';
+                        img.src = m.imageUrl || '';
+                        const tdImg = document.createElement('td');
+                        tdImg.append(img);
+                        const cells = [
+                            m.name,
+                            m.category,
+                            money(m.price, state.settings.currency || 'IDR'),
+                            m.status,
+                            m.label || '—',
+                            m.sortOrder,
+                        ];
+                        const tds = cells.map((v) => {
+                            const td = document.createElement('td');
+                            td.textContent = v;
+                            return td;
+                        });
+                        tds[3].innerHTML = '';
+                        const badge = document.createElement('span');
+                        badge.className = `badge ${m.status === 'active' ? 'active' : 'inactive'}`;
+                        badge.textContent = m.status === 'active' ? 'Aktif' : 'Nonaktif';
+                        tds[3].append(badge);
+                        const action = document.createElement('td'),
+                            wrap = document.createElement('div');
+                        wrap.className = 'table-actions';
+                        const edit = document.createElement('button');
+                        edit.className = 'small-btn';
+                        edit.textContent = 'Edit';
+                        edit.onclick = () => openMenuModal(m);
+                        const toggle = document.createElement('button');
+                        toggle.className = 'small-btn';
+                        toggle.textContent = m.status === 'active' ? 'Nonaktifkan' : 'Aktifkan';
+                        toggle.onclick = () => toggleMenu(m);
+                        const del = document.createElement('button');
+                        del.className = 'small-btn danger';
+                        del.textContent = 'Hapus';
+                        del.onclick = () => deleteMenu(m);
+                        wrap.append(edit, toggle, del);
+                        action.append(wrap);
+                        tr.append(tdImg, ...tds, action);
+                        body.append(tr);
+                    });
+            }
+            function renderCategories() {
+                const box = $('#categoryList');
+                box.replaceChildren();
+                state.categories.forEach((c) => {
+                    const name = typeof c === 'string' ? c : c.name,
+                        id = typeof c === 'string' ? c : c.id,
+                        imageUrl = typeof c === 'string' ? '' : c.imageUrl || '';
+                    const row = document.createElement('div');
+                    row.className = 'category-item';
+
+                    const nameWrap = document.createElement('div');
+                    nameWrap.className = 'cat-name-wrap';
+                    const thumb = document.createElement('img');
+                    thumb.className = 'cat-thumb';
+                    thumb.src = imageUrl || '';
+                    thumb.style.visibility = imageUrl ? 'visible' : 'hidden';
+                    const s = document.createElement('span');
+                    s.textContent = name;
+                    nameWrap.append(thumb, s);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'asset-actions';
+                    const photoBtn = document.createElement('button');
+                    photoBtn.type = 'button';
+                    photoBtn.className = 'small-btn';
+                    photoBtn.textContent = imageUrl ? 'Ganti Foto' : 'Upload Foto';
+                    photoBtn.onclick = () => {
+                        pendingCategoryId = id;
+                        $('#categoryImageInput').click();
+                    };
+                    actions.append(photoBtn);
+                    if (imageUrl) {
+                        const delPhotoBtn = document.createElement('button');
+                        delPhotoBtn.type = 'button';
+                        delPhotoBtn.className = 'small-btn danger';
+                        delPhotoBtn.textContent = 'Hapus Foto';
+                        delPhotoBtn.onclick = () => deleteCategoryImage(id, name);
+                        actions.append(delPhotoBtn);
+                    }
+                    const delBtn = document.createElement('button');
+                    delBtn.type = 'button';
+                    delBtn.className = 'small-btn danger';
+                    delBtn.textContent = 'Hapus';
+                    delBtn.onclick = () => deleteCategory(id, name);
+                    actions.append(delBtn);
+
+                    row.append(nameWrap, actions);
+                    box.append(row);
+                });
+            }
+            function renderBrandAssets() {
+                const logoUrl = state.settings.logoUrl || '';
+                const bannerUrl = state.settings.bannerUrl || '';
+                const logoPrev = $('#logoPreview');
+                if (logoUrl) {
+                    logoPrev.style.backgroundImage = `url('${logoUrl}')`;
+                    logoPrev.textContent = '';
+                } else {
+                    logoPrev.style.backgroundImage = '';
+                    logoPrev.textContent = 'Belum ada logo';
+                }
+                $('#logoDeleteBtn').hidden = !logoUrl;
+                const bannerPrev = $('#bannerPreview');
+                if (bannerUrl) {
+                    bannerPrev.style.backgroundImage = `url('${bannerUrl}')`;
+                    bannerPrev.textContent = '';
+                } else {
+                    bannerPrev.style.backgroundImage = '';
+                    bannerPrev.textContent = 'Belum ada banner';
+                }
+                $('#bannerDeleteBtn').hidden = !bannerUrl;
+            }
+            function renderSettings() {
+                const f = $('#settingsForm');
+                ['storeName', 'whatsappNumber', 'storeAddress', 'deliveryInfo', 'openingHours', 'currency'].forEach(
+                    (k) => (f.elements[k].value = state.settings[k] || '')
+                );
+            }
+            function populateCategorySelect() {
+                const s = $('#menuCategory');
+                s.replaceChildren();
+                state.categories.forEach((c) => {
+                    const n = typeof c === 'string' ? c : c.name;
+                    const o = document.createElement('option');
+                    o.value = n;
+                    o.textContent = n;
+                    s.append(o);
+                });
+            }
+            function openMenuModal(m = null) {
+                const f = $('#menuForm');
+                f.reset();
+                $('#imagePreview').replaceChildren();
+                pendingMenuImageBlob = null;
+                f.elements.id.value = m?.id || '';
+                f.elements.name.value = m?.name || '';
+                f.elements.category.value = m?.category || state.categories[0]?.name || '';
+                f.elements.price.value = m?.price || '';
+                f.elements.status.value = m?.status || 'active';
+                f.elements.label.value = m?.label || '';
+                f.elements.sortOrder.value = m?.sortOrder ?? 1;
+                f.elements.description.value = m?.description || '';
+                $('#menuModalTitle').textContent = m ? 'Edit Menu' : 'Tambah Menu';
+                if (m?.imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = m.imageUrl;
+                    $('#imagePreview').append(img);
+                }
+                openModal('menuModal');
+            }
+            function openModal(id) {
+                $('#' + id).hidden = false;
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMenu() {
+                $('#menuModal').hidden = true;
+                document.body.style.overflow = '';
+            }
+            function fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const r = new FileReader();
+                    r.onload = () => resolve(String(r.result).split(',')[1]);
+                    r.onerror = reject;
+                    r.readAsDataURL(file);
+                });
+            }
+            // ==================== Auto resize + convert ke WebP ====================
+            // Semua foto yang diupload (menu, logo, banner, kategori) otomatis
+            // diproses di browser sebelum dikirim: dikompres jadi WebP dan
+            // di-resize ke ukuran ideal, supaya admin tidak perlu crop/convert
+            // manual dan halaman pelanggan tetap ringan & cepat dimuat.
+            //   - square:true  -> dipotong tengah jadi persegi (foto menu & kategori)
+            //   - square:false -> proporsi asli dipertahankan, lebar dibatasi maxWidth (logo & banner)
+            function loadImageEl_(file) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error('File bukan gambar yang valid.'));
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+            async function toWebp_(file, { square = false, size = 1000, maxWidth = 1600, quality = 0.85 } = {}) {
+                const img = await loadImageEl_(file);
+                let sx = 0,
+                    sy = 0,
+                    sw = img.naturalWidth,
+                    sh = img.naturalHeight,
+                    outW,
+                    outH;
+                if (square) {
+                    const side = Math.min(sw, sh);
+                    sx = (sw - side) / 2;
+                    sy = (sh - side) / 2;
+                    sw = side;
+                    sh = side;
+                    outW = outH = size;
+                } else {
+                    outW = sw;
+                    outH = sh;
+                    if (outW > maxWidth) {
+                        outH = Math.round((outH * maxWidth) / outW);
+                        outW = maxWidth;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = outW;
+                canvas.height = outH;
+                canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+                URL.revokeObjectURL(img.src);
+                return new Promise((resolve, reject) => {
+                    canvas.toBlob(
+                        (blob) => (blob ? resolve(blob) : reject(new Error('Gagal memproses gambar.'))),
+                        'image/webp',
+                        quality
+                    );
+                });
+            }
+            function blobToBase64(blob) {
+                return fileToBase64(blob);
+            }
+            let pendingMenuImageBlob = null;
+            $('#imageInput').addEventListener('change', async (e) => {
+                const f = e.target.files[0],
+                    box = $('#imagePreview');
+                box.replaceChildren();
+                pendingMenuImageBlob = null;
+                if (!f) return;
+                try {
+                    // Foto menu: dipotong persegi & diresize ke 1000×1000 WebP (ukuran ideal).
+                    const blob = await toWebp_(f, { square: true, size: 1000, quality: 0.82 });
+                    pendingMenuImageBlob = blob;
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(blob);
+                    box.append(img);
+                } catch (err) {
+                    toast(err.message || 'Gagal memproses gambar.', true);
+                    e.target.value = '';
+                }
+            });
+            async function saveMenu(e) {
+                e.preventDefault();
+                const f = e.currentTarget;
+                const btn = f.querySelector('button[type=submit]');
+                btn.disabled = true;
+                try {
+                    let imageBase64 = '',
+                        mimeType = '',
+                        imageName = '';
+                    if (pendingMenuImageBlob) {
+                        imageBase64 = await blobToBase64(pendingMenuImageBlob);
+                        mimeType = 'image/webp';
+                        imageName = 'menu.webp';
+                    }
+                    await api(f.elements.id.value ? 'updateMenu' : 'createMenu', {
+                        id: f.elements.id.value,
+                        name: f.elements.name.value,
+                        category: f.elements.category.value,
+                        price: f.elements.price.value,
+                        description: f.elements.description.value,
+                        status: f.elements.status.value,
+                        label: f.elements.label.value,
+                        sortOrder: f.elements.sortOrder.value,
+                        imageBase64,
+                        mimeType,
+                        imageName,
+                    });
+                    closeMenu();
+                    toast('Menu berhasil disimpan.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                } finally {
+                    btn.disabled = false;
+                }
+            }
+            async function toggleMenu(m) {
+                try {
+                    await api('updateMenu', {
+                        id: m.id,
+                        name: m.name,
+                        category: m.category,
+                        price: m.price,
+                        description: m.description,
+                        status: m.status === 'active' ? 'inactive' : 'active',
+                        label: m.label || '',
+                        sortOrder: m.sortOrder,
+                    });
+                    toast('Status menu diperbarui.');
+                    await loadAll();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function deleteMenu(m) {
+                if (!confirm(`Apakah Anda yakin ingin menghapus menu "${m.name}"?`)) return;
+                try {
+                    await api('deleteMenu', { id: m.id });
+                    toast('Menu berhasil dihapus.');
+                    await loadAll();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function deleteCategory(id, name) {
+                if (!confirm(`Hapus kategori "${name}"? Pastikan tidak ada menu yang menggunakannya.`)) return;
+                try {
+                    await api('deleteCategory', { id, name });
+                    toast('Kategori berhasil dihapus.');
+                    await loadAll();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function saveCategory(e) {
+                e.preventDefault();
+                const n = e.currentTarget.elements.name.value.trim();
+                if (!n) return;
+                try {
+                    await api('createCategory', { name: n });
+                    e.currentTarget.reset();
+                    toast('Kategori ditambahkan.');
+                    await loadAll();
+                } catch (e2) {
+                    toast(e2.message, true);
+                }
+            }
+            async function saveSettings(e) {
+                e.preventDefault();
+                const d = Object.fromEntries(new FormData(e.currentTarget));
+                try {
+                    await api('updateSettings', d);
+                    toast('Pengaturan disimpan.');
+                    await loadAll();
+                } catch (e2) {
+                    toast(e2.message, true);
+                }
+            }
+            // ==================== Logo, Banner & Foto Kategori ====================
+            let pendingCategoryId = '';
+            async function uploadAssetFile(action, file, extra = {}, resizeOpts = {}) {
+                if (!file) return;
+                const blob = await toWebp_(file, resizeOpts);
+                const imageBase64 = await blobToBase64(blob);
+                return api(action, { ...extra, imageBase64, mimeType: 'image/webp', imageName: action + '.webp' });
+            }
+            $('#logoUploadBtn').onclick = () => $('#logoInput').click();
+            $('#logoInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                e.target.value = '';
+                if (!file) return;
+                try {
+                    // Logo: proporsi asli dipertahankan (tidak dipotong persegi), lebar dibatasi 600px.
+                    await uploadAssetFile('uploadLogo', file, {}, { square: false, maxWidth: 600, quality: 0.92 });
+                    toast('Logo berhasil diperbarui.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+            $('#logoDeleteBtn').onclick = async () => {
+                if (!confirm('Hapus logo saat ini? Halaman pelanggan akan memakai logo bawaan.')) return;
+                try {
+                    await api('deleteLogo');
+                    toast('Logo dihapus.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            };
+            $('#bannerUploadBtn').onclick = () => $('#bannerInput').click();
+            $('#bannerInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                e.target.value = '';
+                if (!file) return;
+                try {
+                    // Banner: proporsi asli dipertahankan, lebar dibatasi 1600px.
+                    await uploadAssetFile('uploadBanner', file, {}, { square: false, maxWidth: 1600, quality: 0.82 });
+                    toast('Banner berhasil diperbarui.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+            $('#bannerDeleteBtn').onclick = async () => {
+                if (!confirm('Hapus banner saat ini? Halaman pelanggan akan memakai banner bawaan.')) return;
+                try {
+                    await api('deleteBanner');
+                    toast('Banner dihapus.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            };
+            $('#categoryImageInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                const id = pendingCategoryId;
+                e.target.value = '';
+                pendingCategoryId = '';
+                if (!file || !id) return;
+                try {
+                    // Foto kategori: dipotong persegi & diresize ke 500×500 WebP.
+                    await uploadAssetFile(
+                        'uploadCategoryImage',
+                        file,
+                        { id },
+                        { square: true, size: 500, quality: 0.85 }
+                    );
+                    toast('Foto kategori berhasil diperbarui.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+            async function deleteCategoryImage(id, name) {
+                if (!confirm(`Hapus foto kategori "${name}"?`)) return;
+                try {
+                    await api('deleteCategoryImage', { id });
+                    toast('Foto kategori dihapus.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            }
+            function setupNav() {
+                document.querySelectorAll('.side-link[data-view]').forEach(
+                    (b) =>
+                        (b.onclick = () => {
+                            document.querySelectorAll('.side-link').forEach((x) => x.classList.remove('active'));
+                            b.classList.add('active');
+                            document
+                                .querySelectorAll('.admin-view')
+                                .forEach((x) => (x.hidden = x.dataset.section !== b.dataset.view));
+                            $('#viewTitle').textContent = b.textContent;
+                        })
+                );
+            }
+            $('#loginForm').addEventListener('submit', login);
+            $('#logoutBtn').onclick = logout;
+            $('#refreshBtn').onclick = () =>
+                loadAll()
+                    .then(() => toast('Data diperbarui.'))
+                    .catch((e) => toast(e.message, true));
+            $('#clearCacheBtn').onclick = () =>
+                api('clearCache')
+                    .then(() => toast('Cache berhasil dibersihkan.'))
+                    .catch((e) => toast(e.message, true));
+            $('#newMenuBtn').onclick = () => openMenuModal();
+            $('#newMenuBtn2').onclick = () => openMenuModal();
+            $('#closeMenuModal').onclick = closeMenu;
+            $('#cancelMenu').onclick = closeMenu;
+            $('#menuForm').addEventListener('submit', saveMenu);
+            $('#categoryForm').addEventListener('submit', saveCategory);
+            $('#settingsForm').addEventListener('submit', saveSettings);
+            setupNav();
+            if (state.token) showApp();
+        </script>
+    </body>
+</html>

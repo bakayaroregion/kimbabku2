@@ -1,0 +1,1871 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+        <meta name="theme-color" content="#0b2f1f" />
+        <title>KIMBABKU — Kimbab • Risol Mayo • Aneka Jajanan</title>
+        <meta
+            name="description"
+            content="KIMBABKU — Kimbab, Risol Mayo & aneka jajanan fresh. Pesan online, checkout mudah, konfirmasi langsung via WhatsApp."
+        />
+        <meta property="og:title" content="KIMBABKU — Kimbab • Risol Mayo • Aneka Jajanan" />
+        <meta property="og:description" content="Rasa lezat setiap gigitan. Pesan langsung melalui WhatsApp." />
+        <style>
+            :root {
+                --dark: #0b2f1f;
+                --dark2: #0f3a26;
+                --g: #0f7a45;
+                --g-deep: #0d6a3c;
+                --o: #ef8422;
+                --bg: #f6f9f7;
+                --line: #e7ede9;
+                --ink: #16281f;
+                --muted: #74847b;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                font-family: 'Segoe UI', Arial, system-ui, sans-serif;
+                color: var(--ink);
+                background: var(--bg);
+                overflow-x: hidden;
+            }
+            img {
+                max-width: 100%;
+            }
+            button,
+            input,
+            textarea,
+            select {
+                font: inherit;
+            }
+            button {
+                cursor: pointer;
+            }
+            a {
+                color: inherit;
+            }
+            .icon {
+                width: 18px;
+                height: 18px;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                flex-shrink: 0;
+                display: block;
+            }
+            .icon.filled {
+                fill: currentColor;
+                stroke: none;
+            }
+
+            /* ===== HEADER ===== */
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 30;
+                background: var(--dark);
+                color: #fff;
+            }
+            .nav {
+                max-width: 1280px;
+                min-height: 82px;
+                margin: auto;
+                padding: 10px 20px;
+                display: flex;
+                align-items: center;
+                gap: 22px;
+            }
+            .logo {
+                height: 56px;
+                width: auto;
+                flex-shrink: 0;
+            }
+            .links {
+                display: flex;
+                gap: 6px;
+                flex: 1;
+                flex-wrap: wrap;
+            }
+            .links a {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                color: #cfe3d7;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14.5px;
+                padding: 8px 4px;
+                position: relative;
+                white-space: nowrap;
+            }
+            .links a .icon {
+                width: 16px;
+                height: 16px;
+            }
+            .links a:hover {
+                color: #fff;
+            }
+            .links a.active {
+                color: #fff;
+            }
+            .links a.active::after {
+                content: '';
+                position: absolute;
+                left: 2px;
+                right: 2px;
+                bottom: -8px;
+                height: 2px;
+                background: #7ed957;
+                border-radius: 2px;
+            }
+            .search {
+                display: flex;
+                align-items: center;
+                background: #fff;
+                border-radius: 30px;
+                overflow: hidden;
+                width: 230px;
+                max-width: 100%;
+                padding-left: 14px;
+            }
+            .search .icon {
+                color: #9aa89f;
+            }
+            .search input {
+                border: 0;
+                outline: 0;
+                background: transparent;
+                padding: 11px 8px;
+                width: 100%;
+                min-width: 0;
+                color: #16281f;
+            }
+            .search button {
+                border: 0;
+                background: var(--g);
+                color: #fff;
+                width: 42px;
+                height: 42px;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+                margin: 3px;
+                border-radius: 50%;
+            }
+            .cart {
+                position: relative;
+                border: 0;
+                background: #ffffff14;
+                color: #fff;
+                border-radius: 14px;
+                padding: 11px 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-shrink: 0;
+            }
+            .cart .icon {
+                width: 20px;
+                height: 20px;
+            }
+            .badge {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: var(--o);
+                color: #fff;
+                border-radius: 20px;
+                min-width: 18px;
+                height: 18px;
+                padding: 0 4px;
+                font-size: 11px;
+                font-weight: 800;
+                display: grid;
+                place-items: center;
+                border: 2px solid var(--dark);
+            }
+
+            .container {
+                max-width: 1280px;
+                margin: auto;
+                padding: 22px 20px;
+            }
+
+            /* ===== HERO ===== */
+            .hero {
+                position: relative;
+                overflow: hidden;
+                border-radius: 24px;
+                box-shadow: 0 12px 35px #00553818;
+                background: #06362a;
+            }
+            .hero img {
+                display: block;
+                width: 100%;
+                height: auto;
+                max-height: 46vh;
+                object-fit: cover;
+            }
+            .hero-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                border: 0;
+                background: rgba(255, 255, 255, 0.85);
+                color: var(--dark);
+                display: grid;
+                place-items: center;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            }
+            .hero-arrow.prev {
+                left: 16px;
+            }
+            .hero-arrow.next {
+                right: 16px;
+            }
+            .dots {
+                text-align: center;
+                padding: 14px 0 6px;
+            }
+            .dots i {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #d7e6df;
+                margin: 3px;
+            }
+            .dots i.on {
+                background: #16a34a;
+            }
+
+            /* ===== CATEGORIES ===== */
+            .cats {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 10px;
+                margin: 14px 0 30px;
+                background: #fff;
+                border: 1px solid var(--line);
+                border-radius: 20px;
+                padding: 14px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            .cat {
+                flex: 1 1 0;
+                min-width: 78px;
+                border: 1px solid var(--line);
+                background: #fafcfb;
+                border-radius: 16px;
+                padding: 16px 6px;
+                text-align: center;
+                font-weight: 700;
+                font-size: clamp(10px, 2.2vw, 13.5px);
+                color: var(--ink);
+                white-space: nowrap;
+            }
+            .cat span {
+                display: block;
+                font-size: clamp(18px, 5vw, 30px);
+                margin-bottom: 8px;
+            }
+            .cat .cat-ico {
+                display: block;
+                width: clamp(28px, 8vw, 40px);
+                height: clamp(28px, 8vw, 40px);
+                object-fit: contain;
+                margin: 0 auto 8px;
+            }
+            .cat.active {
+                background: var(--g);
+                border-color: var(--g);
+                color: #fff;
+            }
+
+            /* ===== SECTION HEAD ===== */
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 6px 0 18px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .head .titlewrap {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .head .leaf {
+                color: var(--g);
+                margin-top: 5px;
+            }
+            .head h2 {
+                margin: 0;
+                color: var(--ink);
+                font-size: clamp(19px, 4.6vw, 24px);
+            }
+            .head p {
+                margin: 4px 0 0;
+                color: var(--muted);
+                font-size: 13.5px;
+            }
+            .seeall {
+                border: 1.5px solid var(--g);
+                color: var(--g);
+                background: #fff;
+                border-radius: 999px;
+                padding: 9px 16px;
+                font-weight: 700;
+                font-size: 13px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                white-space: nowrap;
+            }
+
+            /* ===== PRODUCT CARDS ===== */
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 16px;
+            }
+            .card {
+                background: #fff;
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 4px 14px rgba(10, 40, 25, 0.05);
+                transition:
+                    transform 0.18s ease,
+                    box-shadow 0.18s ease;
+                display: flex;
+                flex-direction: column;
+            }
+            .card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 22px rgba(10, 40, 25, 0.12);
+            }
+            .pic {
+                aspect-ratio: 4 / 3;
+                width: 100%;
+                background: linear-gradient(135deg, #edf7f2, #fff);
+                display: grid;
+                place-items: center;
+                font-size: clamp(38px, 9vw, 60px);
+                position: relative;
+                overflow: hidden;
+            }
+            .pic > img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .tag {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+                background: var(--g);
+                color: #fff;
+                padding: 5px 11px;
+                border-radius: 999px;
+                font-size: 10.5px;
+                font-weight: 800;
+            }
+            .tag.promo-tag {
+                background: var(--o);
+            }
+            .body {
+                padding: 14px 14px 16px;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+            .body h3 {
+                margin: 0 0 4px;
+                color: var(--ink);
+                font-size: clamp(13.5px, 3.2vw, 15.5px);
+                line-height: 1.3;
+            }
+            .desc {
+                font-size: 12px;
+                color: var(--muted);
+                line-height: 1.45;
+                margin: 0 0 10px;
+            }
+            .price {
+                font-size: clamp(15px, 3.6vw, 18px);
+                color: var(--o);
+                font-weight: 800;
+                margin: 0 0 10px;
+            }
+            .add {
+                margin-top: auto;
+                border: 0;
+                background: var(--g);
+                color: white;
+                padding: 11px;
+                border-radius: 11px;
+                font-size: 13px;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 7px;
+            }
+            .add:hover {
+                background: var(--g-deep);
+            }
+
+            /* ===== CARA PESAN ===== */
+            .steps {
+                background: #eef4f0;
+                border-radius: 22px;
+                padding: 26px 22px;
+                margin: 38px 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .stepsgrid {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: flex-start;
+                gap: 4px;
+                min-width: 420px;
+            }
+            .step {
+                text-align: center;
+                flex: 1 1 0;
+                min-width: 0;
+            }
+            .steparrow {
+                color: #c3d2c9;
+                font-size: 22px;
+                padding-top: 22px;
+                flex-shrink: 0;
+            }
+            .num-wrap {
+                position: relative;
+                width: 52px;
+                height: 52px;
+                margin: 0 auto 12px;
+            }
+            .num-circle {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                background: var(--dark2);
+                color: #fff;
+                display: grid;
+                place-items: center;
+            }
+            .num-badge {
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--o);
+                color: #fff;
+                font-size: 11px;
+                font-weight: 800;
+                display: grid;
+                place-items: center;
+                border: 2px solid #eef4f0;
+            }
+            .step h3 {
+                color: var(--ink);
+                margin: 0 0 4px;
+                font-size: clamp(12px, 3.4vw, 15px);
+            }
+            .step p {
+                font-size: 11.5px;
+                color: var(--muted);
+                margin: 0;
+                line-height: 1.4;
+            }
+
+            /* ===== PROMO + FEATURES ===== */
+            .promowrap {
+                display: flex;
+                align-items: stretch;
+                gap: 14px;
+                margin: 0 0 36px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            .promo {
+                background: linear-gradient(120deg, var(--g-deep), #0a5330);
+                color: white;
+                border-radius: 20px;
+                padding: 20px 22px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                flex: 1 1 300px;
+                min-width: 260px;
+            }
+            .promo .mega {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.15);
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+            }
+            .promo .txt {
+                flex: 1;
+                min-width: 0;
+            }
+            .promo h3 {
+                margin: 0 0 4px;
+                font-size: 16.5px;
+            }
+            .promo p {
+                margin: 0;
+                font-size: 12.5px;
+                color: #d9f0e3;
+            }
+            .promo .arrowbtn {
+                border: 0;
+                background: rgba(255, 255, 255, 0.92);
+                color: var(--g-deep);
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+            }
+            .features {
+                display: flex;
+                gap: 18px;
+                flex: 0 0 auto;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            .feature {
+                text-align: center;
+                flex: 0 0 auto;
+                width: 88px;
+            }
+            .feature .circ {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                background: #e2f2e7;
+                color: var(--g-deep);
+                display: grid;
+                place-items: center;
+                margin: 0 auto 8px;
+                font-weight: 800;
+                font-size: 13px;
+            }
+            .feature b {
+                display: block;
+                color: var(--ink);
+                font-size: 11.5px;
+                line-height: 1.35;
+                font-weight: 700;
+            }
+
+            /* ===== FOOTER ===== */
+            footer {
+                background: var(--dark);
+                color: #fff;
+                padding: 40px 20px 18px;
+            }
+            .foot {
+                max-width: 1280px;
+                margin: auto;
+                display: grid;
+                grid-template-columns: 1.3fr 1fr 1fr;
+                gap: 30px;
+            }
+            .foot img.flogo {
+                height: 46px;
+                margin-bottom: 10px;
+            }
+            .foot p {
+                color: #b9d2c4;
+                font-size: 13.5px;
+                line-height: 1.7;
+                margin: 0;
+            }
+            .foot h3 {
+                margin: 0 0 14px;
+                font-size: 14.5px;
+            }
+            @media (max-width: 700px) {
+                .foot > div:not(:first-child) {
+                    padding-top: 4px;
+                }
+            }
+            .contact-line {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                color: #cfe3d7;
+                font-size: 13.5px;
+                margin-bottom: 11px;
+            }
+            .contact-line .icon {
+                color: #7ed957;
+                width: 16px;
+                height: 16px;
+            }
+            .social-row {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .social-row a {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 1px solid #ffffff33;
+                display: grid;
+                place-items: center;
+                text-decoration: none;
+                color: #fff;
+            }
+            .social-row a:hover {
+                background: #ffffff1a;
+            }
+            .copy {
+                max-width: 1280px;
+                margin: 26px auto 0;
+                border-top: 1px solid #ffffff22;
+                padding-top: 16px;
+                color: #a9c7b8;
+                font-size: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .copy .tagline {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: #cfe3d7;
+            }
+
+            .float {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                z-index: 50;
+                border: 0;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: #1fbf5c;
+                color: white;
+                display: grid;
+                place-items: center;
+                box-shadow: 0 10px 30px #0004;
+            }
+            .float .icon {
+                width: 26px;
+                height: 26px;
+            }
+
+            /* ===== CART DRAWER / CHECKOUT MODAL ===== */
+            .drawer,
+            .modal {
+                position: fixed;
+                inset: 0;
+                z-index: 100;
+                background: #00291c99;
+                display: none;
+            }
+            .drawer.open,
+            .modal.open {
+                display: flex;
+            }
+            .drawer {
+                justify-content: flex-end;
+                align-items: stretch;
+            }
+            .panel {
+                background: #fff;
+                width: min(460px, 100%);
+                padding: 18px;
+                display: flex;
+                flex-direction: column;
+            }
+            .panelhead {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 14px;
+            }
+            .close {
+                border: 0;
+                background: #edf6f2;
+                border-radius: 9px;
+                width: 38px;
+                height: 38px;
+                flex-shrink: 0;
+            }
+            .items {
+                flex: 1;
+                overflow: auto;
+            }
+            .item {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: 8px;
+                padding: 13px 0;
+                border-bottom: 1px solid #edf3f0;
+            }
+            .qty {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+            }
+            .qty button {
+                width: 30px;
+                height: 30px;
+                border: 1px solid var(--line);
+                background: white;
+                border-radius: 8px;
+            }
+            .checkout {
+                width: 100%;
+                border: 0;
+                background: var(--g);
+                color: #fff;
+                border-radius: 11px;
+                padding: 14px;
+                font-weight: 900;
+                margin-top: 12px;
+            }
+            .modal {
+                align-items: center;
+                justify-content: center;
+                padding: 12px;
+            }
+            .box {
+                background: #fff;
+                width: min(650px, 100%);
+                max-height: 92vh;
+                overflow: auto;
+                border-radius: 22px;
+                padding: 18px;
+            }
+            .progress {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 5px;
+                margin: 15px 0 22px;
+            }
+            .progress i {
+                height: 5px;
+                background: #dfebe6;
+                border-radius: 8px;
+            }
+            .progress i.on {
+                background: var(--g);
+            }
+            .title {
+                font-size: clamp(17px, 4.4vw, 22px);
+                font-weight: 900;
+                color: var(--dark);
+            }
+            .sub {
+                color: var(--muted);
+            }
+            .form {
+                display: grid;
+                gap: 12px;
+            }
+            label {
+                font-size: 13px;
+                font-weight: 800;
+                color: #31584b;
+            }
+            input,
+            textarea,
+            select {
+                width: 100%;
+                border: 1px solid #cfe2d9;
+                border-radius: 11px;
+                padding: 12px;
+                outline: 0;
+                font-size: 16px;
+            }
+            textarea {
+                min-height: 95px;
+            }
+            .two {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .opts {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin: 12px 0;
+            }
+            .opt {
+                border: 1px solid var(--line);
+                padding: 13px;
+                border-radius: 11px;
+            }
+            .opt input {
+                width: auto;
+            }
+            .footbtn {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                margin-top: 18px;
+            }
+            .primary,
+            .secondary {
+                padding: 12px 17px;
+                border-radius: 11px;
+                font-weight: 900;
+            }
+            .primary {
+                border: 0;
+                background: var(--g);
+                color: white;
+            }
+            .secondary {
+                border: 1px solid var(--line);
+                background: white;
+            }
+            .preview {
+                background: #f3f9f6;
+                border: 1px solid #d9ebe2;
+                border-radius: 14px;
+                padding: 15px;
+                line-height: 1.75;
+            }
+            .empty {
+                text-align: center;
+                padding: 35px;
+                color: var(--muted);
+            }
+            .toast {
+                position: fixed;
+                bottom: 22px;
+                left: 50%;
+                transform: translate(-50%, 30px);
+                opacity: 0;
+                background: #12352b;
+                color: #fff;
+                padding: 12px 17px;
+                border-radius: 11px;
+                z-index: 200;
+                transition: 0.25s;
+                max-width: calc(100vw - 32px);
+                text-align: center;
+            }
+            .toast.show {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+            #waFallback {
+                display: none;
+                position: fixed;
+                left: 50%;
+                bottom: 90px;
+                transform: translateX(-50%);
+                z-index: 210;
+                max-width: calc(100vw - 32px);
+            }
+            #waFallback a {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: #16b86a;
+                color: #fff;
+                text-decoration: none;
+                font-weight: 800;
+                padding: 12px 18px;
+                border-radius: 999px;
+                box-shadow: 0 10px 30px #0004;
+            }
+
+            @media (max-width: 980px) {
+                .links {
+                    display: none;
+                }
+                .search {
+                    margin-left: auto;
+                }
+                .grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            @media (max-width: 700px) {
+                .container {
+                    padding: 16px;
+                }
+                .nav {
+                    min-height: 66px;
+                    padding: 8px 12px;
+                    gap: 10px;
+                }
+                .logo {
+                    height: 40px;
+                }
+                .search {
+                    width: auto;
+                    flex: 1;
+                }
+                .hero {
+                    border-radius: 16px;
+                }
+                .hero img {
+                    max-height: 30vh;
+                }
+                .hero-arrow {
+                    width: 30px;
+                    height: 30px;
+                }
+                .cats {
+                    border-radius: 16px;
+                    padding: 10px;
+                }
+                .cat {
+                    padding: 10px 6px;
+                    border-radius: 12px;
+                    min-width: 70px;
+                }
+                .grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+                .promowrap {
+                    gap: 10px;
+                }
+                footer {
+                    padding: 34px 16px 100px;
+                }
+                .foot {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 34px;
+                    padding-right: 60px;
+                }
+                .float {
+                    width: 50px;
+                    height: 50px;
+                    right: 16px;
+                    bottom: 16px;
+                }
+                .float .icon {
+                    width: 22px;
+                    height: 22px;
+                }
+                .two,
+                .opts {
+                    grid-template-columns: 1fr;
+                }
+                .cart span.txt {
+                    display: none;
+                }
+            }
+            @media (max-width: 420px) {
+                .grid {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+                }
+                .logo {
+                    height: 34px;
+                }
+                .hero img {
+                    max-height: 24vh;
+                }
+                .foot {
+                    grid-template-columns: 1fr;
+                    gap: 26px;
+                    padding-right: 60px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav class="nav">
+                <img class="logo" id="logoImg" src="Logo.png" alt="KIMBABKU" />
+                <div class="links">
+                    <a href="#beranda" class="active">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 11l9-7 9 7" />
+                            <path d="M5 10v10h14V10" />
+                        </svg>
+                        Beranda</a
+                    ><a href="#menu">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                        </svg>
+                        Menu</a
+                    ><a href="#kategori">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+                        </svg>
+                        Kategori</a
+                    ><a href="#tentang">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 11v5" />
+                            <circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none" />
+                        </svg>
+                        Tentang Kami</a
+                    ><a href="#kontak">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+                            <path d="M3 7l9 6 9-6" />
+                        </svg>
+                        Kontak</a
+                    >
+                </div>
+                <div class="search">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="M21 21l-4.3-4.3" />
+                    </svg>
+                    <input id="search" placeholder="Cari menu..." oninput="render()" />
+                    <button type="button" onclick="render()" aria-label="Cari">
+                        <svg class="icon" viewBox="0 0 24 24" style="stroke: #fff">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="M21 21l-4.3-4.3" />
+                        </svg>
+                    </button>
+                </div>
+                <button class="cart" onclick="openCart()">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none" />
+                        <circle cx="18" cy="21" r="1.4" fill="currentColor" stroke="none" />
+                        <path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6" />
+                    </svg>
+                    <span class="txt">Keranjang</span>
+                    <span class="badge" id="badge">0</span>
+                </button>
+            </nav>
+        </header>
+        <main id="beranda">
+            <div class="container">
+                <section class="hero">
+                    <button class="hero-arrow prev" aria-label="Sebelumnya" onclick="heroPrev()">
+                        <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                    </button>
+                    <img id="heroImg" src="Baner.jpg" alt="KIMBABKU — Kimbab, Risol Mayo & Aneka Jajanan" />
+                    <button class="hero-arrow next" aria-label="Berikutnya" onclick="heroNext()">
+                        <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px">
+                            <path d="M9 6l6 6-6 6" />
+                        </svg>
+                    </button>
+                </section>
+                <div class="dots" id="heroDots"></div>
+                <section id="kategori" class="cats">
+                    <button class="cat active" onclick="cat('Semua', this)"><span>🍽️</span>Semua</button
+                    ><button class="cat" onclick="cat('Kimbab', this)">
+                        <img class="cat-ico" src="Kategori-Kimbab.png" alt="Kimbab" />Kimbab</button
+                    ><button class="cat" onclick="cat('Risol Mayo', this)">
+                        <img class="cat-ico" src="Kategori-RisolMayo.png" alt="Risol Mayo" />Risol Mayo</button
+                    ><button class="cat" onclick="cat('Aneka Jajanan', this)">
+                        <img class="cat-ico" src="Kategori-AnekaJajanan.png" alt="Aneka Jajanan" />Aneka Jajanan</button
+                    ><button class="cat" onclick="cat('Minuman', this)">
+                        <img class="cat-ico" src="Kategori-Minuman.png" alt="Minuman" />Minuman
+                    </button>
+                </section>
+                <section id="menu">
+                    <div class="head">
+                        <div class="titlewrap">
+                            <svg
+                                class="icon leaf"
+                                viewBox="0 0 24 24"
+                                style="width: 20px; height: 20px; margin-top: 3px"
+                            >
+                                <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
+                                <path d="M5 21c3-6 6-9 12-12" />
+                            </svg>
+                            <div>
+                                <h2>Produk Unggulan</h2>
+                                <p>Pilihan terbaik dengan rasa yang selalu bikin ketagihan</p>
+                            </div>
+                        </div>
+                        <a href="#menu" class="seeall"
+                            >Lihat Semua
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                <path d="M9 6l6 6-6 6" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div id="products" class="grid"></div>
+                </section>
+                <section id="cara" class="steps">
+                    <div class="head" style="margin-bottom: 20px">
+                        <div class="titlewrap">
+                            <svg
+                                class="icon leaf"
+                                viewBox="0 0 24 24"
+                                style="width: 20px; height: 20px; margin-top: 3px"
+                            >
+                                <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
+                                <path d="M5 21c3-6 6-9 12-12" />
+                            </svg>
+                            <div>
+                                <h2>Cara Pesan</h2>
+                                <p>Mudah, cepat dan praktis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stepsgrid">
+                        <div class="step">
+                            <div class="num-wrap">
+                                <div class="num-circle">
+                                    <svg class="icon" viewBox="0 0 24 24" style="color: #fff">
+                                        <circle cx="9" cy="21" r="1.2" fill="currentColor" stroke="none" />
+                                        <circle cx="18" cy="21" r="1.2" fill="currentColor" stroke="none" />
+                                        <path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6" />
+                                    </svg>
+                                </div>
+                                <div class="num-badge">1</div>
+                            </div>
+                            <h3>Pilih Menu</h3>
+                            <p>Pilih makanan favoritmu</p>
+                        </div>
+                        <div class="steparrow">→</div>
+                        <div class="step">
+                            <div class="num-wrap">
+                                <div class="num-circle">
+                                    <svg class="icon" viewBox="0 0 24 24" style="color: #fff">
+                                        <rect x="5" y="3" width="14" height="18" rx="2" />
+                                        <path d="M9 3v3h6V3M8 11h8M8 15h5" />
+                                    </svg>
+                                </div>
+                                <div class="num-badge">2</div>
+                            </div>
+                            <h3>Isi Data</h3>
+                            <p>Nama, No. WhatsApp,<br />Alamat & Catatan</p>
+                        </div>
+                        <div class="steparrow">→</div>
+                        <div class="step">
+                            <div class="num-wrap">
+                                <div class="num-circle">
+                                    <svg class="icon" viewBox="0 0 24 24" style="color: #fff">
+                                        <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
+                                        <path
+                                            d="M8.5 8.7c.2-.6.9-1.4 1.7-1.2.6.1 1 .9 1.3 1.5.2.5-.5 1-.3 1.5.4 1 2 2.6 3 3 .5.2 1-.5 1.5-.3.6.3 1.4.7 1.5 1.3.2.8-.6 1.5-1.2 1.7-1 .3-2.2 0-3.6-.8-1.7-1-3.3-2.6-4.3-4.3-.8-1.4-1.1-2.6-.8-3.6z"
+                                            fill="currentColor"
+                                            stroke="none"
+                                        />
+                                    </svg>
+                                </div>
+                                <div class="num-badge">3</div>
+                            </div>
+                            <h3>Konfirmasi</h3>
+                            <p>Cek kembali pesananmu</p>
+                        </div>
+                        <div class="steparrow">→</div>
+                        <div class="step">
+                            <div class="num-wrap">
+                                <div class="num-circle">
+                                    <svg class="icon" viewBox="0 0 24 24" style="color: #fff">
+                                        <path d="M22 2L11 13" />
+                                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                                    </svg>
+                                </div>
+                                <div class="num-badge">4</div>
+                            </div>
+                            <h3>Kirim WhatsApp</h3>
+                            <p>Pesanan langsung<br />masuk ke admin</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="tentang" class="promowrap">
+                    <div class="promo">
+                        <div class="mega">
+                            <svg class="icon" viewBox="0 0 24 24" style="color: #fff">
+                                <path d="M3 11v2a2 2 0 0 0 2 2h1l3 5V4L6 9H5a2 2 0 0 0-2 2z" />
+                                <path d="M13 8a4 4 0 0 1 0 8" />
+                                <path d="M16 5a8 8 0 0 1 0 14" />
+                            </svg>
+                        </div>
+                        <div class="txt">
+                            <h3>Jangan Lewatkan!</h3>
+                            <p>Nikmati promo menarik setiap hari hanya di KIMBABKU.</p>
+                        </div>
+                        <button
+                            class="arrowbtn"
+                            onclick="document.querySelector('#menu').scrollIntoView()"
+                            aria-label="Lihat menu"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <path d="M9 6l6 6-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="features">
+                        <div class="feature">
+                            <div class="circ">
+                                <svg class="icon" viewBox="0 0 24 24" style="width: 20px; height: 20px">
+                                    <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
+                                    <path d="M5 21c3-6 6-9 12-12" />
+                                </svg>
+                            </div>
+                            <b>Bahan Pilihan<br />Berkualitas</b>
+                        </div>
+                        <div class="feature">
+                            <div class="circ">
+                                <svg class="icon filled" viewBox="0 0 24 24" style="width: 18px; height: 18px">
+                                    <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 22l-6-4-6 4 1.5-7.9L2 9.3l7.1-.4z" />
+                                </svg>
+                            </div>
+                            <b>Rasa Lezat<br />& Istimewa</b>
+                        </div>
+                        <div class="feature">
+                            <div class="circ">Rp</div>
+                            <b>Harga<br />Terjangkau</b>
+                        </div>
+                        <div class="feature">
+                            <div class="circ">
+                                <svg class="icon filled" viewBox="0 0 24 24" style="width: 18px; height: 18px">
+                                    <path
+                                        d="M12 21s-7.5-4.6-10-9.3C.5 8.3 2.4 5 5.8 5 8 5 9.7 6.3 12 8.6 14.3 6.3 16 5 18.2 5c3.4 0 5.3 3.3 3.8 6.7C19.5 16.4 12 21 12 21z"
+                                    />
+                                </svg>
+                            </div>
+                            <b>Pelayanan<br />Ramah</b>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer id="kontak">
+            <div class="foot">
+                <div>
+                    <img class="flogo" id="footerLogoImg" src="Logo.png" alt="Toko KIMBABKU" />
+                    <p>KIMBABKU hadir untuk memberikan camilan lezat, sehat dan berkualitas dengan harga terjangkau.</p>
+                </div>
+                <div>
+                    <h3>Kontak Kami</h3>
+                    <div class="contact-line" id="contactWa">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
+                        </svg>
+                        <span>+62 812 3456 7890</span>
+                    </div>
+                    <div class="contact-line" id="contactAddr">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12z" />
+                            <circle cx="12" cy="9" r="2.4" />
+                        </svg>
+                        <span>Jl. Kuliner No. 123, Jakarta</span>
+                    </div>
+                    <div class="contact-line" id="contactHours">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                        </svg>
+                        <span>Setiap Hari 08:00 - 22:00</span>
+                    </div>
+                </div>
+                <div>
+                    <h3>Ikuti Kami</h3>
+                    <div class="social-row">
+                        <a
+                            href="#"
+                            onclick="
+                                wa();
+                                return false;
+                            "
+                            aria-label="WhatsApp"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <rect x="3" y="3" width="18" height="18" rx="5" />
+                                <circle cx="12" cy="12" r="4" />
+                                <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="TikTok">
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5" />
+                                <path d="M14 4c.4 2.2 2 3.8 4 4.2" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <path d="M15 8h2V5h-2a4 4 0 0 0-4 4v2H9v3h2v7h3v-7h2.2l.8-3H14V9c0-.6.4-1 1-1z" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                                <rect x="2.5" y="6" width="19" height="12" rx="3" />
+                                <path d="M11 9.5l4 2.5-4 2.5z" fill="currentColor" stroke="none" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="copy">
+                <span>© 2026 KIMBABKU. All rights reserved.</span>
+                <span class="tagline">
+                    <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px; color: #7ed957">
+                        <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
+                    </svg>
+                    Kimbab • Risol Mayo • Aneka Jajanan
+                </span>
+            </div>
+        </footer>
+        <button class="float" onclick="wa()" aria-label="Chat WhatsApp">
+            <svg class="icon filled" viewBox="0 0 24 24">
+                <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
+            </svg>
+        </button>
+        <div id="drawer" class="drawer" onclick="if (event.target === this) closeCart();">
+            <aside class="panel">
+                <div class="panelhead">
+                    <div>
+                        <h2 style="margin: 0; color: #00452f">Keranjang</h2>
+                        <small id="ct">0 item</small>
+                    </div>
+                    <button class="close" onclick="closeCart()">✕</button>
+                </div>
+                <div id="items" class="items"></div>
+                <div>
+                    <div style="display: flex; justify-content: space-between">
+                        <b>Subtotal</b><b id="total">Rp0</b>
+                    </div>
+                    <button class="checkout" onclick="openCheckout()">Lanjut Checkout →</button>
+                </div>
+            </aside>
+        </div>
+        <div id="modal" class="modal">
+            <div class="box">
+                <div style="display: flex; justify-content: space-between">
+                    <div>
+                        <h2 style="margin: 0; color: #00452f">Checkout Pesanan</h2>
+                        <small>Lengkapi data sampai pesanan terkirim ke WhatsApp.</small>
+                    </div>
+                    <button class="close" onclick="closeCheckout()">✕</button>
+                </div>
+                <div id="prog" class="progress"></div>
+                <div id="checkout"></div>
+            </div>
+        </div>
+        <div id="toast" class="toast"></div>
+        <div id="waFallback"></div>
+        <script>
+            // =====================================================================
+            // PENTING: apiUrl DI SINI HARUS SAMA PERSIS dengan CONFIG.API_URL di
+            // admin.html. Keduanya harus menunjuk ke satu Web App Apps Script yang
+            // sama (satu spreadsheet yang sama), kalau tidak, perubahan dari Admin
+            // (menu, kategori, nomor WhatsApp, dst) TIDAK akan muncul di sini.
+            // =====================================================================
+            const CONFIG = {
+                apiUrl: 'https://script.google.com/macros/s/AKfycbyP5_m7LRjOvSvYqYYpBL1yVIt9fXNhqZrVWvOsyuWK73AgOZJS1GtdXirUT8GTYllslg/exec',
+                waAdmin: '6282379620228',
+            };
+            const CAT_ICONS = {
+                Kimbab: '🍙',
+                'Risol Mayo': '🥟',
+                'Aneka Jajanan': '🍗',
+                Minuman: '🥤',
+                Promo: '🎁',
+                Paket: '🎁',
+                Snack: '🍪',
+            };
+            // Logo gambar untuk chip kategori (Kimbab, Risol Mayo, Aneka Jajanan,
+            // Minuman). Kategori "Semua" & kategori lain di luar daftar ini akan
+            // tetap pakai emoji (lihat CAT_ICONS / fallback 🍽️).
+            const CAT_IMAGES = {
+                Kimbab: 'Kategori-Kimbab.png',
+                'Risol Mayo': 'Kategori-RisolMayo.png',
+                'Aneka Jajanan': 'Kategori-AnekaJajanan.png',
+                Minuman: 'Kategori-Minuman.png',
+            };
+            // Banner hero (carousel). Tambah/kurangi nama file di sini kalau
+            // jumlah banner berubah — dots & tombol prev/next otomatis menyesuaikan.
+            // Kalau admin sudah upload Banner lewat dashboard (SETTINGS.bannerUrl),
+            // banner dari database dipakai (menggantikan daftar file lokal ini).
+            const DEFAULT_BANNERS = ['Baner.jpg', 'Banner-1.jpg', 'Banner-2.jpg', 'Banner-3.jpg'];
+            let BANNERS = DEFAULT_BANNERS;
+            let heroIndex = 0,
+                heroTimer = null;
+            function renderHero() {
+                const img = document.getElementById('heroImg');
+                if (img) img.src = BANNERS[heroIndex];
+                const dots = document.getElementById('heroDots');
+                if (dots)
+                    dots.innerHTML = BANNERS.map(
+                        (_, i) => `<i class="${i === heroIndex ? 'on' : ''}" data-i="${i}"></i>`
+                    ).join('');
+            }
+            function heroGo(i) {
+                heroIndex = (i + BANNERS.length) % BANNERS.length;
+                renderHero();
+                heroAutoplay();
+            }
+            function heroPrev() {
+                heroGo(heroIndex - 1);
+            }
+            function heroNext() {
+                heroGo(heroIndex + 1);
+            }
+            function heroAutoplay() {
+                clearInterval(heroTimer);
+                if (BANNERS.length > 1) heroTimer = setInterval(() => heroGo(heroIndex + 1), 5000);
+            }
+            document.getElementById('heroDots').addEventListener('click', (e) => {
+                const dot = e.target.closest('i[data-i]');
+                if (dot) heroGo(Number(dot.dataset.i));
+            });
+            // Terapkan Logo & Banner dari database (kalau admin sudah upload lewat
+            // dashboard). Kalau belum diupload (kosong), tetap pakai file lokal
+            // (Logo.png / daftar DEFAULT_BANNERS) yang sudah ada di src bawaan.
+            function applyBrandAssets() {
+                if (SETTINGS.logoUrl) {
+                    const logo = document.getElementById('logoImg');
+                    const flogo = document.getElementById('footerLogoImg');
+                    if (logo) logo.src = SETTINGS.logoUrl;
+                    if (flogo) flogo.src = SETTINGS.logoUrl;
+                }
+                if (SETTINGS.bannerUrl) {
+                    BANNERS = [SETTINGS.bannerUrl];
+                } else {
+                    BANNERS = DEFAULT_BANNERS;
+                }
+                heroIndex = 0;
+                renderHero();
+                heroAutoplay();
+            }
+            let MENUS = [],
+                CATEGORIES = [],
+                SETTINGS = {};
+            let cart = JSON.parse(localStorage.getItem('kb-cart') || '[]'),
+                active = 'Semua',
+                step = 1;
+            const money = (n, c) =>
+                new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: c || SETTINGS.currency || 'IDR',
+                    maximumFractionDigits: 0,
+                }).format(n);
+            const esc = (s) =>
+                String(s ?? '').replace(
+                    /[&<>"']/g,
+                    (m) =>
+                        ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            '"': '&quot;',
+                            "'": '&#039;',
+                        })[m]
+                );
+            const total = () => cart.reduce((s, x) => s + (MENUS.find((p) => p.id === x.id)?.p || 0) * x.q, 0);
+            function save() {
+                localStorage.setItem('kb-cart', JSON.stringify(cart));
+            }
+            function toast(t) {
+                let x = document.getElementById('toast');
+                x.textContent = t;
+                x.classList.add('show');
+                setTimeout(() => x.classList.remove('show'), 2200);
+            }
+
+            async function loadStoreData() {
+                const grid = document.getElementById('products');
+                grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Memuat menu...</div>';
+                try {
+                    if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0)
+                        throw new Error('API_URL belum dikonfigurasi.');
+                    const r = await fetch(CONFIG.apiUrl + '?action=getStoreData');
+                    const j = await r.json();
+                    if (!j.success) throw new Error(j.error || 'Gagal memuat data toko.');
+                    MENUS = (j.data.menus || []).map((m) => ({
+                        id: String(m.id),
+                        n: m.name,
+                        c: m.category,
+                        p: Number(m.price) || 0,
+                        d: m.description || '',
+                        img: m.imageUrl || '',
+                        label: m.label || '',
+                    }));
+                    CATEGORIES = (j.data.categories || []).map((c) =>
+                        typeof c === 'string' ? { name: c, imageUrl: '' } : { name: c.name, imageUrl: c.imageUrl || '' }
+                    );
+                    SETTINGS = j.data.settings || {};
+                    if (SETTINGS.whatsappNumber) CONFIG.waAdmin = SETTINGS.whatsappNumber;
+                    applyBrandAssets();
+                    cart = cart.filter((x) => MENUS.some((p) => p.id === x.id));
+                    save();
+                    renderCategories();
+                    renderContact();
+                } catch (err) {
+                    grid.innerHTML =
+                        '<div class="empty" style="grid-column:1/-1">Menu belum bisa dimuat. Silakan coba lagi nanti.</div>';
+                    console.error('loadStoreData:', err.message);
+                    toast(err.message || 'Gagal memuat menu');
+                }
+                render();
+                renderCart();
+            }
+
+            function renderCategories() {
+                const box = document.getElementById('kategori');
+                if (!box || !CATEGORIES.length) return;
+                const names = [{ name: 'Semua', imageUrl: '' }, ...CATEGORIES];
+                box.innerHTML = names
+                    .map((n, i) => {
+                        // Urutan prioritas ikon: foto kategori dari admin (imageUrl) →
+                        // file lokal bawaan (CAT_IMAGES) → emoji fallback (CAT_ICONS).
+                        const icon = n.imageUrl
+                            ? `<img class="cat-ico" src="${esc(n.imageUrl)}" alt="${esc(n.name)}">`
+                            : n.name !== 'Semua' && CAT_IMAGES[n.name]
+                              ? `<img class="cat-ico" src="${esc(CAT_IMAGES[n.name])}" alt="${esc(n.name)}">`
+                              : `<span>${n.name === 'Semua' ? '🍽️' : CAT_ICONS[n.name] || '🍽️'}</span>`;
+                        return `<button class="cat${i === 0 ? ' active' : ''}" data-cat="${esc(n.name)}">${icon}${esc(n.name)}</button>`;
+                    })
+                    .join('');
+            }
+            document.getElementById('kategori').addEventListener('click', (e) => {
+                const btn = e.target.closest('.cat');
+                if (!btn) return;
+                active = btn.dataset.cat;
+                document.querySelectorAll('.cat').forEach((x) => x.classList.remove('active'));
+                btn.classList.add('active');
+                render();
+            });
+
+            function renderContact() {
+                try {
+                    const cleanWa = String(SETTINGS.whatsappNumber || CONFIG.waAdmin).replace(/\D/g, '');
+                    if (cleanWa) {
+                        const el = document.querySelector('#contactWa span');
+                        if (el) el.textContent = '+' + cleanWa;
+                    }
+                    if (SETTINGS.storeAddress) {
+                        const el = document.querySelector('#contactAddr span');
+                        if (el) el.textContent = SETTINGS.storeAddress;
+                    }
+                    if (SETTINGS.openingHours) {
+                        const el = document.querySelector('#contactHours span');
+                        if (el) el.textContent = SETTINGS.openingHours;
+                    }
+                } catch (e) {}
+            }
+
+            function render() {
+                let q = document.getElementById('search').value.toLowerCase(),
+                    a = MENUS.filter(
+                        (p) =>
+                            (active === 'Semua' || p.c === active) &&
+                            (!q || p.n.toLowerCase().includes(q) || p.c.toLowerCase().includes(q))
+                    );
+
+                document.getElementById('products').innerHTML =
+                    a
+                        .map(
+                            (p) => `
+    <article class="card">
+      <div class="pic">
+        ${
+            p.img
+                ? `<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`
+                : `<span>${CAT_ICONS[p.c] || '🍙'}</span>`
+        }
+        ${p.label ? `<span class="tag ${p.label === 'PROMO' ? 'promo-tag' : ''}">${esc(p.label)}</span>` : ''}
+      </div>
+      <div class="body">
+        <h3>${esc(p.n)}</h3>
+        <p class="desc">${esc(p.d || 'Nasi, nori, telur, wortel & timun.')}</p>
+        <div class="price">${money(p.p)}</div>
+        <button class="add" data-id="${esc(p.id)}">
+          <svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#fff"><circle cx="9" cy="21" r="1.2" fill="#fff" stroke="none"/><circle cx="18" cy="21" r="1.2" fill="#fff" stroke="none"/><path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+          Tambah
+        </button>
+      </div>
+    </article>
+  `
+                        )
+                        .join('') || '<div class="empty" style="grid-column:1/-1">Menu tidak ditemukan.</div>';
+            }
+            document.getElementById('products').addEventListener('click', (e) => {
+                const btn = e.target.closest('.add');
+                if (!btn) return;
+                add(btn.dataset.id);
+            });
+
+            function add(id) {
+                let x = cart.find((a) => a.id === id);
+                x ? x.q++ : cart.push({ id, q: 1 });
+                save();
+                renderCart();
+                toast('Menu ditambahkan ✓');
+            }
+            function qty(id, d) {
+                let x = cart.find((a) => a.id === id);
+                if (!x) return;
+                x.q += d;
+                if (x.q < 1) cart = cart.filter((a) => a.id !== id);
+                save();
+                renderCart();
+            }
+            function renderCart() {
+                let count = cart.reduce((s, x) => s + x.q, 0);
+                document.getElementById('badge').textContent = count;
+                document.getElementById('ct').textContent = count + ' item';
+                document.getElementById('total').textContent = money(total());
+                document.getElementById('items').innerHTML = cart.length
+                    ? cart
+                          .map((x) => {
+                              let p = MENUS.find((a) => a.id === x.id);
+                              if (!p) return '';
+                              return `<div class="item"><div><b>${esc(p.n)}</b><div style="color:#ef8422;font-weight:800">${money(p.p)} × ${x.q}</div></div><div class="qty"><button data-id="${esc(x.id)}" data-d="-1">−</button><b>${x.q}</b><button data-id="${esc(x.id)}" data-d="1">+</button></div></div>`;
+                          })
+                          .join('')
+                    : '<div class="empty">Keranjang masih kosong.</div>';
+            }
+            document.getElementById('items').addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-id]');
+                if (!btn) return;
+                qty(btn.dataset.id, Number(btn.dataset.d));
+            });
+
+            function openCart() {
+                document.getElementById('drawer').classList.add('open');
+                renderCart();
+            }
+            function closeCart() {
+                document.getElementById('drawer').classList.remove('open');
+            }
+            function openCheckout() {
+                if (!cart.length) return toast('Keranjang masih kosong');
+                closeCart();
+                step = 1;
+                document.getElementById('modal').classList.add('open');
+                checkoutRender();
+            }
+            function closeCheckout() {
+                document.getElementById('modal').classList.remove('open');
+            }
+            function foot(label, last = false) {
+                return `<div class="footbtn">${step > 1 ? '<button class="secondary" onclick="back()">← Kembali</button>' : '<span></span>'}<button class="primary" onclick="${last ? 'send()' : 'next()'}">${label}</button></div>`;
+            }
+            function checkoutRender() {
+                document.getElementById('prog').innerHTML = [1, 2, 3, 4]
+                    .map((i) => `<i class="${i <= step ? 'on' : ''}"></i>`)
+                    .join('');
+                let b = document.getElementById('checkout');
+                if (step === 1)
+                    b.innerHTML = `<div class="title">👤 Data Pemesan</div><p class="sub">Siapa yang akan menerima pesanan?</p><div class="form"><div class="two"><div><label>Nama</label><input id="name" placeholder="Nama penerima" value="${esc(localStorage.getItem('kb-name') || '')}"></div><div><label>No. WhatsApp</label><input id="phone" placeholder="08xxxxxxxxxx" value="${esc(localStorage.getItem('kb-phone') || '')}"></div></div></div>${foot('Lanjut →')}`;
+                else if (step === 2)
+                    b.innerHTML = `<div class="title">📦 Cara Menerima Pesanan</div><p class="sub">Pilih delivery atau pickup.</p><div class="opts"><label class="opt"><input type="radio" name="type" value="Delivery" checked> 🚚 Delivery</label><label class="opt"><input type="radio" name="type" value="Pickup"> 🛍️ Pickup</label></div><label>Alamat / Lokasi Pickup</label><textarea id="addr" placeholder="Alamat lengkap / detail lokasi pickup">${esc(localStorage.getItem('kb-address') || '')}</textarea>${foot('Lanjut →')}`;
+                else if (step === 3)
+                    b.innerHTML = `<div class="title">🕐 Waktu & Catatan</div><p class="sub">Tentukan kapan pesanan ingin diproses.</p><div class="form"><div><label>Waktu</label><select id="time"><option>Secepatnya</option><option>11:00 - 13:00</option><option>13:00 - 15:00</option><option>17:00 - 19:00</option><option>19:00 - 21:00</option></select></div><div><label>Catatan</label><textarea id="note" placeholder="Saus dipisah, dll."></textarea></div></div>${foot('Review Pesanan →')}`;
+                else {
+                    b.innerHTML = `<div class="title">🧾 Cek Pesanan</div><p class="sub">Pastikan semua data sudah benar sebelum dikirim.</p><div id="preview" class="preview"></div>${foot('📲 Kirim ke WhatsApp', true)}`;
+                    fill();
+                }
+            }
+            function next() {
+                if (step === 1) {
+                    let n = document.getElementById('name').value.trim(),
+                        p = document.getElementById('phone').value.trim();
+                    if (!n || !p) return toast('Nama dan WhatsApp wajib diisi');
+                    localStorage.setItem('kb-name', n);
+                    localStorage.setItem('kb-phone', p);
+                }
+                if (step === 2) {
+                    let a = document.getElementById('addr').value.trim();
+                    if (!a) return toast('Alamat / lokasi wajib diisi');
+                    localStorage.setItem('kb-address', a);
+                }
+                step++;
+                checkoutRender();
+            }
+            function back() {
+                step--;
+                checkoutRender();
+            }
+            function data() {
+                return {
+                    n: localStorage.getItem('kb-name') || '',
+                    p: localStorage.getItem('kb-phone') || '',
+                    a: localStorage.getItem('kb-address') || '',
+                    type: document.querySelector('input[name="type"]:checked')?.value || 'Delivery',
+                    time: document.getElementById('time')?.value || 'Secepatnya',
+                    note: document.getElementById('note')?.value.trim() || '',
+                };
+            }
+            function fill() {
+                let d = data(),
+                    lines = cart
+                        .map((x) => {
+                            let p = MENUS.find((a) => a.id === x.id);
+                            if (!p) return '';
+                            return `• ${esc(p.n)} × ${x.q} — <b>${money(p.p * x.q)}</b>`;
+                        })
+                        .join('<br>');
+                document.getElementById('preview').innerHTML =
+                    lines +
+                    '<hr><b>Subtotal: ' +
+                    money(total()) +
+                    '</b><br>Metode: ' +
+                    esc(d.type) +
+                    '<br>Waktu: ' +
+                    esc(d.time) +
+                    '<br>Nama: ' +
+                    esc(d.n) +
+                    '<br>WhatsApp: ' +
+                    esc(d.p) +
+                    '<br>Alamat/Detail: ' +
+                    esc(d.a) +
+                    '<br>Catatan: ' +
+                    esc(d.note || '-');
+            }
+
+            // Buka WhatsApp SEKARANG (sinkron, di dalam event klik pengguna) supaya
+            // tidak diblokir oleh browser. Anchor+click lebih andal daripada
+            // window.open()/location.href yang ditunda dengan setTimeout.
+            function openWhatsApp(url) {
+                try {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } catch (e) {
+                    location.href = url;
+                }
+                // Tombol cadangan kalau redirect otomatis gagal/diblokir di sebagian browser.
+                const fb = document.getElementById('waFallback');
+                fb.innerHTML = `<a href="${url}" target="_blank" rel="noopener">💬 Belum terbuka? Ketuk di sini untuk buka WhatsApp</a>`;
+                fb.style.display = 'block';
+                setTimeout(() => (fb.style.display = 'none'), 20000);
+            }
+
+            // Catat pesanan ke sheet ORDER_LOG di backend. Dijalankan tanpa
+            // "menunggu" (fire-and-forget) supaya TIDAK menunda pembukaan WhatsApp,
+            // dan tetap lanjut membuka WhatsApp walau pencatatan ini gagal/lambat.
+            function logOrderToServer(id, d, itemsForLog, totalVal) {
+                if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0) return;
+                try {
+                    const body = new URLSearchParams();
+                    body.set('action', 'logOrder');
+                    body.set('id', id);
+                    body.set('customerName', d.n);
+                    body.set('phone', d.p);
+                    body.set('address', d.a);
+                    body.set('deliveryTime', d.time);
+                    body.set('note', d.note);
+                    body.set('itemsJson', JSON.stringify(itemsForLog));
+                    body.set('total', String(totalVal));
+                    fetch(CONFIG.apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                        },
+                        body,
+                    }).catch((e) => console.warn('logOrder gagal:', e.message));
+                } catch (e) {
+                    console.warn('logOrder gagal:', e.message);
+                }
+            }
+
+            function send() {
+                let d = data();
+                if (!d.n || !d.p || !d.a) return toast('Data checkout belum lengkap');
+                let id =
+                        'KB-' +
+                        new Date().toISOString().slice(0, 10).replaceAll('-', '') +
+                        '-' +
+                        Math.floor(1000 + Math.random() * 9000),
+                    itemsForLog = cart.map((x) => {
+                        let p = MENUS.find((a) => a.id === x.id);
+                        return {
+                            id: x.id,
+                            name: p ? p.n : '',
+                            qty: x.q,
+                            price: p ? p.p : 0,
+                        };
+                    }),
+                    lines = cart
+                        .map((x) => {
+                            let p = MENUS.find((a) => a.id === x.id);
+                            if (!p) return '';
+                            return `• ${p.n} x${x.q} = ${money(p.p * x.q)}`;
+                        })
+                        .join('\n'),
+                    msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'} 👋\nSaya mau order *${id}*\n\n${lines}\n\n*Subtotal: ${money(total())}*\nMetode: ${d.type}\nWaktu: ${d.time}\nNama: ${d.n}\nWhatsApp: ${d.p}\nAlamat/Detail: ${d.a}\nCatatan: ${d.note || '-'}\n\nMohon konfirmasi total + ongkir ya.`;
+
+                localStorage.setItem(
+                    'kimbabku-last-order',
+                    JSON.stringify({
+                        id,
+                        total: total(),
+                        date: new Date().toISOString(),
+                        items: cart,
+                    })
+                );
+
+                const url = 'https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(msg);
+
+                // Catat ke server dulu (tidak menunggu), lalu langsung buka WhatsApp.
+                logOrderToServer(id, d, itemsForLog, total());
+                openWhatsApp(url);
+
+                cart = [];
+                save();
+                closeCheckout();
+                renderCart();
+                toast('Order ' + id + ' dibuat. Membuka WhatsApp...');
+            }
+
+            function wa() {
+                const url =
+                    'https://wa.me/' +
+                    CONFIG.waAdmin +
+                    '?text=' +
+                    encodeURIComponent(`Halo ${SETTINGS.storeName || 'KIMBABKU'}, saya ingin bertanya tentang menu.`);
+                openWhatsApp(url);
+            }
+
+            renderHero();
+            heroAutoplay();
+            loadStoreData();
+        </script>
+    </body>
+</html>
