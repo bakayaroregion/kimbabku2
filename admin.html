@@ -132,6 +132,7 @@
                 padding: 11px;
                 outline: none;
                 background: #fff;
+                font-size: 16px;
             }
             .form textarea,
             .settings-form textarea {
@@ -181,6 +182,7 @@
                 border-radius: 9px;
                 cursor: pointer;
                 font-weight: 650;
+                white-space: nowrap;
             }
             .side-link.active,
             .side-link:hover {
@@ -258,6 +260,7 @@
             }
             .table-wrap {
                 overflow: auto;
+                -webkit-overflow-scrolling: touch;
             }
             table {
                 border-collapse: collapse;
@@ -327,6 +330,7 @@
                 justify-content: space-between;
                 padding: 12px 0;
                 border-bottom: 1px solid #eee;
+                flex-wrap: wrap;
             }
             .settings-form {
                 display: grid;
@@ -421,9 +425,6 @@
                 background: #f2f1ed;
                 flex-shrink: 0;
             }
-            .category-item {
-                gap: 10px;
-            }
             .category-item .cat-name-wrap {
                 display: flex;
                 align-items: center;
@@ -490,6 +491,7 @@
                 border-radius: 10px;
                 z-index: 100;
                 box-shadow: 0 10px 30px #0002;
+                max-width: calc(100vw - 40px);
             }
             .toast.error {
                 background: #9b2525;
@@ -506,6 +508,7 @@
             }
             .recent-row div {
                 flex: 1;
+                min-width: 0;
             }
             .recent-row strong {
                 display: block;
@@ -516,6 +519,10 @@
             [hidden] {
                 display: none !important;
             }
+            /* ===== Nav mobile: tab horizontal yang bisa digeser, dipakai
+               di bawah 900px MENGGANTIKAN sidebar vertikal, dan tetap
+               terlihat sampai layar sekecil apapun (tidak pernah disembunyikan
+               tanpa pengganti). ===== */
             @media (max-width: 900px) {
                 .admin-shell {
                     grid-template-columns: 1fr;
@@ -526,14 +533,34 @@
                     z-index: 40;
                     flex-direction: row;
                     align-items: center;
+                    gap: 14px;
                     padding: 10px 14px;
-                    overflow: auto;
+                    overflow: hidden;
+                }
+                .sidebar .brand {
+                    padding: 0;
+                    flex-shrink: 0;
                 }
                 .sidebar nav {
                     display: flex;
+                    gap: 4px;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: none;
+                    flex: 1;
+                    min-width: 0;
+                }
+                .sidebar nav::-webkit-scrollbar {
+                    display: none;
+                }
+                .side-link {
+                    flex-shrink: 0;
+                    padding: 9px 12px;
+                    font-size: 13.5px;
                 }
                 .sidebar .logout {
                     margin: 0;
+                    flex-shrink: 0;
                 }
                 .admin-main {
                     padding: 18px;
@@ -546,6 +573,9 @@
                 .admin-top {
                     align-items: flex-start;
                     flex-direction: column;
+                }
+                .admin-top h1 {
+                    font-size: 26px;
                 }
                 .admin-actions {
                     width: 100%;
@@ -560,6 +590,9 @@
                     align-items: flex-start;
                     flex-direction: column;
                 }
+                .panel-head .btn {
+                    width: 100%;
+                }
                 .stats-grid {
                     gap: 8px;
                 }
@@ -567,13 +600,18 @@
                     padding: 14px;
                 }
                 .stat-card strong {
-                    font-size: 24px;
-                }
-                .sidebar nav {
-                    display: none;
+                    font-size: 22px;
                 }
                 .sidebar {
-                    justify-content: space-between;
+                    padding: 8px 10px;
+                    gap: 10px;
+                }
+                .sidebar .brand span:not(.brand-mark) {
+                    display: none;
+                }
+                .side-link {
+                    padding: 8px 10px;
+                    font-size: 13px;
                 }
                 .inline-form {
                     flex-direction: column;
@@ -589,6 +627,83 @@
                 .settings-form label:nth-child(3),
                 .settings-form label:nth-child(4) {
                     grid-column: span 1;
+                }
+                .modal,
+                .wide-modal {
+                    width: 100%;
+                    border-radius: 16px;
+                    padding: 16px;
+                }
+                .modal-head h2 {
+                    font-size: 20px;
+                }
+                .asset-card {
+                    gap: 12px;
+                    padding: 12px;
+                }
+                .asset-preview {
+                    width: 96px;
+                    height: 64px;
+                }
+                .asset-preview.logo-preview {
+                    width: 72px;
+                    height: 72px;
+                }
+                .asset-actions {
+                    width: 100%;
+                }
+                .asset-actions .btn,
+                .asset-actions button {
+                    flex: 1;
+                }
+                .category-item {
+                    padding: 12px 0;
+                    gap: 8px;
+                }
+                .category-item .asset-actions {
+                    width: 100%;
+                    justify-content: flex-start;
+                }
+                .image-preview img {
+                    width: 140px;
+                    height: 140px;
+                }
+                .login-card {
+                    padding: 24px 20px;
+                }
+            }
+            @media (max-width: 400px) {
+                .admin-main {
+                    padding: 12px;
+                }
+                .stats-grid {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 6px;
+                }
+                .stat-card {
+                    padding: 10px;
+                }
+                .stat-card strong {
+                    font-size: 19px;
+                }
+                th,
+                td {
+                    padding: 8px;
+                    font-size: 12px;
+                }
+                .thumb {
+                    width: 36px;
+                    height: 36px;
+                }
+                .btn {
+                    padding: 10px 14px;
+                    font-size: 13.5px;
+                }
+                .asset-actions .btn,
+                .asset-actions button,
+                .category-item .asset-actions button {
+                    font-size: 12.5px;
+                    padding: 8px 10px;
                 }
             }
         </style>
@@ -1379,6 +1494,7 @@
                                 .querySelectorAll('.admin-view')
                                 .forEach((x) => (x.hidden = x.dataset.section !== b.dataset.view));
                             $('#viewTitle').textContent = b.textContent;
+                            b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                         })
                 );
             }
