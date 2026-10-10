@@ -40,10 +40,6 @@
                 text-decoration: none;
                 color: inherit;
             }
-            .container {
-                width: min(1120px, calc(100% - 32px));
-                margin: auto;
-            }
             .admin-body {
                 background: #f5f4f0;
             }
@@ -97,6 +93,10 @@
                 align-items: center;
                 gap: 8px;
                 padding: 12px 18px;
+            }
+            .btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
             }
             .btn-primary {
                 background: #f4c84a;
@@ -519,10 +519,6 @@
             [hidden] {
                 display: none !important;
             }
-            /* ===== Nav mobile: tab horizontal yang bisa digeser, dipakai
-               di bawah 900px MENGGANTIKAN sidebar vertikal, dan tetap
-               terlihat sampai layar sekecil apapun (tidak pernah disembunyikan
-               tanpa pengganti). ===== */
             @media (max-width: 900px) {
                 .admin-shell {
                     grid-template-columns: 1fr;
@@ -868,7 +864,8 @@
                                 >Nomor WhatsApp<input
                                     name="whatsappNumber"
                                     required
-                                    placeholder="628xxxxxxxxxx" /></label
+                                    inputmode="numeric"
+                                    placeholder="628xxxxxxxxxx (awalan 0 otomatis jadi 62)" /></label
                             ><label>Alamat Toko<textarea name="storeAddress"></textarea></label
                             ><label>Info Pengantaran<textarea name="deliveryInfo"></textarea></label
                             ><label>Jam Operasional<input name="openingHours" /></label
@@ -884,7 +881,7 @@
             <div class="modal wide-modal" role="dialog" aria-modal="true">
                 <div class="modal-head">
                     <h2 id="menuModalTitle">Tambah Menu</h2>
-                    <button class="icon-button" id="closeMenuModal">×</button>
+                    <button class="icon-button" id="closeMenuModal" aria-label="Tutup">×</button>
                 </div>
                 <form id="menuForm" class="form two-col">
                     <input type="hidden" name="id" />
@@ -926,17 +923,12 @@
         <div id="toast" class="toast" hidden></div>
         <script>
             /* KIMBABKU admin app */
-            // =====================================================================
-            // PENTING: API_URL DI SINI HARUS SAMA PERSIS dengan CONFIG.apiUrl di
-            // index.html. Keduanya harus menunjuk ke satu Web App Apps Script yang
-            // sama (satu spreadsheet yang sama). Kalau berbeda, menu/gambar/
-            // pengaturan yang kamu simpan di sini TIDAK akan muncul di halaman
-            // pelanggan, karena keduanya membaca database yang berbeda.
-            // =====================================================================
+            // PENTING: API_URL HARUS SAMA PERSIS dengan CONFIG.apiUrl di index.html.
             const CONFIG = Object.freeze({
                 API_URL:
                     'https://script.google.com/macros/s/AKfycbyP5_m7LRjOvSvYqYYpBL1yVIt9fXNhqZrVWvOsyuWK73AgOZJS1GtdXirUT8GTYllslg/exec',
             });
+            const MAX_UPLOAD_BYTES = 2 * 1024 * 1024;
             const state = {
                 token: sessionStorage.getItem('kimbabku_admin_token') || '',
                 menus: [],
@@ -945,11 +937,12 @@
             };
             const $ = (s) => document.querySelector(s);
             const money = (n, c = 'IDR') =>
-                new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: c,
-                    maximumFractionDigits: 0,
-                }).format(Number(n) || 0);
+                new Intl.NumberFormat('id-ID', { style: 'currency', currency: c, maximumFractionDigits: 0 }).format(
+                    Number(n) || 0
+                );
+            // Escape untuk dipakai di dalam url('...') CSS
+            const cssUrl = (u) => String(u).replace(/['"()\\\s]/g, (m) => encodeURIComponent(m));
+
             async function api(action, data = {}) {
                 if (!CONFIG.API_URL || CONFIG.API_URL.indexOf('PASTE_URL') === 0)
                     throw new Error('API_URL belum dikonfigurasi.');
@@ -961,9 +954,7 @@
                 });
                 const r = await fetch(CONFIG.API_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
                     body,
                 });
                 const j = await r.json();
@@ -982,10 +973,12 @@
                 $('#adminApp').hidden = false;
                 loadAll().catch((e) => {
                     toast(e.message, true);
-                    if (/login|token|auth/i.test(e.message)) logout();
+                    if (/sesi|login|token|auth/i.test(e.message)) logout();
                 });
             }
             function logout() {
+                // Hapus sesi di server juga (bukan hanya di browser).
+                if (state.token) api('logout').catch(() => {});
                 state.token = '';
                 sessionStorage.removeItem('kimbabku_admin_token');
                 $('#adminApp').hidden = true;
@@ -996,10 +989,7 @@
                 const f = Object.fromEntries(new FormData(e.currentTarget));
                 $('#loginError').hidden = true;
                 try {
-                    const d = await api('loginAdmin', {
-                        username: f.username,
-                        password: f.password,
-                    });
+                    const d = await api('loginAdmin', { username: f.username, password: f.password });
                     state.token = d.token;
                     sessionStorage.setItem('kimbabku_admin_token', state.token);
                     showApp();
@@ -1075,7 +1065,7 @@
                             td.textContent = v;
                             return td;
                         });
-                        tds[3].innerHTML = '';
+                        tds[3].textContent = '';
                         const badge = document.createElement('span');
                         badge.className = `badge ${m.status === 'active' ? 'active' : 'inactive'}`;
                         badge.textContent = m.status === 'active' ? 'Aktif' : 'Nonaktif';
@@ -1101,6 +1091,7 @@
                         body.append(tr);
                     });
             }
+            let pendingCategoryId = '';
             function renderCategories() {
                 const box = $('#categoryList');
                 box.replaceChildren();
@@ -1156,7 +1147,7 @@
                 const bannerUrl = state.settings.bannerUrl || '';
                 const logoPrev = $('#logoPreview');
                 if (logoUrl) {
-                    logoPrev.style.backgroundImage = `url('${logoUrl}')`;
+                    logoPrev.style.backgroundImage = `url('${cssUrl(logoUrl)}')`;
                     logoPrev.textContent = '';
                 } else {
                     logoPrev.style.backgroundImage = '';
@@ -1165,7 +1156,7 @@
                 $('#logoDeleteBtn').hidden = !logoUrl;
                 const bannerPrev = $('#bannerPreview');
                 if (bannerUrl) {
-                    bannerPrev.style.backgroundImage = `url('${bannerUrl}')`;
+                    bannerPrev.style.backgroundImage = `url('${cssUrl(bannerUrl)}')`;
                     bannerPrev.textContent = '';
                 } else {
                     bannerPrev.style.backgroundImage = '';
@@ -1227,13 +1218,7 @@
                     r.readAsDataURL(file);
                 });
             }
-            // ==================== Auto resize + convert ke WebP ====================
-            // Semua foto yang diupload (menu, logo, banner, kategori) otomatis
-            // diproses di browser sebelum dikirim: dikompres jadi WebP dan
-            // di-resize ke ukuran ideal, supaya admin tidak perlu crop/convert
-            // manual dan halaman pelanggan tetap ringan & cepat dimuat.
-            //   - square:true  -> dipotong tengah jadi persegi (foto menu & kategori)
-            //   - square:false -> proporsi asli dipertahankan, lebar dibatasi maxWidth (logo & banner)
+            // ==================== Auto resize + convert (WebP, fallback JPEG) ====================
             function loadImageEl_(file) {
                 return new Promise((resolve, reject) => {
                     const img = new Image();
@@ -1270,14 +1255,16 @@
                 canvas.height = outH;
                 canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
                 URL.revokeObjectURL(img.src);
-                return new Promise((resolve, reject) => {
-                    canvas.toBlob(
-                        (blob) => (blob ? resolve(blob) : reject(new Error('Gagal memproses gambar.'))),
-                        'image/webp',
-                        quality
-                    );
-                });
+                // Sebagian Safari diam-diam menghasilkan PNG saat diminta WebP -> fallback ke JPEG.
+                const tryType = (type, q) => new Promise((res) => canvas.toBlob(res, type, q));
+                let blob = await tryType('image/webp', quality);
+                if (!blob || blob.type !== 'image/webp') blob = await tryType('image/jpeg', quality);
+                if (!blob) throw new Error('Gagal memproses gambar.');
+                if (blob.size > MAX_UPLOAD_BYTES)
+                    throw new Error('Gambar masih lebih dari 2 MB setelah diproses. Pakai gambar yang lebih kecil.');
+                return blob;
             }
+            const extFor = (type) => (type === 'image/webp' ? 'webp' : type === 'image/png' ? 'png' : 'jpg');
             function blobToBase64(blob) {
                 return fileToBase64(blob);
             }
@@ -1289,7 +1276,7 @@
                 pendingMenuImageBlob = null;
                 if (!f) return;
                 try {
-                    // Foto menu: dipotong persegi & diresize ke 1000×1000 WebP (ukuran ideal).
+                    // Foto menu: dipotong persegi & diresize ke 1000×1000.
                     const blob = await toWebp_(f, { square: true, size: 1000, quality: 0.82 });
                     pendingMenuImageBlob = blob;
                     const img = document.createElement('img');
@@ -1311,8 +1298,8 @@
                         imageName = '';
                     if (pendingMenuImageBlob) {
                         imageBase64 = await blobToBase64(pendingMenuImageBlob);
-                        mimeType = 'image/webp';
-                        imageName = 'menu.webp';
+                        mimeType = pendingMenuImageBlob.type;
+                        imageName = 'menu.' + extFor(mimeType);
                     }
                     await api(f.elements.id.value ? 'updateMenu' : 'createMenu', {
                         id: f.elements.id.value,
@@ -1376,11 +1363,12 @@
             }
             async function saveCategory(e) {
                 e.preventDefault();
-                const n = e.currentTarget.elements.name.value.trim();
+                const form = e.currentTarget;
+                const n = form.elements.name.value.trim();
                 if (!n) return;
                 try {
                     await api('createCategory', { name: n });
-                    e.currentTarget.reset();
+                    form.reset();
                     toast('Kategori ditambahkan.');
                     await loadAll();
                 } catch (e2) {
@@ -1399,12 +1387,16 @@
                 }
             }
             // ==================== Logo, Banner & Foto Kategori ====================
-            let pendingCategoryId = '';
             async function uploadAssetFile(action, file, extra = {}, resizeOpts = {}) {
                 if (!file) return;
                 const blob = await toWebp_(file, resizeOpts);
                 const imageBase64 = await blobToBase64(blob);
-                return api(action, { ...extra, imageBase64, mimeType: 'image/webp', imageName: action + '.webp' });
+                return api(action, {
+                    ...extra,
+                    imageBase64,
+                    mimeType: blob.type,
+                    imageName: action + '.' + extFor(blob.type),
+                });
             }
             $('#logoUploadBtn').onclick = () => $('#logoInput').click();
             $('#logoInput').addEventListener('change', async (e) => {
@@ -1412,7 +1404,6 @@
                 e.target.value = '';
                 if (!file) return;
                 try {
-                    // Logo: proporsi asli dipertahankan (tidak dipotong persegi), lebar dibatasi 600px.
                     await uploadAssetFile('uploadLogo', file, {}, { square: false, maxWidth: 600, quality: 0.92 });
                     toast('Logo berhasil diperbarui.');
                     await loadAll();
@@ -1436,7 +1427,6 @@
                 e.target.value = '';
                 if (!file) return;
                 try {
-                    // Banner: proporsi asli dipertahankan, lebar dibatasi 1600px.
                     await uploadAssetFile('uploadBanner', file, {}, { square: false, maxWidth: 1600, quality: 0.82 });
                     toast('Banner berhasil diperbarui.');
                     await loadAll();
@@ -1461,7 +1451,6 @@
                 pendingCategoryId = '';
                 if (!file || !id) return;
                 try {
-                    // Foto kategori: dipotong persegi & diresize ke 500×500 WebP.
                     await uploadAssetFile(
                         'uploadCategoryImage',
                         file,
@@ -1515,6 +1504,9 @@
             $('#menuForm').addEventListener('submit', saveMenu);
             $('#categoryForm').addEventListener('submit', saveCategory);
             $('#settingsForm').addEventListener('submit', saveSettings);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !$('#menuModal').hidden) closeMenu();
+            });
             setupNav();
             if (state.token) showApp();
         </script>
