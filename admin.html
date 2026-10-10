@@ -201,6 +201,12 @@
                         <div class="stat-card"><span>Menu Nonaktif</span><strong id="statInactive">0</strong></div>
                         <div class="stat-card"><span>Total Kategori</span><strong id="statCategories">0</strong></div>
                     </div>
+                    <div class="stats-grid">
+                        <div class="stat-card"><span>Pesanan Hari Ini</span><strong id="statTodayOrders">0</strong></div>
+                        <div class="stat-card"><span>Omzet Hari Ini</span><strong id="statTodayRevenue">Rp0</strong></div>
+                        <div class="stat-card"><span>Pesanan 7 Hari</span><strong id="statWeekOrders">0</strong></div>
+                        <div class="stat-card"><span>Omzet 7 Hari</span><strong id="statWeekRevenue">Rp0</strong></div>
+                    </div>
                     <div class="panel">
                         <div class="panel-head">
                             <div>
@@ -402,6 +408,7 @@
                 categories: [],
                 settings: {},
                 orders: [],
+                stats: {},
             };
             const $ = (s) => document.querySelector(s);
             const money = (n, c = 'IDR') =>
@@ -468,6 +475,7 @@
                 state.menus = d.menus || [];
                 state.categories = d.categories || [];
                 state.settings = d.settings || {};
+                state.stats = d.stats || {};
                 renderDashboard();
                 renderMenus();
                 renderCategories();
@@ -480,6 +488,11 @@
                 $('#statActive').textContent = state.menus.filter((x) => x.status === 'active').length;
                 $('#statInactive').textContent = state.menus.filter((x) => x.status === 'inactive').length;
                 $('#statCategories').textContent = state.categories.length;
+                const st = state.stats || {}, cur = state.settings.currency || 'IDR';
+                $('#statTodayOrders').textContent = st.todayOrders || 0;
+                $('#statTodayRevenue').textContent = money(st.todayRevenue || 0, cur);
+                $('#statWeekOrders').textContent = st.weekOrders || 0;
+                $('#statWeekRevenue').textContent = money(st.weekRevenue || 0, cur);
                 const box = $('#dashboardRecent');
                 box.className = 'recent-list';
                 box.replaceChildren(
@@ -580,7 +593,12 @@
                         pendingCategoryId = id;
                         $('#categoryImageInput').click();
                     };
-                    actions.append(photoBtn);
+                    const renameBtn = document.createElement('button');
+                    renameBtn.type = 'button';
+                    renameBtn.className = 'small-btn';
+                    renameBtn.textContent = 'Ubah Nama';
+                    renameBtn.onclick = () => renameCategory(id, name);
+                    actions.append(renameBtn, photoBtn);
                     if (imageUrl) {
                         const delPhotoBtn = document.createElement('button');
                         delPhotoBtn.type = 'button';
@@ -988,6 +1006,19 @@
             }
             $('#orderFilter').addEventListener('change', renderOrders);
 
+            async function renameCategory(id, name) {
+                const n = prompt(`Nama baru untuk kategori "${name}":`, name);
+                if (n === null) return;
+                const t = n.trim();
+                if (!t || t === name) return;
+                try {
+                    const r = await api('renameCategory', { id, name: t });
+                    toast(`Kategori diubah. ${r.updatedMenus} menu ikut diperbarui.`);
+                    await loadAll();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
             function setupNav() {
                 document.querySelectorAll('.side-link[data-view]').forEach(
                     (b) =>
