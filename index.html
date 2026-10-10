@@ -941,6 +941,263 @@
                 box-shadow: 0 10px 30px #0004;
             }
 
+            /* ===== LOGIN / DAFTAR PELANGGAN ===== */
+            .auth {
+                position: fixed;
+                inset: 0;
+                z-index: 300;
+                overflow: auto;
+                display: flex;
+                padding: 28px 16px;
+                color: #fff;
+                background:
+                    radial-gradient(900px 500px at 20% -10%, #14663f 0%, transparent 60%),
+                    radial-gradient(800px 500px at 100% 100%, #0f5a3a 0%, transparent 55%),
+                    linear-gradient(160deg, #06210f, #0b2f1f 55%, #07261a);
+                -webkit-overflow-scrolling: touch;
+            }
+            .auth-wrap {
+                width: min(440px, 100%);
+                margin: auto;
+                text-align: center;
+            }
+            .auth-logo {
+                height: 64px;
+                width: auto;
+                max-width: 180px;
+                object-fit: contain;
+                padding: 8px 12px;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            }
+            .auth-title {
+                margin: 16px 0 4px;
+                font-size: clamp(21px, 6vw, 28px);
+                font-weight: 900;
+                line-height: 1.2;
+            }
+            .auth-title span {
+                background: linear-gradient(90deg, #7ed957, #f4c84a);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+            .auth-sub {
+                margin: 0 0 20px;
+                color: #a9c7b8;
+                font-size: 13.5px;
+            }
+            .auth-card {
+                text-align: left;
+                padding: 20px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.13);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+                backdrop-filter: blur(6px);
+            }
+            .atabs {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+                margin-bottom: 18px;
+            }
+            .atab {
+                border: 0;
+                border-radius: 14px;
+                padding: 13px 8px;
+                font-weight: 800;
+                color: #fff;
+                background: transparent;
+            }
+            .atab.on {
+                background: linear-gradient(120deg, #0f7a45, #1fa65a);
+                box-shadow: 0 8px 22px rgba(15, 122, 69, 0.45);
+            }
+            .atitle {
+                font-size: 19px;
+                font-weight: 900;
+                margin: 2px 0 4px;
+            }
+            .asub {
+                color: #b9d2c4;
+                font-size: 13.5px;
+                margin: 0 0 14px;
+                line-height: 1.5;
+            }
+            .alabel {
+                display: block;
+                margin: 12px 0 6px;
+                font-size: 13px;
+                font-weight: 800;
+                color: #e3f1e9;
+            }
+            .arow {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px;
+            }
+            .arow .alabel {
+                margin-bottom: 6px;
+            }
+            .afield {
+                position: relative;
+            }
+            .auth input[type='text'],
+            .auth input[type='email'],
+            .auth input[type='tel'],
+            .auth input[type='password'],
+            .auth input[type='number'] {
+                width: 100%;
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border-radius: 14px;
+                padding: 14px 44px 14px 42px;
+                font-size: 16px;
+                outline: 0;
+            }
+            .auth input::placeholder {
+                color: #8fa89a;
+            }
+            .auth input:focus {
+                border-color: #7ed957;
+                box-shadow: 0 0 0 3px rgba(126, 217, 87, 0.2);
+            }
+            .auth input:-webkit-autofill {
+                -webkit-text-fill-color: #fff;
+                -webkit-box-shadow: 0 0 0 100px #12503a inset;
+                caret-color: #fff;
+            }
+            .aico {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 18px;
+                height: 18px;
+                stroke: #a9c7b8;
+                fill: none;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                pointer-events: none;
+            }
+            .eye {
+                position: absolute;
+                right: 6px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 38px;
+                height: 38px;
+                border: 0;
+                background: transparent;
+                display: grid;
+                place-items: center;
+            }
+            .eye svg {
+                width: 18px;
+                height: 18px;
+                stroke: #a9c7b8;
+                fill: none;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+            .acheck {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 14px 0 4px;
+                font-size: 13px;
+                color: #d6e8dd;
+                font-weight: 600;
+            }
+            .acheck input {
+                width: 18px;
+                height: 18px;
+                accent-color: #1fa65a;
+                padding: 0;
+            }
+            .abtn {
+                width: 100%;
+                margin-top: 16px;
+                border: 0;
+                border-radius: 14px;
+                padding: 15px;
+                font-weight: 900;
+                font-size: 15px;
+                color: #fff;
+                background: linear-gradient(120deg, #0f7a45, #1fbf5c);
+                box-shadow: 0 10px 26px rgba(31, 191, 92, 0.35);
+            }
+            .abtn:disabled {
+                opacity: 0.65;
+                cursor: wait;
+            }
+            .alink {
+                background: none;
+                border: 0;
+                padding: 0;
+                color: #7ed957;
+                font-weight: 800;
+                font-size: 13px;
+                text-decoration: none;
+            }
+            .alink:hover {
+                text-decoration: underline;
+            }
+            .amsg {
+                margin: 0 0 12px;
+                padding: 10px 12px;
+                border-radius: 12px;
+                font-size: 13px;
+                line-height: 1.45;
+                background: rgba(255, 90, 90, 0.16);
+                border: 1px solid rgba(255, 130, 130, 0.45);
+                color: #ffd6d6;
+            }
+            .amsg.ok {
+                background: rgba(126, 217, 87, 0.14);
+                border-color: rgba(126, 217, 87, 0.45);
+                color: #dff7d2;
+            }
+            .auth input.acode {
+                text-align: center;
+                letter-spacing: 0.5em;
+                font-size: 24px;
+                font-weight: 900;
+                padding: 14px 10px 14px 18px;
+            }
+            .anote {
+                margin: 14px 0 0;
+                font-size: 12px;
+                color: #a9c7b8;
+                line-height: 1.5;
+            }
+            .aback {
+                margin-bottom: 10px;
+            }
+            .afoot {
+                margin-top: 16px;
+                padding-top: 14px;
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
+                text-align: center;
+                font-size: 12.5px;
+                color: #a9c7b8;
+            }
+            .userbtn {
+                max-width: 160px;
+            }
+            .userbtn .txt {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 90px;
+            }
             @media (max-width: 980px) {
                 /* Menu tidak lagi disembunyikan: tampil sebagai baris geser di bawah header */
                 .nav {
@@ -1216,6 +1473,13 @@
                         </svg>
                     </button>
                 </div>
+                <button class="cart userbtn" id="userBtn" onclick="logoutPrompt()" aria-label="Akun saya" hidden>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+                    </svg>
+                    <span class="txt" id="userName"></span>
+                </button>
                 <button class="cart" onclick="openCart()" aria-label="Buka keranjang">
                     <svg class="icon" viewBox="0 0 24 24">
                         <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none" />
@@ -1552,6 +1816,16 @@
                 <div id="checkout"></div>
             </div>
         </div>
+        <div id="auth" class="auth">
+            <div class="auth-wrap">
+                <img class="auth-logo" id="authLogo" src="Logo.png" alt="KIMBABKU" />
+                <div class="auth-title" role="heading" aria-level="1">
+                    <span id="authBrand">KIMBABKU</span> — Masuk atau Daftar
+                </div>
+                <p class="auth-sub">Kimbab • Risol Mayo • Aneka Jajanan</p>
+                <div class="auth-card" id="authCard"></div>
+            </div>
+        </div>
         <div id="toast" class="toast"></div>
         <div id="waFallback"></div>
         <script>
@@ -1590,6 +1864,11 @@
             const lsSet = (k, v) => {
                 try {
                     localStorage.setItem(k, v);
+                } catch (e) {}
+            };
+            const lsDel = (k) => {
+                try {
+                    localStorage.removeItem(k);
                 } catch (e) {}
             };
 
@@ -1745,13 +2024,21 @@
                 try {
                     if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0)
                         throw new Error('API_URL belum dikonfigurasi.');
-                    const r = await fetch(CONFIG.apiUrl + '?action=getStoreData');
+                    const r = await fetch(
+                        CONFIG.apiUrl +
+                            '?action=getStoreData&userToken=' +
+                            encodeURIComponent(session ? session.token : '')
+                    );
                     const j = await r.json();
                     if (!j.success) throw new Error(j.error || 'Gagal memuat data toko.');
                     applyStoreData(j.data);
                     lsSet('kb-store-cache', JSON.stringify(j.data));
                 } catch (err) {
                     console.error('loadStoreData:', err.message);
+                    if (/LOGIN_REQUIRED/.test(err.message)) {
+                        doLogout('Sesi berakhir, silakan masuk lagi.');
+                        return;
+                    }
                     if (!hadCache) {
                         grid.innerHTML =
                             '<div class="empty" style="grid-column:1/-1">Menu belum bisa dimuat. Silakan coba lagi nanti.</div>';
@@ -2004,6 +2291,7 @@
                     body.set('action', 'logOrder');
                     body.set('orderCode', code);
                     body.set('type', d.type);
+                    body.set('userToken', session ? session.token : '');
                     body.set('customerName', d.n);
                     body.set('phone', d.p);
                     body.set('address', d.a);
@@ -2022,6 +2310,7 @@
             }
 
             function send() {
+                if (!session) return showAuth();
                 capture();
                 const d = order;
                 if (!d.n || !d.p || !d.a) return toast('Data checkout belum lengkap');
@@ -2125,10 +2414,341 @@
                 }
             });
 
+            // ---------- AKUN PELANGGAN (wajib daftar / masuk dengan Gmail) ----------
+            const SESSION_KEY = 'kb-session';
+            let session = null;
+            try {
+                session = JSON.parse(lsGet(SESSION_KEY) || 'null');
+            } catch (e) {
+                session = null;
+            }
+            if (session && !(session.token && Number(session.exp) > Date.now())) session = null;
+            let authView = 'login',
+                authEmail = '',
+                authBusy = false,
+                authNotice = '';
+            const $a = (id) => document.getElementById(id);
+            const svg = (inner) => `<svg class="aico" viewBox="0 0 24 24">${inner}</svg>`;
+            const IC = {
+                user: svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'),
+                phone: svg(
+                    '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'
+                ),
+                mail: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+                lock: svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+                key: svg('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>'),
+                eye: '<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+            };
+            const fld = (label, id, icon, attrs, eye) =>
+                `<label class="alabel" for="${id}">${label}</label><div class="afield">${icon}<input id="${id}" ${attrs}>${eye ? `<button type="button" class="eye" onclick="togglePw('${id}')" aria-label="Tampilkan / sembunyikan kata sandi">${IC.eye}</button>` : ''}</div>`;
+            const authTabs = (on) =>
+                `<div class="atabs"><button type="button" class="atab${on === 'login' ? ' on' : ''}" onclick="setAuthView('login')">Masuk</button><button type="button" class="atab${on === 'register' ? ' on' : ''}" onclick="setAuthView('register')">Daftar</button></div>`;
+            const authBack = () =>
+                `<button type="button" class="alink aback" onclick="setAuthView('login')">← Kembali ke Masuk</button>`;
+            const authBtn = (label) => `<button type="submit" class="abtn" id="aBtn">${label}</button>`;
+            const AFOOT = '<div class="afoot">✦ Nikmati akses ke menu pilihan KIMBABKU</div>';
+
+            function authBody() {
+                const em = esc(authEmail);
+                if (authView === 'register')
+                    return (
+                        authTabs('register') +
+                        fld(
+                            'Nama',
+                            'aName',
+                            IC.user,
+                            'type="text" autocomplete="name" maxlength="60" placeholder="Nama lengkap"'
+                        ) +
+                        fld(
+                            'Nomor WhatsApp (opsional)',
+                            'aPhone',
+                            IC.phone,
+                            'type="tel" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx"'
+                        ) +
+                        fld(
+                            'Email Gmail',
+                            'aEmail',
+                            IC.mail,
+                            `type="email" inputmode="email" autocomplete="email" placeholder="nama@gmail.com" value="${em}"`
+                        ) +
+                        fld(
+                            'Kata sandi',
+                            'aPass',
+                            IC.lock,
+                            'type="password" autocomplete="new-password" maxlength="64" placeholder="Minimal 8 karakter"',
+                            true
+                        ) +
+                        authBtn('Daftar Sekarang →') +
+                        '<p class="anote">Hanya akun Gmail (@gmail.com). Kami kirim kode verifikasi ke email kamu. Dengan mendaftar, kamu setuju nama, email, dan WhatsApp dipakai untuk memproses pesanan.</p>'
+                    );
+                if (authView === 'verify')
+                    return (
+                        authBack() +
+                        '<div class="atitle">Verifikasi Email</div>' +
+                        `<p class="asub">Masukkan 6 digit kode yang dikirim ke <b>${em}</b>. Cek juga folder Spam.</p>` +
+                        fld(
+                            'Kode verifikasi',
+                            'aCode',
+                            IC.key,
+                            'type="text" class="acode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"'
+                        ) +
+                        authBtn('Verifikasi →') +
+                        '<p class="anote">Belum menerima kode? <button type="button" class="alink" onclick="resendCode()">Kirim ulang kode</button></p>'
+                    );
+                if (authView === 'forgot')
+                    return (
+                        authBack() +
+                        '<div class="atitle">Lupa Kata Sandi</div>' +
+                        '<p class="asub">Masukkan email Gmail kamu. Kami kirim kode untuk membuat kata sandi baru.</p>' +
+                        fld(
+                            'Email Gmail',
+                            'aEmail',
+                            IC.mail,
+                            `type="email" inputmode="email" autocomplete="email" placeholder="nama@gmail.com" value="${em}"`
+                        ) +
+                        authBtn('Kirim Kode →')
+                    );
+                if (authView === 'reset')
+                    return (
+                        authBack() +
+                        '<div class="atitle">Buat Kata Sandi Baru</div>' +
+                        `<p class="asub">Masukkan kode yang dikirim ke <b>${em}</b> dan kata sandi barumu.</p>` +
+                        fld(
+                            'Kode',
+                            'aCode',
+                            IC.key,
+                            'type="text" class="acode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"'
+                        ) +
+                        fld(
+                            'Kata sandi baru',
+                            'aPass',
+                            IC.lock,
+                            'type="password" autocomplete="new-password" maxlength="64" placeholder="Minimal 8 karakter"',
+                            true
+                        ) +
+                        authBtn('Simpan & Masuk →')
+                    );
+                return (
+                    authTabs('login') +
+                    fld(
+                        'Email',
+                        'aEmail',
+                        IC.mail,
+                        `type="email" inputmode="email" autocomplete="email" placeholder="nama@gmail.com" value="${em}"`
+                    ) +
+                    `<div class="arow" style="margin-top:12px"><label class="alabel" for="aPass" style="margin:0">Kata sandi</label><button type="button" class="alink" onclick="setAuthView('forgot')">Lupa kata sandi?</button></div>` +
+                    `<div class="afield" style="margin-top:6px">${IC.lock}<input id="aPass" type="password" autocomplete="current-password" maxlength="64" placeholder="Kata sandi"><button type="button" class="eye" onclick="togglePw('aPass')" aria-label="Tampilkan / sembunyikan kata sandi">${IC.eye}</button></div>` +
+                    '<label class="acheck"><input type="checkbox" id="aRemember" checked> Ingat saya</label>' +
+                    authBtn('Masuk →')
+                );
+            }
+            function renderAuth() {
+                const notice = authNotice;
+                authNotice = '';
+                $a('authCard').innerHTML =
+                    `<form id="authForm" novalidate onsubmit="authSubmit(event)"><div id="aMsg" class="amsg${notice ? ' ok' : ''}"${notice ? '' : ' hidden'}>${esc(notice)}</div>${authBody()}</form>${AFOOT}`;
+            }
+            function showAuthMsg(msg, ok) {
+                const m = $a('aMsg');
+                if (!m) return;
+                m.className = 'amsg' + (ok ? ' ok' : '');
+                m.textContent = msg;
+                m.hidden = false;
+            }
+            function setAuthView(v) {
+                if ($a('aEmail')) authEmail = $a('aEmail').value.trim();
+                authView = v;
+                authNotice = '';
+                renderAuth();
+            }
+            function togglePw(id) {
+                const i = $a(id);
+                if (i) i.type = i.type === 'password' ? 'text' : 'password';
+            }
+            function showAuth() {
+                $a('auth').hidden = false;
+                document.body.style.overflow = 'hidden';
+                renderAuth();
+            }
+            function hideAuth() {
+                $a('auth').hidden = true;
+                document.body.style.overflow = '';
+            }
+
+            async function authApi(action, data = {}) {
+                const body = new URLSearchParams();
+                body.set('action', action);
+                Object.entries(data).forEach(([k, v]) => body.set(k, String(v)));
+                let r;
+                try {
+                    r = await fetch(CONFIG.apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                        body,
+                    });
+                } catch (e) {
+                    throw new Error('Tidak bisa terhubung. Periksa koneksi internet kamu.');
+                }
+                const j = await r.json();
+                if (!j.success) throw new Error(j.error || 'Terjadi kesalahan.');
+                return j.data;
+            }
+            async function doAuth(action, data) {
+                authBusy = true;
+                const btn = $a('aBtn'),
+                    old = btn ? btn.textContent : '';
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Memproses...';
+                }
+                try {
+                    return await authApi(action, data);
+                } finally {
+                    authBusy = false;
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = old;
+                    }
+                }
+            }
+            async function authSubmit(e) {
+                e.preventDefault();
+                if (authBusy) return;
+                const v = (id) => ($a(id) ? $a(id).value.trim() : '');
+                try {
+                    if (authView === 'login') {
+                        const email = v('aEmail'),
+                            pass = $a('aPass').value;
+                        if (!email || !pass) return showAuthMsg('Email dan kata sandi wajib diisi.');
+                        authEmail = email;
+                        try {
+                            onAuthSuccess(
+                                await doAuth('loginUser', {
+                                    email,
+                                    password: pass,
+                                    remember: $a('aRemember').checked ? 1 : 0,
+                                })
+                            );
+                        } catch (err) {
+                            if (/^BELUM_VERIFIKASI/.test(err.message)) {
+                                authView = 'verify';
+                                authNotice = 'Email kamu belum diverifikasi. Kami kirim kode baru ke inbox.';
+                                renderAuth();
+                                resendCode(true);
+                            } else throw err;
+                        }
+                    } else if (authView === 'register') {
+                        const name = v('aName'),
+                            phone = v('aPhone'),
+                            email = v('aEmail'),
+                            pass = $a('aPass').value;
+                        if (name.length < 2) return showAuthMsg('Nama minimal 2 karakter.');
+                        if (!/^[^\s@]+@gmail\.com$/i.test(email))
+                            return showAuthMsg('Gunakan alamat Gmail (contoh: nama@gmail.com).');
+                        if (pass.length < 8) return showAuthMsg('Kata sandi minimal 8 karakter.');
+                        const d = await doAuth('register', { name, phone, email, password: pass });
+                        authEmail = d.email;
+                        authView = 'verify';
+                        authNotice = 'Kode verifikasi sudah dikirim. Cek inbox atau folder Spam.';
+                        renderAuth();
+                    } else if (authView === 'verify') {
+                        const code = v('aCode');
+                        if (!/^\d{6}$/.test(code)) return showAuthMsg('Masukkan 6 digit kode.');
+                        onAuthSuccess(await doAuth('verifyEmail', { email: authEmail, code }));
+                    } else if (authView === 'forgot') {
+                        const email = v('aEmail');
+                        if (!/^[^\s@]+@gmail\.com$/i.test(email))
+                            return showAuthMsg('Gunakan alamat Gmail (contoh: nama@gmail.com).');
+                        authEmail = email;
+                        await doAuth('forgotPassword', { email });
+                        authView = 'reset';
+                        authNotice = 'Jika email terdaftar, kode reset sudah dikirim. Cek inbox atau folder Spam.';
+                        renderAuth();
+                    } else if (authView === 'reset') {
+                        const code = v('aCode'),
+                            pass = $a('aPass').value;
+                        if (!/^\d{6}$/.test(code)) return showAuthMsg('Masukkan 6 digit kode.');
+                        if (pass.length < 8) return showAuthMsg('Kata sandi minimal 8 karakter.');
+                        onAuthSuccess(await doAuth('resetPassword', { email: authEmail, code, password: pass }));
+                    }
+                } catch (err) {
+                    showAuthMsg(err.message);
+                }
+            }
+            async function resendCode(quiet) {
+                try {
+                    await authApi('resendCode', { email: authEmail });
+                    if (!quiet) showAuthMsg('Kode baru sudah dikirim. Cek inbox atau folder Spam.', true);
+                } catch (err) {
+                    showAuthMsg(err.message);
+                }
+            }
+            function onAuthSuccess(d) {
+                session = { token: d.token, user: d.user, exp: d.expiresAt };
+                lsSet(SESSION_KEY, JSON.stringify(session));
+                if (d.user.name) order.n = d.user.name;
+                if (d.user.phone) order.p = d.user.phone;
+                authView = 'login';
+                authEmail = '';
+                hideAuth();
+                updateUserBtn();
+                loadStoreData();
+                toast('Halo, ' + String(d.user.name || '').split(' ')[0] + '! Selamat datang 👋');
+            }
+            function updateUserBtn() {
+                const b = $a('userBtn');
+                if (!b) return;
+                b.hidden = !session;
+                $a('userName').textContent = session ? String(session.user.name || '').split(' ')[0] : '';
+                if (session) b.title = session.user.email;
+            }
+            function logoutPrompt() {
+                if (session && confirm('Keluar dari akun ' + session.user.email + '?')) doLogout();
+            }
+            function doLogout(msg) {
+                session = null;
+                lsDel(SESSION_KEY);
+                lsDel('kb-store-cache');
+                MENUS = [];
+                CATEGORIES = [];
+                closeCart();
+                document.getElementById('modal').classList.remove('open');
+                if (chatOpen) toggleChat(false);
+                updateUserBtn();
+                render();
+                renderCart();
+                authView = 'login';
+                authNotice = msg || '';
+                showAuth();
+            }
+            async function loadBrand() {
+                try {
+                    const r = await fetch(CONFIG.apiUrl + '?action=getBrand');
+                    const j = await r.json();
+                    if (!j.success) return;
+                    const b = j.data || {};
+                    SETTINGS = { ...SETTINGS, ...b };
+                    applyBrandAssets();
+                    if (b.logoUrl) $a('authLogo').src = b.logoUrl;
+                    if (b.storeName) $a('authBrand').textContent = b.storeName;
+                } catch (e) {}
+            }
+            function initAuth() {
+                if (session) {
+                    hideAuth();
+                    updateUserBtn();
+                    if (session.user.name) order.n = order.n || session.user.name;
+                    loadStoreData();
+                } else {
+                    showAuth();
+                    loadBrand();
+                }
+            }
+
             renderHero();
             heroAutoplay();
             renderContact();
-            loadStoreData();
+            initAuth();
         </script>
     </body>
 </html>

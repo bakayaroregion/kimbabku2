@@ -751,6 +751,7 @@
                 <nav>
                     <button class="side-link active" data-view="dashboard">Dashboard</button
                     ><button class="side-link" data-view="orders">Pesanan</button
+                    ><button class="side-link" data-view="customers">Pelanggan</button
                     ><button class="side-link" data-view="menus">Menu</button
                     ><button class="side-link" data-view="categories">Kategori</button
                     ><button class="side-link" data-view="settings">Pengaturan</button>
@@ -835,6 +836,48 @@
                         <p id="orderEmpty" class="sub" style="color: #777; font-size: 13px" hidden>
                             Belum ada pesanan.
                         </p>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="customers" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Pelanggan Terdaftar</h2>
+                                <p id="customerInfo">Akun Gmail yang mendaftar di halaman pelanggan.</p>
+                            </div>
+                            <div class="toolbar">
+                                <input
+                                    id="customerSearch"
+                                    placeholder="Cari nama / email..."
+                                    aria-label="Cari pelanggan"
+                                    style="
+                                        border: 1px solid #ddd9d1;
+                                        border-radius: 10px;
+                                        padding: 10px;
+                                        font-size: 14px;
+                                        background: #fff;
+                                    "
+                                />
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>WhatsApp</th>
+                                        <th>Status</th>
+                                        <th>Daftar</th>
+                                        <th>Terakhir masuk</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customerTable"></tbody>
+                            </table>
+                        </div>
+                        <p id="customerEmpty" style="color: #777; font-size: 13px" hidden>Belum ada pelanggan.</p>
                     </div>
                 </section>
 
@@ -1680,6 +1723,12 @@
                         a.style.color = '#17713a';
                         cust.append(a);
                     } else cust.append(document.createTextNode(o.phone || '-'));
+                    if (o.userEmail) {
+                        const sm = document.createElement('small');
+                        sm.style.color = '#777';
+                        sm.textContent = o.userEmail;
+                        cust.append(document.createElement('br'), sm);
+                    }
                     const itemsTxt = (o.items || []).map((i) => `${i.name} ×${i.qty}`).join(', ') || '-';
                     const detail = [
                         o.address && 'Alamat: ' + o.address,
@@ -1742,6 +1791,81 @@
                     toast(e.message, true);
                 }
             }
+            // ==================== Pelanggan ====================
+            state.customers = [];
+            const CUSTOMER_STATUS = {
+                active: ['Aktif', 'active'],
+                pending: ['Belum verifikasi', 'inactive'],
+                blocked: ['Diblokir', 'inactive'],
+            };
+            async function loadCustomers() {
+                const d = await api('getCustomers');
+                state.customers = d.customers || [];
+                state.customerTotal = d.total || 0;
+                renderCustomers();
+            }
+            function renderCustomers() {
+                const body = $('#customerTable');
+                body.replaceChildren();
+                const q = $('#customerSearch').value.trim().toLowerCase();
+                const list = state.customers.filter((c) => !q || (c.name + ' ' + c.email).toLowerCase().includes(q));
+                $('#customerEmpty').hidden = list.length > 0;
+                $('#customerInfo').textContent =
+                    `${state.customerTotal || 0} akun terdaftar` +
+                    ((state.customerTotal || 0) > state.customers.length
+                        ? ` (menampilkan ${state.customers.length} terbaru)`
+                        : '') +
+                    '.';
+                const fmt = (v) =>
+                    v ? new Date(v).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                list.forEach((c) => {
+                    const tr = document.createElement('tr');
+                    const td = (t) => {
+                        const x = document.createElement('td');
+                        x.textContent = t;
+                        return x;
+                    };
+                    const wa = document.createElement('td');
+                    const wd = waDigits(c.phone);
+                    if (wd) {
+                        const a = document.createElement('a');
+                        a.href = 'https://wa.me/' + wd;
+                        a.target = '_blank';
+                        a.rel = 'noopener';
+                        a.textContent = c.phone;
+                        a.style.color = '#17713a';
+                        wa.append(a);
+                    } else wa.textContent = '-';
+                    const st = document.createElement('td');
+                    const badge = document.createElement('span');
+                    const meta = CUSTOMER_STATUS[c.status] || [c.status, 'inactive'];
+                    badge.className = 'badge ' + meta[1];
+                    badge.textContent = meta[0];
+                    st.append(badge);
+                    const act = document.createElement('td');
+                    const btn = document.createElement('button');
+                    const block = c.status !== 'blocked';
+                    btn.className = 'small-btn' + (block ? ' danger' : '');
+                    btn.textContent = block ? 'Blokir' : 'Aktifkan';
+                    btn.onclick = async () => {
+                        if (block && !confirm(`Blokir ${c.email}? Akun ini tidak bisa masuk atau memesan.`)) return;
+                        btn.disabled = true;
+                        try {
+                            await api('setCustomerStatus', { id: c.id, status: block ? 'blocked' : 'active' });
+                            toast(block ? 'Pelanggan diblokir.' : 'Pelanggan diaktifkan.');
+                            await loadCustomers();
+                        } catch (err) {
+                            toast(err.message, true);
+                            btn.disabled = false;
+                        }
+                    };
+                    act.append(btn);
+                    tr.append(td(c.name), td(c.email), wa, st, td(fmt(c.createdAt)), td(fmt(c.lastLoginAt)), act);
+                    body.append(tr);
+                });
+            }
+            $('#customerSearch').addEventListener('input', renderCustomers);
+
             function setupNav() {
                 document.querySelectorAll('.side-link[data-view]').forEach(
                     (b) =>
@@ -1754,6 +1878,7 @@
                             $('#viewTitle').textContent = b.textContent;
                             b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                             if (b.dataset.view === 'orders') loadOrders().catch((e) => toast(e.message, true));
+                            if (b.dataset.view === 'customers') loadCustomers().catch((e) => toast(e.message, true));
                         })
                 );
             }
