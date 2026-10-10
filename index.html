@@ -275,6 +275,8 @@
                 border-radius: 20px;
                 padding: 14px;
                 overflow-x: auto;
+                overflow-y: hidden;
+                overscroll-behavior-x: contain;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: thin;
             }
@@ -999,6 +1001,13 @@
                 .cats {
                     border-radius: 16px;
                     padding: 10px;
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+                }
+                .cats::-webkit-scrollbar {
+                    display: none;
+                    width: 0;
+                    height: 0;
                 }
                 .cat {
                     padding: 10px 6px;
@@ -1009,8 +1018,92 @@
                     grid-template-columns: repeat(2, 1fr);
                     gap: 10px;
                 }
+                /* ===== Cara Pesan: grid 2x2, semua langsung terlihat tanpa geser ===== */
+                .steps {
+                    padding: 20px 14px;
+                    margin: 28px 0;
+                    overflow: visible;
+                }
+                .stepsgrid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                    min-width: 0;
+                }
+                .steparrow {
+                    display: none;
+                }
+                .step {
+                    background: #fff;
+                    border: 1px solid var(--line);
+                    border-radius: 16px;
+                    padding: 18px 10px 14px;
+                    box-shadow: 0 3px 10px rgba(10, 40, 25, 0.05);
+                }
+                .num-wrap {
+                    width: 46px;
+                    height: 46px;
+                    margin-bottom: 10px;
+                }
+                .num-circle {
+                    width: 46px;
+                    height: 46px;
+                }
+                .step h3 {
+                    font-size: 14px;
+                    margin-bottom: 5px;
+                }
+                .step p {
+                    font-size: 11.5px;
+                }
+                .step p br {
+                    display: none;
+                }
+                /* ===== Promo + keunggulan: tersusun ke bawah, keunggulan jadi grid 2x2 ===== */
                 .promowrap {
-                    gap: 10px;
+                    flex-direction: column;
+                    overflow: visible;
+                    gap: 14px;
+                    margin-bottom: 28px;
+                }
+                .promo {
+                    flex: none;
+                    width: 100%;
+                    min-width: 0;
+                    padding: 18px;
+                    gap: 14px;
+                }
+                .promo .mega {
+                    width: 42px;
+                    height: 42px;
+                }
+                .promo h3 {
+                    font-size: 16px;
+                }
+                .features {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                    width: 100%;
+                }
+                .feature {
+                    width: auto;
+                    background: #fff;
+                    border: 1px solid var(--line);
+                    border-radius: 16px;
+                    padding: 16px 8px 12px;
+                    box-shadow: 0 3px 10px rgba(10, 40, 25, 0.05);
+                }
+                .feature .circ {
+                    width: 44px;
+                    height: 44px;
+                    margin-bottom: 8px;
+                }
+                .feature b {
+                    font-size: 12px;
+                }
+                .feature b br {
+                    display: none;
                 }
                 footer {
                     padding: 34px 16px 100px;
@@ -1049,6 +1142,16 @@
                 }
                 .logo {
                     height: 34px;
+                }
+                .stepsgrid,
+                .features {
+                    gap: 10px;
+                }
+                .step {
+                    padding: 16px 8px 12px;
+                }
+                .step p {
+                    font-size: 11px;
                 }
                 .hero img {
                     max-height: 24vh;
