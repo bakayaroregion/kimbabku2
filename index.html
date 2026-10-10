@@ -26,6 +26,9 @@
             * {
                 box-sizing: border-box;
             }
+            [hidden] {
+                display: none !important;
+            }
             html {
                 scroll-behavior: smooth;
             }
@@ -50,6 +53,17 @@
             }
             a {
                 color: inherit;
+            }
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
             }
             .icon {
                 width: 18px;
@@ -111,9 +125,7 @@
                 width: 16px;
                 height: 16px;
             }
-            .links a:hover {
-                color: #fff;
-            }
+            .links a:hover,
             .links a.active {
                 color: #fff;
             }
@@ -193,7 +205,6 @@
                 place-items: center;
                 border: 2px solid var(--dark);
             }
-
             .container {
                 max-width: 1280px;
                 margin: auto;
@@ -336,6 +347,7 @@
                 align-items: center;
                 gap: 6px;
                 white-space: nowrap;
+                text-decoration: none;
             }
 
             /* ===== PRODUCT CARDS ===== */
@@ -615,11 +627,6 @@
                 margin: 0 0 14px;
                 font-size: 14.5px;
             }
-            @media (max-width: 700px) {
-                .foot > div:not(:first-child) {
-                    padding-top: 4px;
-                }
-            }
             .contact-line {
                 display: flex;
                 align-items: center;
@@ -670,7 +677,6 @@
                 gap: 6px;
                 color: #cfe3d7;
             }
-
             .float {
                 position: fixed;
                 right: 20px;
@@ -913,8 +919,26 @@
             }
 
             @media (max-width: 980px) {
+                /* Menu tidak lagi disembunyikan: tampil sebagai baris geser di bawah header */
+                .nav {
+                    flex-wrap: wrap;
+                    gap: 10px 14px;
+                }
                 .links {
+                    order: 10;
+                    flex: 0 0 100%;
+                    flex-wrap: nowrap;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: none;
+                    gap: 16px;
+                    padding-bottom: 4px;
+                }
+                .links::-webkit-scrollbar {
                     display: none;
+                }
+                .links a.active::after {
+                    bottom: 0;
                 }
                 .search {
                     margin-left: auto;
@@ -930,7 +954,6 @@
                 .nav {
                     min-height: 66px;
                     padding: 8px 12px;
-                    gap: 10px;
                 }
                 .logo {
                     height: 40px;
@@ -1051,7 +1074,7 @@
                         <circle cx="11" cy="11" r="7" />
                         <path d="M21 21l-4.3-4.3" />
                     </svg>
-                    <input id="search" placeholder="Cari menu..." oninput="render()" />
+                    <input id="search" placeholder="Cari menu..." aria-label="Cari menu" oninput="render()" />
                     <button type="button" onclick="render()" aria-label="Cari">
                         <svg class="icon" viewBox="0 0 24 24" style="stroke: #fff">
                             <circle cx="11" cy="11" r="7" />
@@ -1059,7 +1082,7 @@
                         </svg>
                     </button>
                 </div>
-                <button class="cart" onclick="openCart()">
+                <button class="cart" onclick="openCart()" aria-label="Buka keranjang">
                     <svg class="icon" viewBox="0 0 24 24">
                         <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none" />
                         <circle cx="18" cy="21" r="1.4" fill="currentColor" stroke="none" />
@@ -1071,6 +1094,7 @@
             </nav>
         </header>
         <main id="beranda">
+            <h1 class="sr-only">KIMBABKU — Kimbab, Risol Mayo &amp; Aneka Jajanan</h1>
             <section class="hero">
                 <button class="hero-arrow prev" aria-label="Sebelumnya" onclick="heroPrev()">
                     <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px">
@@ -1087,14 +1111,14 @@
             <div class="container">
                 <div class="dots" id="heroDots"></div>
                 <section id="kategori" class="cats">
-                    <button class="cat active" onclick="cat('Semua', this)"><span>🍽️</span>Semua</button
-                    ><button class="cat" onclick="cat('Kimbab', this)">
+                    <button class="cat active" data-cat="Semua"><span>🍽️</span>Semua</button
+                    ><button class="cat" data-cat="Kimbab">
                         <img class="cat-ico" src="Kategori-Kimbab.png" alt="Kimbab" />Kimbab</button
-                    ><button class="cat" onclick="cat('Risol Mayo', this)">
+                    ><button class="cat" data-cat="Risol Mayo">
                         <img class="cat-ico" src="Kategori-RisolMayo.png" alt="Risol Mayo" />Risol Mayo</button
-                    ><button class="cat" onclick="cat('Aneka Jajanan', this)">
+                    ><button class="cat" data-cat="Aneka Jajanan">
                         <img class="cat-ico" src="Kategori-AnekaJajanan.png" alt="Aneka Jajanan" />Aneka Jajanan</button
-                    ><button class="cat" onclick="cat('Minuman', this)">
+                    ><button class="cat" data-cat="Minuman">
                         <img class="cat-ico" src="Kategori-Minuman.png" alt="Minuman" />Minuman
                     </button>
                 </section>
@@ -1114,7 +1138,13 @@
                                 <p>Pilihan terbaik dengan rasa yang selalu bikin ketagihan</p>
                             </div>
                         </div>
-                        <a href="#menu" class="seeall"
+                        <a
+                            href="#menu"
+                            class="seeall"
+                            onclick="
+                                showAll();
+                                return true;
+                            "
                             >Lihat Semua
                             <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px">
                                 <path d="M9 6l6 6-6 6" />
@@ -1167,7 +1197,7 @@
                                 <div class="num-badge">2</div>
                             </div>
                             <h3>Isi Data</h3>
-                            <p>Nama, No. WhatsApp,<br />Alamat & Catatan</p>
+                            <p>Nama, No. WhatsApp,<br />Alamat &amp; Catatan</p>
                         </div>
                         <div class="steparrow">→</div>
                         <div class="step">
@@ -1242,7 +1272,7 @@
                                     <path d="M12 2l2.9 6.9L22 9.3l-5.5 4.8L18 22l-6-4-6 4 1.5-7.9L2 9.3l7.1-.4z" />
                                 </svg>
                             </div>
-                            <b>Rasa Lezat<br />& Istimewa</b>
+                            <b>Rasa Lezat<br />&amp; Istimewa</b>
                         </div>
                         <div class="feature">
                             <div class="circ">Rp</div>
@@ -1270,25 +1300,25 @@
                 </div>
                 <div>
                     <h3>Kontak Kami</h3>
-                    <div class="contact-line" id="contactWa">
+                    <div class="contact-line" id="contactWa" hidden>
                         <svg class="icon" viewBox="0 0 24 24">
                             <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
                         </svg>
-                        <span>+62 812 3456 7890</span>
+                        <span></span>
                     </div>
-                    <div class="contact-line" id="contactAddr">
+                    <div class="contact-line" id="contactAddr" hidden>
                         <svg class="icon" viewBox="0 0 24 24">
                             <path d="M12 21s7-6.6 7-12a7 7 0 0 0-14 0c0 5.4 7 12 7 12z" />
                             <circle cx="12" cy="9" r="2.4" />
                         </svg>
-                        <span>Jl. Kuliner No. 123, Jakarta</span>
+                        <span></span>
                     </div>
-                    <div class="contact-line" id="contactHours">
+                    <div class="contact-line" id="contactHours" hidden>
                         <svg class="icon" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="9" />
                             <path d="M12 7v5l3 3" />
                         </svg>
-                        <span>Setiap Hari 08:00 - 22:00</span>
+                        <span></span>
                     </div>
                 </div>
                 <div>
@@ -1349,13 +1379,13 @@
             </svg>
         </button>
         <div id="drawer" class="drawer" onclick="if (event.target === this) closeCart();">
-            <aside class="panel">
+            <aside class="panel" role="dialog" aria-label="Keranjang">
                 <div class="panelhead">
                     <div>
                         <h2 style="margin: 0; color: #00452f">Keranjang</h2>
                         <small id="ct">0 item</small>
                     </div>
-                    <button class="close" onclick="closeCart()">✕</button>
+                    <button class="close" onclick="closeCart()" aria-label="Tutup">✕</button>
                 </div>
                 <div id="items" class="items"></div>
                 <div>
@@ -1367,13 +1397,13 @@
             </aside>
         </div>
         <div id="modal" class="modal">
-            <div class="box">
+            <div class="box" role="dialog" aria-modal="true" aria-label="Checkout Pesanan">
                 <div style="display: flex; justify-content: space-between">
                     <div>
                         <h2 style="margin: 0; color: #00452f">Checkout Pesanan</h2>
                         <small>Lengkapi data sampai pesanan terkirim ke WhatsApp.</small>
                     </div>
-                    <button class="close" onclick="closeCheckout()">✕</button>
+                    <button class="close" onclick="closeCheckout()" aria-label="Tutup">✕</button>
                 </div>
                 <div id="prog" class="progress"></div>
                 <div id="checkout"></div>
@@ -1383,10 +1413,7 @@
         <div id="waFallback"></div>
         <script>
             // =====================================================================
-            // PENTING: apiUrl DI SINI HARUS SAMA PERSIS dengan CONFIG.API_URL di
-            // admin.html. Keduanya harus menunjuk ke satu Web App Apps Script yang
-            // sama (satu spreadsheet yang sama), kalau tidak, perubahan dari Admin
-            // (menu, kategori, nomor WhatsApp, dst) TIDAK akan muncul di sini.
+            // PENTING: apiUrl HARUS SAMA PERSIS dengan CONFIG.API_URL di admin.html.
             // =====================================================================
             const CONFIG = {
                 apiUrl: 'https://script.google.com/macros/s/AKfycbyP5_m7LRjOvSvYqYYpBL1yVIt9fXNhqZrVWvOsyuWK73AgOZJS1GtdXirUT8GTYllslg/exec',
@@ -1401,19 +1428,29 @@
                 Paket: '🎁',
                 Snack: '🍪',
             };
-            // Logo gambar untuk chip kategori (Kimbab, Risol Mayo, Aneka Jajanan,
-            // Minuman). Kategori "Semua" & kategori lain di luar daftar ini akan
-            // tetap pakai emoji (lihat CAT_ICONS / fallback 🍽️).
             const CAT_IMAGES = {
                 Kimbab: 'Kategori-Kimbab.png',
                 'Risol Mayo': 'Kategori-RisolMayo.png',
                 'Aneka Jajanan': 'Kategori-AnekaJajanan.png',
                 Minuman: 'Kategori-Minuman.png',
             };
-            // Banner hero (carousel). Tambah/kurangi nama file di sini kalau
-            // jumlah banner berubah — dots & tombol prev/next otomatis menyesuaikan.
-            // Kalau admin sudah upload Banner lewat dashboard (SETTINGS.bannerUrl),
-            // banner dari database dipakai (menggantikan daftar file lokal ini).
+            const TIME_OPTIONS = ['Secepatnya', '11:00 - 13:00', '13:00 - 15:00', '17:00 - 19:00', '19:00 - 21:00'];
+
+            // ---------- localStorage aman (mode privat Safari bisa melempar error) ----------
+            const lsGet = (k) => {
+                try {
+                    return localStorage.getItem(k);
+                } catch (e) {
+                    return null;
+                }
+            };
+            const lsSet = (k, v) => {
+                try {
+                    localStorage.setItem(k, v);
+                } catch (e) {}
+            };
+
+            // ---------- HERO ----------
             const DEFAULT_BANNERS = ['Baner.jpg', 'Banner-1.jpg', 'Banner-2.jpg', 'Banner-3.jpg'];
             let BANNERS = DEFAULT_BANNERS;
             let heroIndex = 0,
@@ -1421,11 +1458,13 @@
             function renderHero() {
                 const img = document.getElementById('heroImg');
                 if (img) img.src = BANNERS[heroIndex];
+                const multi = BANNERS.length > 1;
+                document.querySelectorAll('.hero-arrow').forEach((b) => (b.style.display = multi ? '' : 'none'));
                 const dots = document.getElementById('heroDots');
                 if (dots)
-                    dots.innerHTML = BANNERS.map(
-                        (_, i) => `<i class="${i === heroIndex ? 'on' : ''}" data-i="${i}"></i>`
-                    ).join('');
+                    dots.innerHTML = multi
+                        ? BANNERS.map((_, i) => `<i class="${i === heroIndex ? 'on' : ''}" data-i="${i}"></i>`).join('')
+                        : '';
             }
             function heroGo(i) {
                 heroIndex = (i + BANNERS.length) % BANNERS.length;
@@ -1446,31 +1485,47 @@
                 const dot = e.target.closest('i[data-i]');
                 if (dot) heroGo(Number(dot.dataset.i));
             });
-            // Terapkan Logo & Banner dari database (kalau admin sudah upload lewat
-            // dashboard). Kalau belum diupload (kosong), tetap pakai file lokal
-            // (Logo.png / daftar DEFAULT_BANNERS) yang sudah ada di src bawaan.
             function applyBrandAssets() {
                 if (SETTINGS.logoUrl) {
-                    const logo = document.getElementById('logoImg');
-                    const flogo = document.getElementById('footerLogoImg');
+                    const logo = document.getElementById('logoImg'),
+                        flogo = document.getElementById('footerLogoImg');
                     if (logo) logo.src = SETTINGS.logoUrl;
                     if (flogo) flogo.src = SETTINGS.logoUrl;
                 }
-                if (SETTINGS.bannerUrl) {
-                    BANNERS = [SETTINGS.bannerUrl];
-                } else {
-                    BANNERS = DEFAULT_BANNERS;
-                }
+                BANNERS = SETTINGS.bannerUrl ? [SETTINGS.bannerUrl] : DEFAULT_BANNERS;
                 heroIndex = 0;
                 renderHero();
                 heroAutoplay();
             }
+
+            // ---------- STATE ----------
             let MENUS = [],
                 CATEGORIES = [],
                 SETTINGS = {};
-            let cart = JSON.parse(localStorage.getItem('kb-cart') || '[]'),
-                active = 'Semua',
+            let cart = [];
+            try {
+                cart = JSON.parse(lsGet('kb-cart') || '[]');
+                if (!Array.isArray(cart)) cart = [];
+            } catch (e) {
+                cart = [];
+            }
+            let active = 'Semua',
                 step = 1;
+            // Data checkout disimpan di sini supaya tidak hilang saat tiap step di-render ulang.
+            let order = {
+                n: lsGet('kb-name') || '',
+                p: lsGet('kb-phone') || '',
+                a: lsGet('kb-address') || '',
+                type: 'Delivery',
+                time: 'Secepatnya',
+                note: '',
+            };
+            const waClean = (v) => {
+                let d = String(v || '').replace(/\D/g, '');
+                if (d.startsWith('0')) d = '62' + d.slice(1);
+                else if (d.startsWith('8')) d = '62' + d;
+                return d;
+            };
             const money = (n, c) =>
                 new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -1480,78 +1535,87 @@
             const esc = (s) =>
                 String(s ?? '').replace(
                     /[&<>"']/g,
-                    (m) =>
-                        ({
-                            '&': '&amp;',
-                            '<': '&lt;',
-                            '>': '&gt;',
-                            '"': '&quot;',
-                            "'": '&#039;',
-                        })[m]
+                    (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]
                 );
             const total = () => cart.reduce((s, x) => s + (MENUS.find((p) => p.id === x.id)?.p || 0) * x.q, 0);
             function save() {
-                localStorage.setItem('kb-cart', JSON.stringify(cart));
+                lsSet('kb-cart', JSON.stringify(cart));
             }
             function toast(t) {
-                let x = document.getElementById('toast');
+                const x = document.getElementById('toast');
                 x.textContent = t;
                 x.classList.add('show');
                 setTimeout(() => x.classList.remove('show'), 2200);
             }
 
+            // ---------- LOAD DATA (tampil dari cache dulu, lalu diperbarui di latar belakang) ----------
+            function applyStoreData(d) {
+                MENUS = (d.menus || []).map((m) => ({
+                    id: String(m.id),
+                    n: m.name,
+                    c: m.category,
+                    p: Number(m.price) || 0,
+                    d: m.description || '',
+                    img: m.imageUrl || '',
+                    label: m.label || '',
+                }));
+                CATEGORIES = (d.categories || []).map((c) =>
+                    typeof c === 'string' ? { name: c, imageUrl: '' } : { name: c.name, imageUrl: c.imageUrl || '' }
+                );
+                SETTINGS = d.settings || {};
+                const w = waClean(SETTINGS.whatsappNumber);
+                if (w) CONFIG.waAdmin = w;
+                applyBrandAssets();
+                cart = cart.filter((x) => MENUS.some((p) => p.id === x.id));
+                save();
+                renderCategories();
+                renderContact();
+                render();
+                renderCart();
+            }
             async function loadStoreData() {
                 const grid = document.getElementById('products');
-                grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Memuat menu...</div>';
+                let hadCache = false;
+                try {
+                    const c = JSON.parse(lsGet('kb-store-cache') || 'null');
+                    if (c && Array.isArray(c.menus)) {
+                        applyStoreData(c);
+                        hadCache = true;
+                    }
+                } catch (e) {}
+                if (!hadCache) grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Memuat menu...</div>';
                 try {
                     if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0)
                         throw new Error('API_URL belum dikonfigurasi.');
                     const r = await fetch(CONFIG.apiUrl + '?action=getStoreData');
                     const j = await r.json();
                     if (!j.success) throw new Error(j.error || 'Gagal memuat data toko.');
-                    MENUS = (j.data.menus || []).map((m) => ({
-                        id: String(m.id),
-                        n: m.name,
-                        c: m.category,
-                        p: Number(m.price) || 0,
-                        d: m.description || '',
-                        img: m.imageUrl || '',
-                        label: m.label || '',
-                    }));
-                    CATEGORIES = (j.data.categories || []).map((c) =>
-                        typeof c === 'string' ? { name: c, imageUrl: '' } : { name: c.name, imageUrl: c.imageUrl || '' }
-                    );
-                    SETTINGS = j.data.settings || {};
-                    if (SETTINGS.whatsappNumber) CONFIG.waAdmin = SETTINGS.whatsappNumber;
-                    applyBrandAssets();
-                    cart = cart.filter((x) => MENUS.some((p) => p.id === x.id));
-                    save();
-                    renderCategories();
-                    renderContact();
+                    applyStoreData(j.data);
+                    lsSet('kb-store-cache', JSON.stringify(j.data));
                 } catch (err) {
-                    grid.innerHTML =
-                        '<div class="empty" style="grid-column:1/-1">Menu belum bisa dimuat. Silakan coba lagi nanti.</div>';
                     console.error('loadStoreData:', err.message);
-                    toast(err.message || 'Gagal memuat menu');
+                    if (!hadCache) {
+                        grid.innerHTML =
+                            '<div class="empty" style="grid-column:1/-1">Menu belum bisa dimuat. Silakan coba lagi nanti.</div>';
+                        toast(err.message || 'Gagal memuat menu');
+                    }
                 }
-                render();
-                renderCart();
             }
 
+            // ---------- KATEGORI ----------
             function renderCategories() {
                 const box = document.getElementById('kategori');
                 if (!box || !CATEGORIES.length) return;
                 const names = [{ name: 'Semua', imageUrl: '' }, ...CATEGORIES];
+                if (!names.some((n) => n.name === active)) active = 'Semua';
                 box.innerHTML = names
-                    .map((n, i) => {
-                        // Urutan prioritas ikon: foto kategori dari admin (imageUrl) →
-                        // file lokal bawaan (CAT_IMAGES) → emoji fallback (CAT_ICONS).
+                    .map((n) => {
                         const icon = n.imageUrl
                             ? `<img class="cat-ico" src="${esc(n.imageUrl)}" alt="${esc(n.name)}">`
                             : n.name !== 'Semua' && CAT_IMAGES[n.name]
                               ? `<img class="cat-ico" src="${esc(CAT_IMAGES[n.name])}" alt="${esc(n.name)}">`
                               : `<span>${n.name === 'Semua' ? '🍽️' : CAT_ICONS[n.name] || '🍽️'}</span>`;
-                        return `<button class="cat${i === 0 ? ' active' : ''}" data-cat="${esc(n.name)}">${icon}${esc(n.name)}</button>`;
+                        return `<button class="cat${n.name === active ? ' active' : ''}" data-cat="${esc(n.name)}">${icon}${esc(n.name)}</button>`;
                     })
                     .join('');
             }
@@ -1563,44 +1627,42 @@
                 btn.classList.add('active');
                 render();
             });
-
-            function renderContact() {
-                try {
-                    const cleanWa = String(SETTINGS.whatsappNumber || CONFIG.waAdmin).replace(/\D/g, '');
-                    if (cleanWa) {
-                        const el = document.querySelector('#contactWa span');
-                        if (el) el.textContent = '+' + cleanWa;
-                    }
-                    if (SETTINGS.storeAddress) {
-                        const el = document.querySelector('#contactAddr span');
-                        if (el) el.textContent = SETTINGS.storeAddress;
-                    }
-                    if (SETTINGS.openingHours) {
-                        const el = document.querySelector('#contactHours span');
-                        if (el) el.textContent = SETTINGS.openingHours;
-                    }
-                } catch (e) {}
+            function showAll() {
+                active = 'Semua';
+                document.getElementById('search').value = '';
+                document
+                    .querySelectorAll('.cat')
+                    .forEach((x) => x.classList.toggle('active', x.dataset.cat === 'Semua'));
+                render();
             }
 
-            function render() {
-                let q = document.getElementById('search').value.toLowerCase(),
-                    a = MENUS.filter(
-                        (p) =>
-                            (active === 'Semua' || p.c === active) &&
-                            (!q || p.n.toLowerCase().includes(q) || p.c.toLowerCase().includes(q))
-                    );
+            function renderContact() {
+                const set = (id, val) => {
+                    const row = document.getElementById(id);
+                    if (!row) return;
+                    row.hidden = !val;
+                    row.querySelector('span').textContent = val || '';
+                };
+                set('contactWa', CONFIG.waAdmin ? '+' + CONFIG.waAdmin : '');
+                set('contactAddr', SETTINGS.storeAddress || '');
+                set('contactHours', SETTINGS.openingHours || '');
+            }
 
+            // ---------- PRODUK ----------
+            function render() {
+                const q = document.getElementById('search').value.toLowerCase();
+                const a = MENUS.filter(
+                    (p) =>
+                        (active === 'Semua' || p.c === active) &&
+                        (!q || p.n.toLowerCase().includes(q) || p.c.toLowerCase().includes(q))
+                );
                 document.getElementById('products').innerHTML =
                     a
                         .map(
                             (p) => `
     <article class="card">
       <div class="pic">
-        ${
-            p.img
-                ? `<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`
-                : `<span>${CAT_ICONS[p.c] || '🍙'}</span>`
-        }
+        ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">` : `<span>${CAT_ICONS[p.c] || '🍙'}</span>`}
         ${p.label ? `<span class="tag ${p.label === 'PROMO' ? 'promo-tag' : ''}">${esc(p.label)}</span>` : ''}
       </div>
       <div class="body">
@@ -1612,8 +1674,7 @@
           Tambah
         </button>
       </div>
-    </article>
-  `
+    </article>`
                         )
                         .join('') || '<div class="empty" style="grid-column:1/-1">Menu tidak ditemukan.</div>';
             }
@@ -1623,15 +1684,16 @@
                 add(btn.dataset.id);
             });
 
+            // ---------- KERANJANG ----------
             function add(id) {
-                let x = cart.find((a) => a.id === id);
+                const x = cart.find((a) => a.id === id);
                 x ? x.q++ : cart.push({ id, q: 1 });
                 save();
                 renderCart();
                 toast('Menu ditambahkan ✓');
             }
             function qty(id, d) {
-                let x = cart.find((a) => a.id === id);
+                const x = cart.find((a) => a.id === id);
                 if (!x) return;
                 x.q += d;
                 if (x.q < 1) cart = cart.filter((a) => a.id !== id);
@@ -1639,16 +1701,16 @@
                 renderCart();
             }
             function renderCart() {
-                let count = cart.reduce((s, x) => s + x.q, 0);
+                const count = cart.reduce((s, x) => s + x.q, 0);
                 document.getElementById('badge').textContent = count;
                 document.getElementById('ct').textContent = count + ' item';
                 document.getElementById('total').textContent = money(total());
                 document.getElementById('items').innerHTML = cart.length
                     ? cart
                           .map((x) => {
-                              let p = MENUS.find((a) => a.id === x.id);
+                              const p = MENUS.find((a) => a.id === x.id);
                               if (!p) return '';
-                              return `<div class="item"><div><b>${esc(p.n)}</b><div style="color:#ef8422;font-weight:800">${money(p.p)} × ${x.q}</div></div><div class="qty"><button data-id="${esc(x.id)}" data-d="-1">−</button><b>${x.q}</b><button data-id="${esc(x.id)}" data-d="1">+</button></div></div>`;
+                              return `<div class="item"><div><b>${esc(p.n)}</b><div style="color:#ef8422;font-weight:800">${money(p.p)} × ${x.q}</div></div><div class="qty"><button data-id="${esc(x.id)}" data-d="-1" aria-label="Kurangi">−</button><b>${x.q}</b><button data-id="${esc(x.id)}" data-d="1" aria-label="Tambah">+</button></div></div>`;
                           })
                           .join('')
                     : '<div class="empty">Keranjang masih kosong.</div>';
@@ -1658,7 +1720,6 @@
                 if (!btn) return;
                 qty(btn.dataset.id, Number(btn.dataset.d));
             });
-
             function openCart() {
                 document.getElementById('drawer').classList.add('open');
                 renderCart();
@@ -1666,6 +1727,8 @@
             function closeCart() {
                 document.getElementById('drawer').classList.remove('open');
             }
+
+            // ---------- CHECKOUT ----------
             function openCheckout() {
                 if (!cart.length) return toast('Keranjang masih kosong');
                 closeCart();
@@ -1674,66 +1737,71 @@
                 checkoutRender();
             }
             function closeCheckout() {
+                capture();
                 document.getElementById('modal').classList.remove('open');
             }
             function foot(label, last = false) {
                 return `<div class="footbtn">${step > 1 ? '<button class="secondary" onclick="back()">← Kembali</button>' : '<span></span>'}<button class="primary" onclick="${last ? 'send()' : 'next()'}">${label}</button></div>`;
             }
+            // Simpan isi form step yang sedang tampil ke objek `order`.
+            function capture() {
+                const g = (id) => document.getElementById(id);
+                if (step === 1) {
+                    if (g('name')) order.n = g('name').value.trim();
+                    if (g('phone')) order.p = g('phone').value.trim();
+                } else if (step === 2) {
+                    const r = document.querySelector('input[name="type"]:checked');
+                    if (r) order.type = r.value;
+                    if (g('addr')) order.a = g('addr').value.trim();
+                } else if (step === 3) {
+                    if (g('time')) order.time = g('time').value;
+                    if (g('note')) order.note = g('note').value.trim();
+                }
+                lsSet('kb-name', order.n);
+                lsSet('kb-phone', order.p);
+                lsSet('kb-address', order.a);
+            }
             function checkoutRender() {
                 document.getElementById('prog').innerHTML = [1, 2, 3, 4]
                     .map((i) => `<i class="${i <= step ? 'on' : ''}"></i>`)
                     .join('');
-                let b = document.getElementById('checkout');
+                const b = document.getElementById('checkout');
                 if (step === 1)
-                    b.innerHTML = `<div class="title">👤 Data Pemesan</div><p class="sub">Siapa yang akan menerima pesanan?</p><div class="form"><div class="two"><div><label>Nama</label><input id="name" placeholder="Nama penerima" value="${esc(localStorage.getItem('kb-name') || '')}"></div><div><label>No. WhatsApp</label><input id="phone" placeholder="08xxxxxxxxxx" value="${esc(localStorage.getItem('kb-phone') || '')}"></div></div></div>${foot('Lanjut →')}`;
+                    b.innerHTML = `<div class="title">👤 Data Pemesan</div><p class="sub">Siapa yang akan menerima pesanan?</p><div class="form"><div class="two"><div><label for="name">Nama</label><input id="name" autocomplete="name" placeholder="Nama penerima" value="${esc(order.n)}"></div><div><label for="phone">No. WhatsApp</label><input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx" value="${esc(order.p)}"></div></div></div>${foot('Lanjut →')}`;
                 else if (step === 2)
-                    b.innerHTML = `<div class="title">📦 Cara Menerima Pesanan</div><p class="sub">Pilih delivery atau pickup.</p><div class="opts"><label class="opt"><input type="radio" name="type" value="Delivery" checked> 🚚 Delivery</label><label class="opt"><input type="radio" name="type" value="Pickup"> 🛍️ Pickup</label></div><label>Alamat / Lokasi Pickup</label><textarea id="addr" placeholder="Alamat lengkap / detail lokasi pickup">${esc(localStorage.getItem('kb-address') || '')}</textarea>${foot('Lanjut →')}`;
+                    b.innerHTML = `<div class="title">📦 Cara Menerima Pesanan</div><p class="sub">Pilih delivery atau pickup.</p><div class="opts"><label class="opt"><input type="radio" name="type" value="Delivery" ${order.type === 'Delivery' ? 'checked' : ''}> 🚚 Delivery</label><label class="opt"><input type="radio" name="type" value="Pickup" ${order.type === 'Pickup' ? 'checked' : ''}> 🛍️ Pickup</label></div><label for="addr">Alamat / Lokasi Pickup</label><textarea id="addr" placeholder="Alamat lengkap / detail lokasi pickup">${esc(order.a)}</textarea>${foot('Lanjut →')}`;
                 else if (step === 3)
-                    b.innerHTML = `<div class="title">🕐 Waktu & Catatan</div><p class="sub">Tentukan kapan pesanan ingin diproses.</p><div class="form"><div><label>Waktu</label><select id="time"><option>Secepatnya</option><option>11:00 - 13:00</option><option>13:00 - 15:00</option><option>17:00 - 19:00</option><option>19:00 - 21:00</option></select></div><div><label>Catatan</label><textarea id="note" placeholder="Saus dipisah, dll."></textarea></div></div>${foot('Review Pesanan →')}`;
+                    b.innerHTML = `<div class="title">🕐 Waktu & Catatan</div><p class="sub">Tentukan kapan pesanan ingin diproses.</p><div class="form"><div><label for="time">Waktu</label><select id="time">${TIME_OPTIONS.map((t) => `<option${t === order.time ? ' selected' : ''}>${t}</option>`).join('')}</select></div><div><label for="note">Catatan</label><textarea id="note" placeholder="Saus dipisah, dll.">${esc(order.note)}</textarea></div></div>${foot('Review Pesanan →')}`;
                 else {
                     b.innerHTML = `<div class="title">🧾 Cek Pesanan</div><p class="sub">Pastikan semua data sudah benar sebelum dikirim.</p><div id="preview" class="preview"></div>${foot('📲 Kirim ke WhatsApp', true)}`;
                     fill();
                 }
             }
             function next() {
+                capture();
                 if (step === 1) {
-                    let n = document.getElementById('name').value.trim(),
-                        p = document.getElementById('phone').value.trim();
-                    if (!n || !p) return toast('Nama dan WhatsApp wajib diisi');
-                    localStorage.setItem('kb-name', n);
-                    localStorage.setItem('kb-phone', p);
+                    if (!order.n || !order.p) return toast('Nama dan WhatsApp wajib diisi');
+                    const digits = order.p.replace(/\D/g, '');
+                    if (digits.length < 9 || digits.length > 15) return toast('Nomor WhatsApp tidak valid');
                 }
-                if (step === 2) {
-                    let a = document.getElementById('addr').value.trim();
-                    if (!a) return toast('Alamat / lokasi wajib diisi');
-                    localStorage.setItem('kb-address', a);
-                }
+                if (step === 2 && !order.a) return toast('Alamat / lokasi wajib diisi');
                 step++;
                 checkoutRender();
             }
             function back() {
+                capture();
                 step--;
                 checkoutRender();
             }
-            function data() {
-                return {
-                    n: localStorage.getItem('kb-name') || '',
-                    p: localStorage.getItem('kb-phone') || '',
-                    a: localStorage.getItem('kb-address') || '',
-                    type: document.querySelector('input[name="type"]:checked')?.value || 'Delivery',
-                    time: document.getElementById('time')?.value || 'Secepatnya',
-                    note: document.getElementById('note')?.value.trim() || '',
-                };
-            }
             function fill() {
-                let d = data(),
-                    lines = cart
-                        .map((x) => {
-                            let p = MENUS.find((a) => a.id === x.id);
-                            if (!p) return '';
-                            return `• ${esc(p.n)} × ${x.q} — <b>${money(p.p * x.q)}</b>`;
-                        })
-                        .join('<br>');
+                const d = order;
+                const lines = cart
+                    .map((x) => {
+                        const p = MENUS.find((a) => a.id === x.id);
+                        if (!p) return '';
+                        return `• ${esc(p.n)} × ${x.q} — <b>${money(p.p * x.q)}</b>`;
+                    })
+                    .join('<br>');
                 document.getElementById('preview').innerHTML =
                     lines +
                     '<hr><b>Subtotal: ' +
@@ -1752,9 +1820,6 @@
                     esc(d.note || '-');
             }
 
-            // Buka WhatsApp SEKARANG (sinkron, di dalam event klik pengguna) supaya
-            // tidak diblokir oleh browser. Anchor+click lebih andal daripada
-            // window.open()/location.href yang ditunda dengan setTimeout.
             function openWhatsApp(url) {
                 try {
                     const a = document.createElement('a');
@@ -1767,35 +1832,31 @@
                 } catch (e) {
                     location.href = url;
                 }
-                // Tombol cadangan kalau redirect otomatis gagal/diblokir di sebagian browser.
                 const fb = document.getElementById('waFallback');
                 fb.innerHTML = `<a href="${url}" target="_blank" rel="noopener">💬 Belum terbuka? Ketuk di sini untuk buka WhatsApp</a>`;
                 fb.style.display = 'block';
                 setTimeout(() => (fb.style.display = 'none'), 20000);
             }
 
-            // Catat pesanan ke sheet ORDER_LOG di backend. Dijalankan tanpa
-            // "menunggu" (fire-and-forget) supaya TIDAK menunda pembukaan WhatsApp,
-            // dan tetap lanjut membuka WhatsApp walau pencatatan ini gagal/lambat.
-            function logOrderToServer(id, d, itemsForLog, totalVal) {
+            // Catat pesanan ke ORDER_LOG. keepalive: request tetap jalan walau tab pindah ke WhatsApp.
+            function logOrderToServer(code, d, itemsForLog) {
                 if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0) return;
                 try {
                     const body = new URLSearchParams();
                     body.set('action', 'logOrder');
-                    body.set('id', id);
+                    body.set('orderCode', code);
+                    body.set('type', d.type);
                     body.set('customerName', d.n);
                     body.set('phone', d.p);
                     body.set('address', d.a);
                     body.set('deliveryTime', d.time);
                     body.set('note', d.note);
                     body.set('itemsJson', JSON.stringify(itemsForLog));
-                    body.set('total', String(totalVal));
                     fetch(CONFIG.apiUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
                         body,
+                        keepalive: true,
                     }).catch((e) => console.warn('logOrder gagal:', e.message));
                 } catch (e) {
                     console.warn('logOrder gagal:', e.message);
@@ -1803,65 +1864,66 @@
             }
 
             function send() {
-                let d = data();
+                capture();
+                const d = order;
                 if (!d.n || !d.p || !d.a) return toast('Data checkout belum lengkap');
-                let id =
-                        'KB-' +
-                        new Date().toISOString().slice(0, 10).replaceAll('-', '') +
-                        '-' +
-                        Math.floor(1000 + Math.random() * 9000),
-                    itemsForLog = cart.map((x) => {
-                        let p = MENUS.find((a) => a.id === x.id);
-                        return {
-                            id: x.id,
-                            name: p ? p.n : '',
-                            qty: x.q,
-                            price: p ? p.p : 0,
-                        };
-                    }),
-                    lines = cart
-                        .map((x) => {
-                            let p = MENUS.find((a) => a.id === x.id);
-                            if (!p) return '';
-                            return `• ${p.n} x${x.q} = ${money(p.p * x.q)}`;
-                        })
-                        .join('\n'),
-                    msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'} 👋\nSaya mau order *${id}*\n\n${lines}\n\n*Subtotal: ${money(total())}*\nMetode: ${d.type}\nWaktu: ${d.time}\nNama: ${d.n}\nWhatsApp: ${d.p}\nAlamat/Detail: ${d.a}\nCatatan: ${d.note || '-'}\n\nMohon konfirmasi total + ongkir ya.`;
-
-                localStorage.setItem(
-                    'kimbabku-last-order',
-                    JSON.stringify({
-                        id,
-                        total: total(),
-                        date: new Date().toISOString(),
-                        items: cart,
+                const id =
+                    'KB-' +
+                    new Date().toISOString().slice(0, 10).replaceAll('-', '') +
+                    '-' +
+                    Math.floor(1000 + Math.random() * 9000);
+                const itemsForLog = cart.map((x) => {
+                    const p = MENUS.find((a) => a.id === x.id);
+                    return { id: x.id, name: p ? p.n : '', qty: x.q, price: p ? p.p : 0 };
+                });
+                const lines = cart
+                    .map((x) => {
+                        const p = MENUS.find((a) => a.id === x.id);
+                        return p ? `• ${p.n} x${x.q} = ${money(p.p * x.q)}` : '';
                     })
+                    .join('\n');
+                const msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'} 👋\nSaya mau order *${id}*\n\n${lines}\n\n*Subtotal: ${money(total())}*\nMetode: ${d.type}\nWaktu: ${d.time}\nNama: ${d.n}\nWhatsApp: ${d.p}\nAlamat/Detail: ${d.a}\nCatatan: ${d.note || '-'}\n\nMohon konfirmasi total + ongkir ya.`;
+
+                lsSet(
+                    'kimbabku-last-order',
+                    JSON.stringify({ id, total: total(), date: new Date().toISOString(), items: cart })
                 );
 
                 const url = 'https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(msg);
-
-                // Catat ke server dulu (tidak menunggu), lalu langsung buka WhatsApp.
-                logOrderToServer(id, d, itemsForLog, total());
+                logOrderToServer(id, d, itemsForLog);
                 openWhatsApp(url);
 
                 cart = [];
                 save();
-                closeCheckout();
+                order.type = 'Delivery';
+                order.time = 'Secepatnya';
+                order.note = '';
+                document.getElementById('modal').classList.remove('open');
                 renderCart();
                 toast('Order ' + id + ' dibuat. Membuka WhatsApp...');
             }
 
             function wa() {
-                const url =
+                openWhatsApp(
                     'https://wa.me/' +
-                    CONFIG.waAdmin +
-                    '?text=' +
-                    encodeURIComponent(`Halo ${SETTINGS.storeName || 'KIMBABKU'}, saya ingin bertanya tentang menu.`);
-                openWhatsApp(url);
+                        CONFIG.waAdmin +
+                        '?text=' +
+                        encodeURIComponent(
+                            `Halo ${SETTINGS.storeName || 'KIMBABKU'}, saya ingin bertanya tentang menu.`
+                        )
+                );
             }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeCart();
+                    if (document.getElementById('modal').classList.contains('open')) closeCheckout();
+                }
+            });
 
             renderHero();
             heroAutoplay();
+            renderContact();
             loadStoreData();
         </script>
     </body>
