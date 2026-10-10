@@ -696,6 +696,25 @@
                 width: 26px;
                 height: 26px;
             }
+            .chat-panel {
+                position: fixed;
+                right: 20px;
+                bottom: 90px;
+                z-index: 55;
+                width: min(380px, calc(100vw - 24px));
+                height: min(640px, calc(100vh - 110px));
+                height: min(640px, calc(100dvh - 110px));
+                background: #fff;
+                border-radius: 24px;
+                box-shadow: 0 20px 60px #0005;
+                overflow: hidden;
+            }
+            .chat-panel iframe {
+                width: 100%;
+                height: 100%;
+                border: 0;
+                display: block;
+            }
 
             /* ===== CART DRAWER / CHECKOUT MODAL ===== */
             .drawer,
@@ -1002,6 +1021,10 @@
                 .float .icon {
                     width: 22px;
                     height: 22px;
+                }
+                .chat-panel {
+                    right: 12px;
+                    bottom: 76px;
                 }
                 .two,
                 .opts {
@@ -1373,9 +1396,18 @@
                 </span>
             </div>
         </footer>
-        <button class="float" onclick="wa()" aria-label="Chat WhatsApp">
-            <svg class="icon filled" viewBox="0 0 24 24">
+        <div id="chatPanel" class="chat-panel" role="dialog" aria-label="Live chat" hidden></div>
+        <button class="float" id="floatBtn" onclick="floatClick()" aria-label="Chat WhatsApp">
+            <svg id="iconWa" class="icon filled" viewBox="0 0 24 24">
                 <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
+            </svg>
+            <svg id="iconChat" class="icon filled" viewBox="0 0 24 24" hidden>
+                <path
+                    d="M12 3C6.8 3 2.5 6.6 2.5 11.2c0 2.3 1.1 4.4 2.9 5.9L4.6 21l4.1-1.9c1 .3 2.1.4 3.3.4 5.2 0 9.5-3.6 9.5-8.3S17.2 3 12 3z"
+                />
+            </svg>
+            <svg id="iconClose" class="icon" viewBox="0 0 24 24" style="stroke-width: 2.4" hidden>
+                <path d="M6 6l12 12M18 6L6 18" />
             </svg>
         </button>
         <div id="drawer" class="drawer" onclick="if (event.target === this) closeCart();">
@@ -1492,6 +1524,20 @@
                     if (logo) logo.src = SETTINGS.logoUrl;
                     if (flogo) flogo.src = SETTINGS.logoUrl;
                 }
+                if (SETTINGS.faviconUrl) {
+                    [
+                        ['icon', null],
+                        ['apple-touch-icon', null],
+                    ].forEach(([rel]) => {
+                        let l = document.querySelector(`link[rel="${rel}"]`);
+                        if (!l) {
+                            l = document.createElement('link');
+                            l.rel = rel;
+                            document.head.append(l);
+                        }
+                        l.href = SETTINGS.faviconUrl;
+                    });
+                }
                 BANNERS = SETTINGS.bannerUrl ? [SETTINGS.bannerUrl] : DEFAULT_BANNERS;
                 heroIndex = 0;
                 renderHero();
@@ -1566,6 +1612,7 @@
                 const w = waClean(SETTINGS.whatsappNumber);
                 if (w) CONFIG.waAdmin = w;
                 applyBrandAssets();
+                syncChat();
                 cart = cart.filter((x) => MENUS.some((p) => p.id === x.id));
                 save();
                 renderCategories();
@@ -1903,6 +1950,51 @@
                 toast('Order ' + id + ' dibuat. Membuka WhatsApp...');
             }
 
+            // ---------- LIVE CHAT (gelembung hijau) ----------
+            // Kalau link live chat diisi di Admin -> gelembung membuka panel chat.
+            // Kalau kosong -> gelembung tetap membuka WhatsApp seperti biasa.
+            let chatOpen = false;
+            const chatUrl = () => (/^https:\/\//i.test(SETTINGS.chatUrl || '') ? SETTINGS.chatUrl : '');
+            function updateFloat() {
+                const has = !!chatUrl();
+                document.getElementById('iconWa').hidden = has || chatOpen;
+                document.getElementById('iconChat').hidden = !has || chatOpen;
+                document.getElementById('iconClose').hidden = !chatOpen;
+                document
+                    .getElementById('floatBtn')
+                    .setAttribute('aria-label', chatOpen ? 'Tutup chat' : has ? 'Buka live chat' : 'Chat WhatsApp');
+            }
+            function toggleChat(force) {
+                const panel = document.getElementById('chatPanel');
+                const url = chatUrl();
+                chatOpen = !!url && (force === undefined ? !chatOpen : force);
+                if (chatOpen && !panel.querySelector('iframe')) {
+                    const f = document.createElement('iframe'); // dimuat saat pertama dibuka (hemat kuota)
+                    f.src = url;
+                    f.setAttribute('data-src', url);
+                    f.title = 'Live chat';
+                    f.allow = 'clipboard-write';
+                    panel.append(f);
+                }
+                panel.hidden = !chatOpen;
+                updateFloat();
+            }
+            function syncChat() {
+                const panel = document.getElementById('chatPanel');
+                const url = chatUrl();
+                const f = panel.querySelector('iframe');
+                if (!url || (f && f.getAttribute('data-src') !== url)) {
+                    panel.replaceChildren();
+                    chatOpen = false;
+                    panel.hidden = true;
+                }
+                updateFloat();
+            }
+            function floatClick() {
+                if (!chatUrl()) return wa();
+                toggleChat();
+            }
+
             function wa() {
                 openWhatsApp(
                     'https://wa.me/' +
@@ -1917,6 +2009,7 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeCart();
+                    if (chatOpen) toggleChat(false);
                     if (document.getElementById('modal').classList.contains('open')) closeCheckout();
                 }
             });
