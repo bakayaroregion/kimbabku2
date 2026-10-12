@@ -1189,14 +1189,211 @@
                 font-size: 12.5px;
                 color: #a9c7b8;
             }
-            .userbtn {
-                max-width: 160px;
-            }
-            .userbtn .txt {
-                overflow: hidden;
-                text-overflow: ellipsis;
+            .userbtn .bal {
+                font-weight: 800;
+                font-size: 13.5px;
                 white-space: nowrap;
-                max-width: 90px;
+            }
+            .userbtn {
+                background: #1fa65a22;
+                border: 1px solid #7ed95744;
+            }
+            /* ===== DOMPET / SALDO ===== */
+            .whead {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                margin-bottom: 12px;
+            }
+            .whead h2 {
+                margin: 0;
+                color: #00452f;
+            }
+            .whead small {
+                color: var(--muted);
+                word-break: break-all;
+            }
+            .wbal {
+                background: linear-gradient(120deg, #0f7a45, #0a5330);
+                color: #fff;
+                border-radius: 18px;
+                padding: 18px;
+                display: grid;
+                gap: 6px;
+            }
+            .wbal span {
+                font-size: 13px;
+                color: #d9f0e3;
+            }
+            .wbal strong {
+                font-size: 30px;
+                line-height: 1.1;
+            }
+            .wbal .primary {
+                background: #fff;
+                color: var(--g-deep);
+                justify-self: start;
+                margin-top: 6px;
+                border: 0;
+            }
+            .wsec {
+                margin: 20px 0 6px;
+                font-weight: 900;
+                color: var(--dark);
+            }
+            .wrow {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 11px 0;
+                border-bottom: 1px solid #edf3f0;
+                font-size: 13.5px;
+            }
+            .wrow small {
+                color: var(--muted);
+                display: block;
+            }
+            .wrow > div:last-child {
+                text-align: right;
+                flex-shrink: 0;
+            }
+            .pos {
+                color: #0f7a45;
+                font-weight: 800;
+            }
+            .neg {
+                color: #c0392b;
+                font-weight: 800;
+            }
+            .pill {
+                display: inline-block;
+                padding: 3px 9px;
+                border-radius: 999px;
+                font-size: 11px;
+                font-weight: 800;
+                background: #eef4f0;
+                color: #31584b;
+            }
+            .pill.pending {
+                background: #fff3dc;
+                color: #9a6200;
+            }
+            .pill.approved {
+                background: #e2f2e7;
+                color: #0d6a3c;
+            }
+            .pill.rejected,
+            .pill.cancelled {
+                background: #fdeaea;
+                color: #a11;
+            }
+            .mini {
+                border: 1px solid var(--line);
+                background: #fff;
+                border-radius: 9px;
+                padding: 6px 10px;
+                font-weight: 700;
+                font-size: 12px;
+                margin-top: 4px;
+            }
+            .mini.wa {
+                background: #1fbf5c;
+                color: #fff;
+                border: 0;
+            }
+            .wchips {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 8px 0 12px;
+            }
+            .wchip {
+                border: 1px solid var(--line);
+                background: #fff;
+                border-radius: 999px;
+                padding: 8px 14px;
+                font-weight: 800;
+            }
+            .wmethod {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                padding: 12px;
+                margin: 8px 0;
+                cursor: pointer;
+                font-weight: 700;
+                color: var(--ink);
+            }
+            .wmethod input {
+                width: auto;
+            }
+            .wmethod small {
+                display: block;
+                color: var(--muted);
+                font-weight: 600;
+            }
+            .wqr {
+                width: min(260px, 100%);
+                border-radius: 14px;
+                border: 1px solid var(--line);
+                display: block;
+                margin: 10px auto;
+            }
+            .wacct {
+                background: #f3f9f6;
+                border: 1px solid #d9ebe2;
+                border-radius: 14px;
+                padding: 14px;
+                line-height: 1.7;
+                margin: 10px 0;
+            }
+            .wacct .num {
+                font-family: ui-monospace, Menlo, monospace;
+                font-size: 20px;
+                font-weight: 900;
+                color: var(--dark);
+                word-break: break-all;
+            }
+            .wsteps {
+                background: #fff8e8;
+                border: 1px solid #f3dfae;
+                border-radius: 12px;
+                padding: 10px 14px;
+                font-size: 13px;
+                line-height: 1.6;
+                margin: 12px 0;
+                color: #6b4d00;
+            }
+            .paybox {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                text-align: center;
+                background: #fff;
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                padding: 10px;
+                margin-top: 10px;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .paybox b {
+                display: block;
+                color: var(--ink);
+                font-size: 14px;
+            }
+            .paybox.low b:last-child {
+                color: #c0392b;
+            }
+            .okcard {
+                text-align: center;
+                padding: 8px 0;
+            }
+            .okcard .big {
+                font-size: 46px;
             }
             @media (max-width: 980px) {
                 /* Menu tidak lagi disembunyikan: tampil sebagai baris geser di bawah header */
@@ -1473,12 +1670,14 @@
                         </svg>
                     </button>
                 </div>
-                <button class="cart userbtn" id="userBtn" onclick="logoutPrompt()" aria-label="Akun saya" hidden>
+                <button class="cart userbtn" id="userBtn" onclick="openWallet()" aria-label="Dompet saya" hidden>
                     <svg class="icon" viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+                        <path d="M3 7a2 2 0 0 1 2-2h13v4" />
+                        <path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3" />
+                        <path d="M21 9H6a3 3 0 0 0 0 6h15V9z" />
+                        <circle cx="16.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
                     </svg>
-                    <span class="txt" id="userName"></span>
+                    <span class="bal" id="userBal"></span>
                 </button>
                 <button class="cart" onclick="openCart()" aria-label="Buka keranjang">
                     <svg class="icon" viewBox="0 0 24 24">
@@ -1815,6 +2014,9 @@
                 <div id="prog" class="progress"></div>
                 <div id="checkout"></div>
             </div>
+        </div>
+        <div id="walletModal" class="modal" onclick="if (event.target === this) closeWallet();">
+            <div class="box" role="dialog" aria-modal="true" aria-label="Dompet saya"><div id="walletBody"></div></div>
         </div>
         <div id="auth" class="auth">
             <div class="auth-wrap">
@@ -2180,13 +2382,14 @@
                 step = 1;
                 document.getElementById('modal').classList.add('open');
                 checkoutRender();
+                loadWallet().catch(() => {}); // saldo terbaru untuk langkah pembayaran
             }
             function closeCheckout() {
                 capture();
                 document.getElementById('modal').classList.remove('open');
             }
             function foot(label, last = false) {
-                return `<div class="footbtn">${step > 1 ? '<button class="secondary" onclick="back()">← Kembali</button>' : '<span></span>'}<button class="primary" onclick="${last ? 'send()' : 'next()'}">${label}</button></div>`;
+                return `<div class="footbtn">${step > 1 ? '<button class="secondary" onclick="back()">← Kembali</button>' : '<span></span>'}<button class="primary"${last ? ' id="payBtn"' : ''} onclick="${last ? 'send()' : 'next()'}">${label}</button></div>`;
             }
             // Simpan isi form step yang sedang tampil ke objek `order`.
             function capture() {
@@ -2217,9 +2420,11 @@
                     b.innerHTML = `<div class="title">📦 Cara Menerima Pesanan</div><p class="sub">Pilih delivery atau pickup.</p><div class="opts"><label class="opt"><input type="radio" name="type" value="Delivery" ${order.type === 'Delivery' ? 'checked' : ''}> 🚚 Delivery</label><label class="opt"><input type="radio" name="type" value="Pickup" ${order.type === 'Pickup' ? 'checked' : ''}> 🛍️ Pickup</label></div><label for="addr">Alamat / Lokasi Pickup</label><textarea id="addr" placeholder="Alamat lengkap / detail lokasi pickup">${esc(order.a)}</textarea>${foot('Lanjut →')}`;
                 else if (step === 3)
                     b.innerHTML = `<div class="title">🕐 Waktu & Catatan</div><p class="sub">Tentukan kapan pesanan ingin diproses.</p><div class="form"><div><label for="time">Waktu</label><select id="time">${TIME_OPTIONS.map((t) => `<option${t === order.time ? ' selected' : ''}>${t}</option>`).join('')}</select></div><div><label for="note">Catatan</label><textarea id="note" placeholder="Saus dipisah, dll.">${esc(order.note)}</textarea></div></div>${foot('Review Pesanan →')}`;
-                else {
-                    b.innerHTML = `<div class="title">🧾 Cek Pesanan</div><p class="sub">Pastikan semua data sudah benar sebelum dikirim.</p><div id="preview" class="preview"></div>${foot('📲 Kirim ke WhatsApp', true)}`;
+                else if (step === 4) {
+                    b.innerHTML = `<div class="title">🧾 Cek & Bayar</div><p class="sub">Pastikan data sudah benar. Pesanan dibayar memakai saldo.</p><div id="preview" class="preview"></div>${foot('💳 Bayar dengan Saldo', true)}`;
                     fill();
+                } else {
+                    b.innerHTML = `<div class="okcard"><div class="big">✅</div><div class="title">Pesanan Berhasil Dibayar</div><p class="sub">Kode pesanan <b>${esc(lastOrderCode)}</b><br>Sisa saldo ${money(balNow())}</p></div><p class="sub" style="text-align:center">Kirim pesananmu ke WhatsApp admin supaya cepat diproses.</p><div class="footbtn" style="flex-direction:column"><button class="primary" onclick="sendOrderWa()">📲 Kirim ke WhatsApp Admin</button><button class="secondary" onclick="closeCheckout()">Selesai</button></div>`;
                 }
             }
             function next() {
@@ -2239,7 +2444,10 @@
                 checkoutRender();
             }
             function fill() {
-                const d = order;
+                const d = order,
+                    t = total(),
+                    bal = balNow(),
+                    enough = bal >= t;
                 const lines = cart
                     .map((x) => {
                         const p = MENUS.find((a) => a.id === x.id);
@@ -2247,10 +2455,12 @@
                         return `• ${esc(p.n)} × ${x.q} — <b>${money(p.p * x.q)}</b>`;
                     })
                     .join('<br>');
-                document.getElementById('preview').innerHTML =
+                const pv = document.getElementById('preview');
+                if (!pv) return;
+                pv.innerHTML =
                     lines +
                     '<hr><b>Subtotal: ' +
-                    money(total()) +
+                    money(t) +
                     '</b><br>Metode: ' +
                     esc(d.type) +
                     '<br>Waktu: ' +
@@ -2262,7 +2472,19 @@
                     '<br>Alamat/Detail: ' +
                     esc(d.a) +
                     '<br>Catatan: ' +
-                    esc(d.note || '-');
+                    esc(d.note || '-') +
+                    `<div class="paybox${enough ? '' : ' low'}"><div>Saldo kamu<b>${money(bal)}</b></div><div>Total bayar<b>${money(t)}</b></div><div>${enough ? 'Sisa saldo' : 'Saldo kurang'}<b>${money(Math.abs(bal - t))}</b></div></div>` +
+                    (enough
+                        ? ''
+                        : '<button class="primary" style="width:100%;margin-top:10px" onclick="topUpFromCheckout()">+ Top Up Saldo</button>');
+                const btn = document.getElementById('payBtn');
+                if (btn) btn.disabled = !enough;
+            }
+            function topUpFromCheckout() {
+                const need = Math.max(total() - balNow(), 0);
+                walletAmount = Math.max(Math.ceil(need / 1000) * 1000, (wallet && wallet.minTopup) || 10000);
+                closeCheckout();
+                openWallet('topup');
             }
 
             function openWhatsApp(url) {
@@ -2283,38 +2505,24 @@
                 setTimeout(() => (fb.style.display = 'none'), 20000);
             }
 
-            // Catat pesanan ke ORDER_LOG. keepalive: request tetap jalan walau tab pindah ke WhatsApp.
-            function logOrderToServer(code, d, itemsForLog) {
-                if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0) return;
-                try {
-                    const body = new URLSearchParams();
-                    body.set('action', 'logOrder');
-                    body.set('orderCode', code);
-                    body.set('type', d.type);
-                    body.set('userToken', session ? session.token : '');
-                    body.set('customerName', d.n);
-                    body.set('phone', d.p);
-                    body.set('address', d.a);
-                    body.set('deliveryTime', d.time);
-                    body.set('note', d.note);
-                    body.set('itemsJson', JSON.stringify(itemsForLog));
-                    fetch(CONFIG.apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                        body,
-                        keepalive: true,
-                    }).catch((e) => console.warn('logOrder gagal:', e.message));
-                } catch (e) {
-                    console.warn('logOrder gagal:', e.message);
-                }
-            }
-
-            function send() {
+            // Bayar pesanan dengan saldo. Server memotong saldo & mencatat pesanan dalam satu proses (anti ganda).
+            let paying = false,
+                lastOrderMsg = '',
+                lastOrderCode = '';
+            async function send() {
                 if (!session) return showAuth();
+                if (paying) return;
                 capture();
                 const d = order;
                 if (!d.n || !d.p || !d.a) return toast('Data checkout belum lengkap');
-                const id =
+                if (balNow() < total()) return fill();
+                const btn = document.getElementById('payBtn');
+                paying = true;
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Memproses...';
+                }
+                const code =
                     'KB-' +
                     new Date().toISOString().slice(0, 10).replaceAll('-', '') +
                     '-' +
@@ -2329,25 +2537,54 @@
                         return p ? `• ${p.n} x${x.q} = ${money(p.p * x.q)}` : '';
                     })
                     .join('\n');
-                const msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'} 👋\nSaya mau order *${id}*\n\n${lines}\n\n*Subtotal: ${money(total())}*\nMetode: ${d.type}\nWaktu: ${d.time}\nNama: ${d.n}\nWhatsApp: ${d.p}\nAlamat/Detail: ${d.a}\nCatatan: ${d.note || '-'}\n\nMohon konfirmasi total + ongkir ya.`;
-
+                let res;
+                try {
+                    res = await authApi('logOrder', {
+                        userToken: session.token,
+                        orderCode: code,
+                        type: d.type,
+                        customerName: d.n,
+                        phone: d.p,
+                        address: d.a,
+                        deliveryTime: d.time,
+                        note: d.note,
+                        itemsJson: JSON.stringify(itemsForLog),
+                    });
+                } catch (err) {
+                    paying = false;
+                    if (/LOGIN_REQUIRED/.test(err.message)) {
+                        closeCheckout();
+                        doLogout('Sesi berakhir, silakan masuk lagi.');
+                        return;
+                    }
+                    toast(err.message.replace(/^SALDO_KURANG:\s*/, ''));
+                    loadWallet().catch(() => {});
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = '💳 Bayar dengan Saldo';
+                    }
+                    return;
+                }
+                paying = false;
+                lastOrderCode = res.orderCode;
+                lastOrderMsg = `Halo ${SETTINGS.storeName || 'KIMBABKU'} 👋\nSaya sudah order *${res.orderCode}* (dibayar dengan saldo ✅)\n\n${lines}\n\n*Total: ${money(res.total)}* (lunas)\nMetode: ${d.type}\nWaktu: ${d.time}\nNama: ${d.n}\nWhatsApp: ${d.p}\nAlamat/Detail: ${d.a}\nCatatan: ${d.note || '-'}\n\nMohon diproses dan konfirmasi ongkir ya.`;
                 lsSet(
                     'kimbabku-last-order',
-                    JSON.stringify({ id, total: total(), date: new Date().toISOString(), items: cart })
+                    JSON.stringify({ id: res.orderCode, total: res.total, date: new Date().toISOString(), items: cart })
                 );
-
-                const url = 'https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(msg);
-                logOrderToServer(id, d, itemsForLog);
-                openWhatsApp(url);
-
+                setBalance(res.balance);
                 cart = [];
                 save();
+                renderCart();
                 order.type = 'Delivery';
                 order.time = 'Secepatnya';
                 order.note = '';
-                document.getElementById('modal').classList.remove('open');
-                renderCart();
-                toast('Order ' + id + ' dibuat. Membuka WhatsApp...');
+                loadWallet().catch(() => {});
+                step = 5;
+                checkoutRender();
+            }
+            function sendOrderWa() {
+                openWhatsApp('https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(lastOrderMsg));
             }
 
             // ---------- LIVE CHAT (gelembung hijau) ----------
@@ -2410,11 +2647,12 @@
                 if (e.key === 'Escape') {
                     closeCart();
                     if (chatOpen) toggleChat(false);
+                    closeWallet();
                     if (document.getElementById('modal').classList.contains('open')) closeCheckout();
                 }
             });
 
-            // ---------- AKUN PELANGGAN (wajib daftar / masuk dengan Gmail) ----------
+            // ---------- AKUN PELANGGAN (daftar / masuk dengan Gmail, tanpa kode OTP) ----------
             const SESSION_KEY = 'kb-session';
             let session = null;
             try {
@@ -2427,6 +2665,11 @@
                 authEmail = '',
                 authBusy = false,
                 authNotice = '';
+            let wallet = null,
+                walletView = 'home',
+                walletPay = null,
+                walletAmount = 0,
+                walletMethod = '';
             const $a = (id) => document.getElementById(id);
             const svg = (inner) => `<svg class="aico" viewBox="0 0 24 24">${inner}</svg>`;
             const IC = {
@@ -2436,7 +2679,6 @@
                 ),
                 mail: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
                 lock: svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
-                key: svg('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>'),
                 eye: '<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
             };
             const fld = (label, id, icon, attrs, eye) =>
@@ -2479,54 +2721,20 @@
                             true
                         ) +
                         authBtn('Daftar Sekarang →') +
-                        '<p class="anote">Hanya akun Gmail (@gmail.com). Kami kirim kode verifikasi ke email kamu. Dengan mendaftar, kamu setuju nama, email, dan WhatsApp dipakai untuk memproses pesanan.</p>'
-                    );
-                if (authView === 'verify')
-                    return (
-                        authBack() +
-                        '<div class="atitle">Verifikasi Email</div>' +
-                        `<p class="asub">Masukkan 6 digit kode yang dikirim ke <b>${em}</b>. Cek juga folder Spam.</p>` +
-                        fld(
-                            'Kode verifikasi',
-                            'aCode',
-                            IC.key,
-                            'type="text" class="acode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"'
-                        ) +
-                        authBtn('Verifikasi →') +
-                        '<p class="anote">Belum menerima kode? <button type="button" class="alink" onclick="resendCode()">Kirim ulang kode</button></p>'
+                        '<p class="anote">Hanya akun Gmail (@gmail.com). Dengan mendaftar, kamu setuju nama, email, dan WhatsApp dipakai untuk memproses pesanan.</p>'
                     );
                 if (authView === 'forgot')
                     return (
                         authBack() +
                         '<div class="atitle">Lupa Kata Sandi</div>' +
-                        '<p class="asub">Masukkan email Gmail kamu. Kami kirim kode untuk membuat kata sandi baru.</p>' +
+                        '<p class="asub">Kata sandi dibuatkan ulang oleh admin. Hubungi admin lewat WhatsApp, lalu kami bantu setelah memastikan akun kamu.</p>' +
                         fld(
-                            'Email Gmail',
+                            'Email akun (opsional)',
                             'aEmail',
                             IC.mail,
                             `type="email" inputmode="email" autocomplete="email" placeholder="nama@gmail.com" value="${em}"`
                         ) +
-                        authBtn('Kirim Kode →')
-                    );
-                if (authView === 'reset')
-                    return (
-                        authBack() +
-                        '<div class="atitle">Buat Kata Sandi Baru</div>' +
-                        `<p class="asub">Masukkan kode yang dikirim ke <b>${em}</b> dan kata sandi barumu.</p>` +
-                        fld(
-                            'Kode',
-                            'aCode',
-                            IC.key,
-                            'type="text" class="acode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"'
-                        ) +
-                        fld(
-                            'Kata sandi baru',
-                            'aPass',
-                            IC.lock,
-                            'type="password" autocomplete="new-password" maxlength="64" placeholder="Minimal 8 karakter"',
-                            true
-                        ) +
-                        authBtn('Simpan & Masuk →')
+                        authBtn('📲 Hubungi Admin via WhatsApp')
                     );
                 return (
                     authTabs('login') +
@@ -2621,22 +2829,13 @@
                             pass = $a('aPass').value;
                         if (!email || !pass) return showAuthMsg('Email dan kata sandi wajib diisi.');
                         authEmail = email;
-                        try {
-                            onAuthSuccess(
-                                await doAuth('loginUser', {
-                                    email,
-                                    password: pass,
-                                    remember: $a('aRemember').checked ? 1 : 0,
-                                })
-                            );
-                        } catch (err) {
-                            if (/^BELUM_VERIFIKASI/.test(err.message)) {
-                                authView = 'verify';
-                                authNotice = 'Email kamu belum diverifikasi. Kami kirim kode baru ke inbox.';
-                                renderAuth();
-                                resendCode(true);
-                            } else throw err;
-                        }
+                        onAuthSuccess(
+                            await doAuth('loginUser', {
+                                email,
+                                password: pass,
+                                remember: $a('aRemember').checked ? 1 : 0,
+                            })
+                        );
                     } else if (authView === 'register') {
                         const name = v('aName'),
                             phone = v('aPhone'),
@@ -2646,72 +2845,70 @@
                         if (!/^[^\s@]+@gmail\.com$/i.test(email))
                             return showAuthMsg('Gunakan alamat Gmail (contoh: nama@gmail.com).');
                         if (pass.length < 8) return showAuthMsg('Kata sandi minimal 8 karakter.');
-                        const d = await doAuth('register', { name, phone, email, password: pass });
-                        authEmail = d.email;
-                        authView = 'verify';
-                        authNotice = 'Kode verifikasi sudah dikirim. Cek inbox atau folder Spam.';
-                        renderAuth();
-                    } else if (authView === 'verify') {
-                        const code = v('aCode');
-                        if (!/^\d{6}$/.test(code)) return showAuthMsg('Masukkan 6 digit kode.');
-                        onAuthSuccess(await doAuth('verifyEmail', { email: authEmail, code }));
+                        onAuthSuccess(await doAuth('register', { name, phone, email, password: pass }), true);
                     } else if (authView === 'forgot') {
                         const email = v('aEmail');
-                        if (!/^[^\s@]+@gmail\.com$/i.test(email))
-                            return showAuthMsg('Gunakan alamat Gmail (contoh: nama@gmail.com).');
-                        authEmail = email;
-                        await doAuth('forgotPassword', { email });
-                        authView = 'reset';
-                        authNotice = 'Jika email terdaftar, kode reset sudah dikirim. Cek inbox atau folder Spam.';
-                        renderAuth();
-                    } else if (authView === 'reset') {
-                        const code = v('aCode'),
-                            pass = $a('aPass').value;
-                        if (!/^\d{6}$/.test(code)) return showAuthMsg('Masukkan 6 digit kode.');
-                        if (pass.length < 8) return showAuthMsg('Kata sandi minimal 8 karakter.');
-                        onAuthSuccess(await doAuth('resetPassword', { email: authEmail, code, password: pass }));
+                        const msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'}, saya lupa kata sandi akun saya.\nEmail akun: ${email || '-'}\nMohon bantu buatkan kata sandi baru. Terima kasih 🙏`;
+                        openWhatsApp('https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(msg));
                     }
                 } catch (err) {
                     showAuthMsg(err.message);
                 }
             }
-            async function resendCode(quiet) {
-                try {
-                    await authApi('resendCode', { email: authEmail });
-                    if (!quiet) showAuthMsg('Kode baru sudah dikirim. Cek inbox atau folder Spam.', true);
-                } catch (err) {
-                    showAuthMsg(err.message);
-                }
-            }
-            function onAuthSuccess(d) {
+            function onAuthSuccess(d, isNew) {
                 session = { token: d.token, user: d.user, exp: d.expiresAt };
                 lsSet(SESSION_KEY, JSON.stringify(session));
                 if (d.user.name) order.n = d.user.name;
                 if (d.user.phone) order.p = d.user.phone;
                 authView = 'login';
                 authEmail = '';
+                wallet = null;
                 hideAuth();
                 updateUserBtn();
                 loadStoreData();
-                toast('Halo, ' + String(d.user.name || '').split(' ')[0] + '! Selamat datang 👋');
+                loadWallet().catch(() => {});
+                toast(
+                    (isNew ? 'Akun berhasil dibuat. Halo, ' : 'Halo, ') +
+                        String(d.user.name || '').split(' ')[0] +
+                        '! 👋'
+                );
+            }
+            function compactRp(n) {
+                n = Math.round(Number(n) || 0);
+                if (n >= 1e6) return (n / 1e6).toFixed(1).replace('.0', '') + 'jt';
+                if (n >= 1000) return Math.round(n / 1000) + 'rb';
+                return String(n);
+            }
+            const balNow = () =>
+                wallet ? wallet.balance : session && session.user ? Number(session.user.balance) || 0 : 0;
+            function setBalance(b) {
+                if (session) {
+                    session.user.balance = b;
+                    lsSet(SESSION_KEY, JSON.stringify(session));
+                }
+                if (wallet) wallet.balance = b;
+                updateUserBtn();
             }
             function updateUserBtn() {
                 const b = $a('userBtn');
                 if (!b) return;
                 b.hidden = !session;
-                $a('userName').textContent = session ? String(session.user.name || '').split(' ')[0] : '';
-                if (session) b.title = session.user.email;
+                $a('userBal').textContent = session ? 'Rp' + compactRp(balNow()) : '';
+                if (session) b.title = session.user.email + ' · Saldo ' + money(balNow());
             }
             function logoutPrompt() {
                 if (session && confirm('Keluar dari akun ' + session.user.email + '?')) doLogout();
             }
             function doLogout(msg) {
                 session = null;
+                wallet = null;
+                walletPay = null;
                 lsDel(SESSION_KEY);
                 lsDel('kb-store-cache');
                 MENUS = [];
                 CATEGORIES = [];
                 closeCart();
+                closeWallet();
                 document.getElementById('modal').classList.remove('open');
                 if (chatOpen) toggleChat(false);
                 updateUserBtn();
@@ -2728,10 +2925,212 @@
                     if (!j.success) return;
                     const b = j.data || {};
                     SETTINGS = { ...SETTINGS, ...b };
+                    const w = waClean(b.whatsappNumber);
+                    if (w) CONFIG.waAdmin = w;
                     applyBrandAssets();
                     if (b.logoUrl) $a('authLogo').src = b.logoUrl;
                     if (b.storeName) $a('authBrand').textContent = b.storeName;
                 } catch (e) {}
+            }
+
+            // ---------- DOMPET (saldo, top up QRIS / transfer manual) ----------
+            const TXN_LABEL = {
+                topup: 'Top up saldo',
+                admin_add: 'Saldo ditambah admin',
+                admin_sub: 'Saldo dikurangi admin',
+                order: 'Pembayaran pesanan',
+                refund: 'Pengembalian dana',
+            };
+            const TOPUP_LABEL = {
+                pending: 'Menunggu konfirmasi',
+                approved: 'Berhasil',
+                rejected: 'Ditolak',
+                cancelled: 'Dibatalkan',
+            };
+            const fmtDate = (v) =>
+                v ? new Date(v).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : '';
+            const walletIsOpen = () => $a('walletModal').classList.contains('open');
+            async function loadWallet() {
+                if (!session) return;
+                const r = await fetch(
+                    CONFIG.apiUrl + '?action=getWallet&userToken=' + encodeURIComponent(session.token)
+                );
+                const j = await r.json();
+                if (!j.success) {
+                    if (/LOGIN_REQUIRED/.test(j.error)) doLogout('Sesi berakhir, silakan masuk lagi.');
+                    throw new Error(j.error);
+                }
+                wallet = j.data;
+                setBalance(wallet.balance);
+                if (walletIsOpen() && walletView !== 'topup') renderWallet();
+                if (document.getElementById('preview')) fill();
+            }
+            function openWallet(view) {
+                if (!session) return showAuth();
+                walletView = view || 'home';
+                $a('walletModal').classList.add('open');
+                renderWallet();
+                loadWallet().catch(() => {});
+            }
+            function closeWallet() {
+                $a('walletModal').classList.remove('open');
+            }
+            function walletGo(v) {
+                walletView = v;
+                if (v === 'home') walletPay = null;
+                renderWallet();
+            }
+            function setWalletAmount(val) {
+                walletAmount = Number(String(val).replace(/\D/g, '')) || 0;
+            }
+            function pickAmount(n) {
+                walletAmount = n;
+                const i = $a('wAmount');
+                if (i) i.value = n;
+            }
+            function renderWallet() {
+                const u = session ? session.user : { name: '', email: '' };
+                const head = `<div class="whead"><div><h2>Dompet Saya</h2><small>${esc(u.name)} · ${esc(u.email)}</small></div><button class="close" onclick="closeWallet()" aria-label="Tutup">✕</button></div>`;
+                $a('walletBody').innerHTML =
+                    head +
+                    (walletView === 'topup'
+                        ? walletTopupHtml()
+                        : walletView === 'pay' && walletPay
+                          ? walletPayHtml()
+                          : walletHomeHtml());
+            }
+            function walletHomeHtml() {
+                const card = `<div class="wbal"><span>Saldo kamu</span><strong>${money(balNow())}</strong><button class="primary" onclick="walletGo('topup')">+ Top Up Saldo</button></div>`;
+                if (!wallet) return card + '<div class="empty">Memuat...</div>';
+                const none = '<div class="empty" style="padding:14px">Belum ada.</div>';
+                const tps =
+                    wallet.topups
+                        .slice(0, 5)
+                        .map(
+                            (t) =>
+                                `<div class="wrow"><div><b>${esc(t.id)}</b> <span class="pill ${esc(t.status)}">${esc(TOPUP_LABEL[t.status] || t.status)}</span><small>${esc(t.method)} · ${fmtDate(t.createdAt)}${t.note ? ' · ' + esc(t.note) : ''}</small></div><div><b>${money(t.amount)}</b>${t.status === 'pending' ? `<br><button class="mini wa" data-id="${esc(t.id)}" onclick="sendProof(this.dataset.id)">Kirim bukti</button> <button class="mini" data-id="${esc(t.id)}" onclick="cancelTopup(this.dataset.id)">Batal</button>` : ''}</div></div>`
+                        )
+                        .join('') || none;
+                const txs =
+                    wallet.transactions
+                        .slice(0, 10)
+                        .map(
+                            (x) =>
+                                `<div class="wrow"><div><b>${esc(TXN_LABEL[x.type] || x.type)}</b><small>${fmtDate(x.createdAt)}${x.note ? ' · ' + esc(x.note) : ''}</small></div><div><span class="${x.amount >= 0 ? 'pos' : 'neg'}">${x.amount >= 0 ? '+' : '−'}${money(Math.abs(x.amount))}</span><small>Saldo ${money(x.balanceAfter)}</small></div></div>`
+                        )
+                        .join('') || none;
+                return (
+                    card +
+                    '<div class="wsec">Permintaan Top Up</div>' +
+                    tps +
+                    '<div class="wsec">Riwayat Saldo</div>' +
+                    txs +
+                    '<button class="secondary" style="width:100%;margin-top:18px" onclick="logoutPrompt()">Keluar dari akun</button>'
+                );
+            }
+            function walletTopupHtml() {
+                const back = `<button class="mini" onclick="walletGo('home')">← Kembali</button><div class="title" style="margin-top:8px">Top Up Saldo</div>`;
+                if (!wallet) return back + '<div class="empty">Memuat...</div>';
+                const min = wallet.minTopup || 10000;
+                const methods = [];
+                if (wallet.qris && (wallet.qris.imageUrl || wallet.qris.link))
+                    methods.push({ id: 'QRIS', title: 'QRIS', sub: 'Scan dari aplikasi bank / e-wallet apa saja' });
+                wallet.methods.forEach((m) =>
+                    methods.push({ id: m.id, title: m.name, sub: m.accountNumber + ' a.n. ' + m.accountName })
+                );
+                if (!methods.length)
+                    return (
+                        back +
+                        '<p class="sub">Metode pembayaran belum tersedia. Silakan hubungi admin lewat WhatsApp.</p>'
+                    );
+                if (!methods.some((m) => m.id === walletMethod)) walletMethod = methods[0].id;
+                const chips = [20000, 50000, 100000, 200000]
+                    .filter((n) => n >= min)
+                    .map((n) => `<button type="button" class="wchip" onclick="pickAmount(${n})">${money(n)}</button>`)
+                    .join('');
+                const list = methods
+                    .map(
+                        (m) =>
+                            `<label class="wmethod"><input type="radio" name="wm" value="${esc(m.id)}" ${m.id === walletMethod ? 'checked' : ''} onchange="walletMethod = this.value"><div>${esc(m.title)}<small>${esc(m.sub)}</small></div></label>`
+                    )
+                    .join('');
+                return (
+                    back +
+                    `<p class="sub">Minimal top up ${money(min)}.</p><label for="wAmount">Nominal</label><div class="wchips">${chips}</div><input id="wAmount" inputmode="numeric" placeholder="Nominal top up" value="${walletAmount || ''}" oninput="setWalletAmount(this.value)"><div class="wsec">Metode pembayaran</div>${list}<button class="primary" id="wBtn" style="width:100%;margin-top:12px" onclick="submitTopup()">Lanjut Bayar →</button>`
+                );
+            }
+            function walletPayHtml() {
+                const t = walletPay.topup,
+                    qris = walletPay.qris,
+                    account = walletPay.account;
+                let pay = '';
+                if (qris)
+                    pay =
+                        (qris.imageUrl ? `<img class="wqr" src="${esc(qris.imageUrl)}" alt="QRIS">` : '') +
+                        (qris.link
+                            ? `<a class="primary" style="display:block;text-align:center;text-decoration:none;margin:8px 0" href="${esc(qris.link)}" target="_blank" rel="noopener">Buka link pembayaran QRIS</a>`
+                            : '') +
+                        (qris.note ? `<p class="sub" style="text-align:center">${esc(qris.note)}</p>` : '');
+                else if (account)
+                    pay = `<div class="wacct"><div>${esc(account.name)}</div><div class="num">${esc(account.accountNumber)}</div><div>a.n. ${esc(account.accountName)}</div>${account.note ? `<small>${esc(account.note)}</small><br>` : ''}<button class="mini" data-copy="${esc(account.accountNumber)}" onclick="copyText(this.dataset.copy)">Salin nomor</button></div>`;
+                return `<button class="mini" onclick="walletGo('home')">← Kembali</button><div class="title" style="margin-top:8px">Bayar Top Up</div><p class="sub">Kode <b>${esc(t.id)}</b></p><div class="wbal"><span>Nominal yang harus dibayar</span><strong>${money(t.amount)}</strong></div>${pay}<div class="wsteps"><b>Langkah:</b><br>1. Bayar sesuai nominal di atas.<br>2. Kirim <b>foto bukti transfer</b> ke WhatsApp admin.<br>3. Saldo ditambahkan setelah admin memverifikasi.</div><button class="primary" style="width:100%" data-id="${esc(t.id)}" onclick="sendProof(this.dataset.id)">📲 Kirim Bukti via WhatsApp</button><button class="secondary" style="width:100%;margin-top:8px" onclick="walletGo('home')">Selesai</button>`;
+            }
+            async function submitTopup() {
+                const min = (wallet && wallet.minTopup) || 10000;
+                if (!(walletAmount >= min)) return toast('Minimal top up ' + money(min));
+                if (!walletMethod) return toast('Pilih metode pembayaran');
+                const btn = $a('wBtn');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Memproses...';
+                }
+                try {
+                    walletPay = await authApi('createTopup', {
+                        userToken: session.token,
+                        amount: walletAmount,
+                        method: walletMethod,
+                    });
+                    walletView = 'pay';
+                    renderWallet();
+                    loadWallet().catch(() => {});
+                } catch (err) {
+                    if (/LOGIN_REQUIRED/.test(err.message)) {
+                        closeWallet();
+                        doLogout('Sesi berakhir, silakan masuk lagi.');
+                        return;
+                    }
+                    toast(err.message);
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = 'Lanjut Bayar →';
+                    }
+                }
+            }
+            async function cancelTopup(id) {
+                if (!confirm('Batalkan permintaan top up ini?')) return;
+                try {
+                    await authApi('cancelTopup', { userToken: session.token, id });
+                    toast('Permintaan dibatalkan.');
+                    await loadWallet();
+                } catch (err) {
+                    toast(err.message);
+                }
+            }
+            function sendProof(id) {
+                const t =
+                    (wallet && wallet.topups.find((x) => x.id === id)) ||
+                    (walletPay && walletPay.topup.id === id ? walletPay.topup : null);
+                if (!t || !session) return;
+                const msg = `Halo ${SETTINGS.storeName || 'KIMBABKU'}, saya sudah transfer untuk top up saldo.\n\nKode: ${t.id}\nNominal: ${money(t.amount)}\nMetode: ${t.methodDetail || t.method}\nAkun: ${session.user.email}\n\nBukti transfer saya kirim di chat ini 🙏`;
+                openWhatsApp('https://wa.me/' + CONFIG.waAdmin + '?text=' + encodeURIComponent(msg));
+            }
+            function copyText(t) {
+                if (navigator.clipboard && navigator.clipboard.writeText)
+                    navigator.clipboard
+                        .writeText(t)
+                        .then(() => toast('Disalin ✓'))
+                        .catch(() => toast(t));
+                else toast(t);
             }
             function initAuth() {
                 if (session) {
@@ -2739,6 +3138,7 @@
                     updateUserBtn();
                     if (session.user.name) order.n = order.n || session.user.name;
                     loadStoreData();
+                    loadWallet().catch(() => {});
                 } else {
                     showAuth();
                     loadBrand();

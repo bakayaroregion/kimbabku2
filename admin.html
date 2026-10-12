@@ -543,6 +543,85 @@
                 background: #fff;
                 font-size: 14px;
             }
+            .kv {
+                display: grid;
+                grid-template-columns: 150px 1fr;
+                gap: 6px 14px;
+                font-size: 14px;
+                margin: 0 0 14px;
+            }
+            .kv dt {
+                color: #777;
+            }
+            .kv dd {
+                margin: 0;
+                word-break: break-word;
+            }
+            .bigbal {
+                background: #171717;
+                color: #fff;
+                border-radius: 14px;
+                padding: 14px 18px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 12px;
+            }
+            .bigbal strong {
+                font-size: 26px;
+                color: #f4c84a;
+            }
+            .btnrow {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 10px 0;
+            }
+            .adjbox {
+                background: #faf9f6;
+                border: 1px solid #e5e1d9;
+                border-radius: 12px;
+                padding: 12px;
+                display: grid;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            .adjbox input {
+                border: 1px solid #ddd9d1;
+                border-radius: 10px;
+                padding: 10px;
+                font-size: 16px;
+                width: 100%;
+                background: #fff;
+            }
+            .subh {
+                margin: 18px 0 6px;
+                font-size: 15px;
+                font-weight: 800;
+            }
+            .pos {
+                color: #17713a;
+                font-weight: 700;
+            }
+            .neg {
+                color: #a11;
+                font-weight: 700;
+            }
+            .muted {
+                color: #777;
+                font-size: 13px;
+            }
+            @media (max-width: 600px) {
+                .kv {
+                    grid-template-columns: 1fr;
+                    gap: 2px;
+                }
+                .kv dd {
+                    margin-bottom: 8px;
+                }
+            }
             @media (max-width: 900px) {
                 .admin-shell {
                     grid-template-columns: 1fr;
@@ -752,6 +831,8 @@
                     <button class="side-link active" data-view="dashboard">Dashboard</button
                     ><button class="side-link" data-view="orders">Pesanan</button
                     ><button class="side-link" data-view="customers">Pelanggan</button
+                    ><button class="side-link" data-view="topups" data-title="Top Up">Top Up</button
+                    ><button class="side-link" data-view="payments">Pembayaran</button
                     ><button class="side-link" data-view="menus">Menu</button
                     ><button class="side-link" data-view="categories">Kategori</button
                     ><button class="side-link" data-view="settings">Pengaturan</button>
@@ -843,14 +924,14 @@
                     <div class="panel">
                         <div class="panel-head">
                             <div>
-                                <h2>Pelanggan Terdaftar</h2>
-                                <p id="customerInfo">Akun Gmail yang mendaftar di halaman pelanggan.</p>
+                                <h2>Member Terdaftar</h2>
+                                <p id="customerInfo">Semua akun yang mendaftar di halaman pelanggan.</p>
                             </div>
                             <div class="toolbar">
                                 <input
                                     id="customerSearch"
-                                    placeholder="Cari nama / email..."
-                                    aria-label="Cari pelanggan"
+                                    placeholder="Cari nama / email / WhatsApp..."
+                                    aria-label="Cari member"
                                     style="
                                         border: 1px solid #ddd9d1;
                                         border-radius: 10px;
@@ -868,6 +949,7 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>WhatsApp</th>
+                                        <th>Saldo</th>
                                         <th>Status</th>
                                         <th>Daftar</th>
                                         <th>Terakhir masuk</th>
@@ -877,7 +959,124 @@
                                 <tbody id="customerTable"></tbody>
                             </table>
                         </div>
-                        <p id="customerEmpty" style="color: #777; font-size: 13px" hidden>Belum ada pelanggan.</p>
+                        <p id="customerEmpty" class="muted" hidden>Belum ada member.</p>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="topups" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Permintaan Top Up</h2>
+                                <p>
+                                    Member membayar (QRIS / transfer), mengirim bukti ke WhatsApp, lalu kamu konfirmasi
+                                    di sini agar saldo masuk.
+                                </p>
+                            </div>
+                            <div class="toolbar">
+                                <select id="topupFilter" aria-label="Filter status">
+                                    <option value="pending">Menunggu</option>
+                                    <option value="">Semua</option>
+                                    <option value="approved">Berhasil</option>
+                                    <option value="rejected">Ditolak</option>
+                                    <option value="cancelled">Dibatalkan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Waktu</th>
+                                        <th>Kode</th>
+                                        <th>Member</th>
+                                        <th>Nominal</th>
+                                        <th>Metode</th>
+                                        <th>Status</th>
+                                        <th>Catatan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topupTable"></tbody>
+                            </table>
+                        </div>
+                        <p id="topupEmpty" class="muted" hidden>Tidak ada permintaan.</p>
+                    </div>
+                </section>
+
+                <section class="admin-view" data-section="payments" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>QRIS</h2>
+                                <p>
+                                    Gambar QRIS dan/atau link pembayaran QRIS Interactive yang tampil ke member saat top
+                                    up.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="asset-card">
+                            <div
+                                class="asset-preview logo-preview"
+                                id="qrisPreview"
+                                style="width: 120px; height: 120px"
+                            >
+                                Belum ada QRIS
+                            </div>
+                            <div class="asset-info">
+                                <strong>Gambar QRIS</strong>
+                                <small>Upload gambar QR yang jelas (JPG/PNG/WEBP, maks. 2 MB).</small>
+                            </div>
+                            <div class="asset-actions">
+                                <input type="file" id="qrisInput" accept="image/jpeg,image/png,image/webp" hidden />
+                                <button type="button" class="btn btn-secondary" id="qrisUploadBtn">
+                                    Upload / Ganti
+                                </button>
+                                <button type="button" class="small-btn danger" id="qrisDeleteBtn" hidden>Hapus</button>
+                            </div>
+                        </div>
+                        <form id="qrisForm" class="settings-form" style="margin-top: 14px">
+                            <label
+                                >Link QRIS Interactive (opsional)<input
+                                    name="qrisLink"
+                                    placeholder="https://..."
+                                    autocomplete="off"
+                            /></label>
+                            <label
+                                >Minimal Top Up (Rp)<input name="minTopup" inputmode="numeric" placeholder="10000"
+                            /></label>
+                            <label class="full-field"
+                                >Petunjuk untuk member (opsional)<textarea name="qrisNote" maxlength="300"></textarea>
+                            </label>
+                            <button class="btn btn-primary">Simpan Pengaturan Pembayaran</button>
+                        </form>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Rekening Pembayaran Manual</h2>
+                                <p>Rekening bank / e-wallet yang aktif akan tampil di halaman top up member.</p>
+                            </div>
+                            <button class="btn btn-primary" id="newPaymentBtn">+ Tambah Rekening</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Urutan</th>
+                                        <th>Jenis</th>
+                                        <th>Bank / E-wallet</th>
+                                        <th>No. Rekening</th>
+                                        <th>Atas Nama</th>
+                                        <th>Catatan</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentTable"></tbody>
+                            </table>
+                        </div>
+                        <p id="paymentEmpty" class="muted" hidden>Belum ada rekening. Klik "+ Tambah Rekening".</p>
                     </div>
                 </section>
 
@@ -1067,6 +1266,56 @@
                 </form>
             </div>
         </div>
+        <div class="modal-backdrop" id="customerModal" hidden>
+            <div class="modal wide-modal" role="dialog" aria-modal="true" style="width: min(900px, 100%)">
+                <div class="modal-head">
+                    <h2 id="cmTitle">Detail Member</h2>
+                    <button class="icon-button" id="cmClose" aria-label="Tutup">×</button>
+                </div>
+                <div id="cmBody">Memuat...</div>
+            </div>
+        </div>
+        <div class="modal-backdrop" id="paymentModal" hidden>
+            <div class="modal" role="dialog" aria-modal="true">
+                <div class="modal-head">
+                    <h2 id="pmTitle">Tambah Rekening</h2>
+                    <button class="icon-button" id="pmClose" aria-label="Tutup">×</button>
+                </div>
+                <form id="paymentForm" class="form">
+                    <input type="hidden" name="id" />
+                    <label
+                        >Jenis<select name="type">
+                            <option value="bank">Bank</option>
+                            <option value="ewallet">E-wallet</option>
+                            <option value="other">Lainnya</option>
+                        </select></label
+                    >
+                    <label
+                        >Nama Bank / E-wallet<input
+                            name="name"
+                            required
+                            maxlength="40"
+                            placeholder="BCA, BRI, DANA, ..."
+                    /></label>
+                    <label
+                        >Nomor Rekening<input name="accountNumber" required maxlength="40" inputmode="numeric"
+                    /></label>
+                    <label>Atas Nama<input name="accountName" required maxlength="60" /></label>
+                    <label>Catatan (opsional)<input name="note" maxlength="200" /></label>
+                    <label>Urutan tampil<input name="sortOrder" type="number" min="0" step="1" value="1" /></label>
+                    <label
+                        >Status<select name="active">
+                            <option value="1">Aktif (tampil ke member)</option>
+                            <option value="0">Nonaktif</option>
+                        </select></label
+                    >
+                    <div style="display: flex; justify-content: flex-end; gap: 10px">
+                        <button type="button" class="btn btn-secondary" id="pmCancel">Batal</button>
+                        <button class="btn btn-primary" type="submit">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div id="toast" class="toast" hidden></div>
         <script>
             /* KIMBABKU admin app */
@@ -1158,6 +1407,7 @@
                 renderCategories();
                 renderSettings();
                 renderBrandAssets();
+                renderQris();
                 populateCategorySelect();
             }
             function renderDashboard() {
@@ -1165,6 +1415,9 @@
                 $('#statActive').textContent = state.menus.filter((x) => x.status === 'active').length;
                 $('#statInactive').textContent = state.menus.filter((x) => x.status === 'inactive').length;
                 $('#statCategories').textContent = state.categories.length;
+                const pt = (state.stats || {}).pendingTopups || 0;
+                const tb = document.querySelector('[data-view="topups"]');
+                if (tb) tb.textContent = 'Top Up' + (pt ? ` (${pt})` : '');
                 const st = state.stats || {},
                     cur = state.settings.currency || 'IDR';
                 $('#statTodayOrders').textContent = st.todayOrders || 0;
@@ -1734,6 +1987,7 @@
                         o.address && 'Alamat: ' + o.address,
                         o.deliveryTime && 'Waktu: ' + o.deliveryTime,
                         o.note && 'Catatan: ' + o.note,
+                        o.payment && 'Bayar: ' + o.payment,
                     ]
                         .filter(Boolean)
                         .join('\n');
@@ -1751,9 +2005,13 @@
                         const prev = o.status;
                         sel.disabled = true;
                         try {
-                            await api('updateOrderStatus', { id: o.id, status: sel.value });
+                            const rs = await api('updateOrderStatus', { id: o.id, status: sel.value });
                             o.status = sel.value;
-                            toast('Status pesanan diperbarui.');
+                            toast(
+                                rs && rs.refunded
+                                    ? 'Pesanan dibatalkan. Saldo member dikembalikan.'
+                                    : 'Status pesanan diperbarui.'
+                            );
                         } catch (err) {
                             sel.value = prev;
                             toast(err.message, true);
@@ -1791,13 +2049,82 @@
                     toast(e.message, true);
                 }
             }
-            // ==================== Pelanggan ====================
-            state.customers = [];
-            const CUSTOMER_STATUS = {
+            // ==================== Member, Saldo, Top Up & Pembayaran ====================
+            const el = (tag, cls, text) => {
+                const e = document.createElement(tag);
+                if (cls) e.className = cls;
+                if (text !== undefined) e.textContent = text;
+                return e;
+            };
+            const fmtDT = (v) =>
+                v ? new Date(v).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+            const rp = (n) => money(n, state.settings.currency || 'IDR');
+            const digitsOnly = (v) => String(v || '').replace(/\D/g, '');
+            const waLink = (phone) => {
+                const wd = waDigits(phone);
+                if (!wd) return document.createTextNode('-');
+                const a = el('a', '', phone);
+                a.href = 'https://wa.me/' + wd;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.style.color = '#17713a';
+                return a;
+            };
+            function closeModal(id) {
+                $('#' + id).hidden = true;
+                document.body.style.overflow = '';
+            }
+            function mkTable(heads, rows, emptyText) {
+                const wrap = el('div', 'table-wrap');
+                if (!rows.length) {
+                    wrap.append(el('p', 'muted', emptyText));
+                    return wrap;
+                }
+                const t = el('table');
+                const tr0 = el('tr');
+                heads.forEach((h) => tr0.append(el('th', '', h)));
+                const thead = el('thead');
+                thead.append(tr0);
+                const tb = el('tbody');
+                rows.forEach((r) => {
+                    const tr = el('tr');
+                    r.forEach((c) => {
+                        const td = el('td');
+                        if (c instanceof Node) td.append(c);
+                        else td.textContent = c === undefined || c === null || c === '' ? '-' : c;
+                        tr.append(td);
+                    });
+                    tb.append(tr);
+                });
+                t.append(thead, tb);
+                wrap.append(t);
+                return wrap;
+            }
+            const MEMBER_STATUS = {
                 active: ['Aktif', 'active'],
-                pending: ['Belum verifikasi', 'inactive'],
+                pending: ['Aktif', 'active'],
                 blocked: ['Diblokir', 'inactive'],
             };
+            const TOPUP_STATUS = {
+                pending: ['Menunggu', 'inactive'],
+                approved: ['Berhasil', 'active'],
+                rejected: ['Ditolak', 'inactive'],
+                cancelled: ['Dibatalkan', 'inactive'],
+            };
+            const TXN_LABEL = {
+                topup: 'Top up',
+                admin_add: 'Ditambah admin',
+                admin_sub: 'Dikurangi admin',
+                order: 'Pembayaran pesanan',
+                refund: 'Pengembalian dana',
+            };
+            const badge = (map, key) => {
+                const m = map[key] || [key, 'inactive'];
+                return el('span', 'badge ' + m[1], m[0]);
+            };
+
+            // ---------- daftar member ----------
+            state.customers = [];
             async function loadCustomers() {
                 const d = await api('getCustomers');
                 state.customers = d.customers || [];
@@ -1808,63 +2135,485 @@
                 const body = $('#customerTable');
                 body.replaceChildren();
                 const q = $('#customerSearch').value.trim().toLowerCase();
-                const list = state.customers.filter((c) => !q || (c.name + ' ' + c.email).toLowerCase().includes(q));
+                const list = state.customers.filter(
+                    (c) => !q || (c.name + ' ' + c.email + ' ' + c.phone).toLowerCase().includes(q)
+                );
                 $('#customerEmpty').hidden = list.length > 0;
+                const totalBal = state.customers.reduce((s, c) => s + (Number(c.balance) || 0), 0);
                 $('#customerInfo').textContent =
-                    `${state.customerTotal || 0} akun terdaftar` +
+                    `${state.customerTotal || 0} member · total saldo semua member ${rp(totalBal)}` +
                     ((state.customerTotal || 0) > state.customers.length
                         ? ` (menampilkan ${state.customers.length} terbaru)`
-                        : '') +
-                    '.';
-                const fmt = (v) =>
-                    v ? new Date(v).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                        : '');
                 list.forEach((c) => {
-                    const tr = document.createElement('tr');
-                    const td = (t) => {
-                        const x = document.createElement('td');
-                        x.textContent = t;
+                    const tr = el('tr');
+                    const td = (v) => {
+                        const x = el('td');
+                        if (v instanceof Node) x.append(v);
+                        else x.textContent = v || '-';
                         return x;
                     };
-                    const wa = document.createElement('td');
-                    const wd = waDigits(c.phone);
-                    if (wd) {
-                        const a = document.createElement('a');
-                        a.href = 'https://wa.me/' + wd;
-                        a.target = '_blank';
-                        a.rel = 'noopener';
-                        a.textContent = c.phone;
-                        a.style.color = '#17713a';
-                        wa.append(a);
-                    } else wa.textContent = '-';
-                    const st = document.createElement('td');
-                    const badge = document.createElement('span');
-                    const meta = CUSTOMER_STATUS[c.status] || [c.status, 'inactive'];
-                    badge.className = 'badge ' + meta[1];
-                    badge.textContent = meta[0];
-                    st.append(badge);
-                    const act = document.createElement('td');
-                    const btn = document.createElement('button');
-                    const block = c.status !== 'blocked';
-                    btn.className = 'small-btn' + (block ? ' danger' : '');
-                    btn.textContent = block ? 'Blokir' : 'Aktifkan';
-                    btn.onclick = async () => {
-                        if (block && !confirm(`Blokir ${c.email}? Akun ini tidak bisa masuk atau memesan.`)) return;
-                        btn.disabled = true;
-                        try {
-                            await api('setCustomerStatus', { id: c.id, status: block ? 'blocked' : 'active' });
-                            toast(block ? 'Pelanggan diblokir.' : 'Pelanggan diaktifkan.');
-                            await loadCustomers();
-                        } catch (err) {
-                            toast(err.message, true);
-                            btn.disabled = false;
-                        }
-                    };
-                    act.append(btn);
-                    tr.append(td(c.name), td(c.email), wa, st, td(fmt(c.createdAt)), td(fmt(c.lastLoginAt)), act);
+                    const btn = el('button', 'small-btn', 'Detail');
+                    btn.onclick = () => openCustomer(c.id);
+                    tr.append(
+                        td(c.name),
+                        td(c.email),
+                        td(waLink(c.phone)),
+                        td(rp(c.balance)),
+                        td(badge(MEMBER_STATUS, c.status)),
+                        td(fmtDT(c.createdAt)),
+                        td(fmtDT(c.lastLoginAt)),
+                        td(btn)
+                    );
                     body.append(tr);
                 });
             }
             $('#customerSearch').addEventListener('input', renderCustomers);
+
+            // ---------- detail member (semua data) ----------
+            state.customer = null;
+            state.adjDir = null;
+            async function openCustomer(id) {
+                state.adjDir = null;
+                state.customer = null;
+                $('#cmBody').textContent = 'Memuat...';
+                $('#cmTitle').textContent = 'Detail Member';
+                openModal('customerModal');
+                try {
+                    await refreshCustomer(id);
+                } catch (e) {
+                    toast(e.message, true);
+                    closeModal('customerModal');
+                }
+            }
+            async function refreshCustomer(id) {
+                state.customer = await api('getCustomerDetail', { id });
+                renderCustomerModal();
+            }
+            function renderCustomerModal() {
+                const d = state.customer,
+                    c = d.customer,
+                    body = $('#cmBody');
+                $('#cmTitle').textContent = c.name || 'Detail Member';
+                body.replaceChildren();
+                const kv = el('dl', 'kv');
+                const add = (k, v) => {
+                    kv.append(el('dt', '', k));
+                    const dd = el('dd');
+                    if (v instanceof Node) dd.append(v);
+                    else dd.textContent = v || '-';
+                    kv.append(dd);
+                };
+                add('ID Akun', c.id);
+                add('Nama', c.name);
+                add('Email', c.email);
+                add('WhatsApp', waLink(c.phone));
+                add('Status', badge(MEMBER_STATUS, c.status));
+                add('Tanggal daftar', fmtDT(c.createdAt));
+                add('Terakhir masuk', fmtDT(c.lastLoginAt));
+                add(
+                    'Kata sandi',
+                    'Tersimpan terenkripsi, tidak bisa dilihat siapa pun. Jika member lupa, gunakan "Reset Kata Sandi".'
+                );
+                const bal = el('div', 'bigbal');
+                bal.append(el('span', '', 'Saldo saat ini'), el('strong', '', rp(c.balance)));
+                const row = el('div', 'btnrow');
+                const mk = (label, cls, fn) => {
+                    const b = el('button', cls, label);
+                    b.onclick = fn;
+                    row.append(b);
+                    return b;
+                };
+                mk('+ Tambah Saldo', 'btn btn-primary', () => {
+                    state.adjDir = 'add';
+                    renderCustomerModal();
+                });
+                mk('− Kurangi Saldo', 'btn btn-secondary', () => {
+                    state.adjDir = 'sub';
+                    renderCustomerModal();
+                });
+                mk('Reset Kata Sandi', 'btn btn-secondary', () => resetMemberPassword(c));
+                mk(
+                    c.status === 'blocked' ? 'Aktifkan Akun' : 'Blokir Akun',
+                    'small-btn' + (c.status === 'blocked' ? '' : ' danger'),
+                    () => toggleMember(c)
+                );
+                body.append(kv, bal, row);
+                if (state.adjDir) {
+                    const box = el('div', 'adjbox');
+                    box.append(
+                        el('strong', '', state.adjDir === 'add' ? 'Tambah saldo member' : 'Kurangi saldo member')
+                    );
+                    const amt = el('input');
+                    amt.id = 'adjAmount';
+                    amt.setAttribute('inputmode', 'numeric');
+                    amt.placeholder = 'Nominal (Rp)';
+                    const note = el('input');
+                    note.id = 'adjNote';
+                    note.maxLength = 200;
+                    note.placeholder = 'Catatan (mis. top up QRIS TP-20261010-ABCD)';
+                    const r2 = el('div', 'btnrow');
+                    const save = el('button', 'btn btn-primary', 'Simpan');
+                    save.onclick = () => submitAdjust(c);
+                    const cancel = el('button', 'btn btn-secondary', 'Batal');
+                    cancel.onclick = () => {
+                        state.adjDir = null;
+                        renderCustomerModal();
+                    };
+                    r2.append(save, cancel);
+                    box.append(amt, note, r2);
+                    body.append(box);
+                }
+                body.append(el('div', 'subh', 'Riwayat Saldo'));
+                body.append(
+                    mkTable(
+                        ['Waktu', 'Jenis', 'Jumlah', 'Saldo akhir', 'Catatan'],
+                        d.transactions.map((x) => [
+                            fmtDT(x.createdAt),
+                            TXN_LABEL[x.type] || x.type,
+                            (() => {
+                                const s = el(
+                                    'span',
+                                    x.amount >= 0 ? 'pos' : 'neg',
+                                    (x.amount >= 0 ? '+' : '−') + rp(Math.abs(x.amount))
+                                );
+                                return s;
+                            })(),
+                            rp(x.balanceAfter),
+                            x.note,
+                        ]),
+                        'Belum ada riwayat saldo.'
+                    )
+                );
+                body.append(el('div', 'subh', 'Permintaan Top Up'));
+                body.append(
+                    mkTable(
+                        ['Waktu', 'Kode', 'Metode', 'Nominal', 'Status', 'Catatan'],
+                        d.topups.map((t) => [
+                            fmtDT(t.createdAt),
+                            t.id,
+                            t.methodDetail || t.method,
+                            rp(t.amount),
+                            badge(TOPUP_STATUS, t.status),
+                            t.note,
+                        ]),
+                        'Belum ada top up.'
+                    )
+                );
+                body.append(el('div', 'subh', 'Pesanan'));
+                body.append(
+                    mkTable(
+                        ['Waktu', 'Kode', 'Metode', 'Pesanan', 'Total', 'Bayar', 'Status', 'Alamat / Catatan'],
+                        d.orders.map((o) => [
+                            fmtDT(o.createdAt),
+                            o.orderCode,
+                            o.type,
+                            (o.items || []).map((i) => `${i.name} ×${i.qty}`).join(', '),
+                            rp(o.total),
+                            o.payment,
+                            o.status,
+                            [o.address, o.deliveryTime && 'Waktu: ' + o.deliveryTime, o.note && 'Catatan: ' + o.note]
+                                .filter(Boolean)
+                                .join(' · '),
+                        ]),
+                        'Belum ada pesanan.'
+                    )
+                );
+            }
+            async function submitAdjust(c) {
+                const amount = digitsOnly($('#adjAmount').value);
+                if (!amount || Number(amount) <= 0) return toast('Nominal tidak valid.', true);
+                try {
+                    const r = await api('adjustBalance', {
+                        id: c.id,
+                        amount,
+                        direction: state.adjDir,
+                        note: $('#adjNote').value.trim(),
+                    });
+                    toast('Saldo diperbarui. Saldo sekarang ' + rp(r.balance) + '.');
+                    state.adjDir = null;
+                    await refreshCustomer(c.id);
+                    loadCustomers().catch(() => {});
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function resetMemberPassword(c) {
+                const pw = prompt(
+                    `Kata sandi baru untuk ${c.email} (8-64 karakter).\nSetelah ini, beri tahu member lewat WhatsApp:`,
+                    ''
+                );
+                if (pw === null) return;
+                try {
+                    await api('resetCustomerPassword', { id: c.id, password: pw });
+                    toast('Kata sandi diganti. Beri tahu member lewat WhatsApp.');
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function toggleMember(c) {
+                const block = c.status !== 'blocked';
+                if (block && !confirm(`Blokir ${c.email}? Akun ini tidak bisa masuk atau memesan.`)) return;
+                try {
+                    await api('setCustomerStatus', { id: c.id, status: block ? 'blocked' : 'active' });
+                    toast(block ? 'Member diblokir.' : 'Member diaktifkan.');
+                    await refreshCustomer(c.id);
+                    loadCustomers().catch(() => {});
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            $('#cmClose').onclick = () => closeModal('customerModal');
+
+            // ---------- permintaan top up ----------
+            state.topups = [];
+            async function loadTopups() {
+                const d = await api('getTopups');
+                state.topups = d.topups || [];
+                renderTopups();
+            }
+            function renderTopups() {
+                const body = $('#topupTable');
+                body.replaceChildren();
+                const f = $('#topupFilter').value;
+                const list = state.topups.filter((t) => !f || t.status === f);
+                $('#topupEmpty').hidden = list.length > 0;
+                list.forEach((t) => {
+                    const tr = el('tr');
+                    const td = (v) => {
+                        const x = el('td');
+                        if (v instanceof Node) x.append(v);
+                        else x.textContent = v || '-';
+                        return x;
+                    };
+                    const who = el('td');
+                    const nm = el('strong', '', t.userName || '-');
+                    const sm = el('small', 'muted', t.userEmail || '');
+                    who.append(nm, document.createElement('br'), sm, document.createElement('br'), waLink(t.phone));
+                    const act = el('td');
+                    if (t.status === 'pending') {
+                        const w = el('div', 'table-actions');
+                        const ok = el('button', 'small-btn', 'Konfirmasi');
+                        ok.onclick = () => approveTopup(t);
+                        const no = el('button', 'small-btn danger', 'Tolak');
+                        no.onclick = () => rejectTopup(t);
+                        w.append(ok, no);
+                        act.append(w);
+                    } else act.textContent = '-';
+                    tr.append(
+                        td(fmtDT(t.createdAt)),
+                        td(t.id),
+                        who,
+                        td(rp(t.amount)),
+                        td(t.methodDetail || t.method),
+                        td(badge(TOPUP_STATUS, t.status)),
+                        td(t.note),
+                        act
+                    );
+                    body.append(tr);
+                });
+            }
+            $('#topupFilter').addEventListener('change', renderTopups);
+            async function approveTopup(t) {
+                const v = prompt(
+                    `Konfirmasi ${t.id} dari ${t.userName}.\nNominal yang benar-benar kamu terima (Rp):`,
+                    t.amount
+                );
+                if (v === null) return;
+                const amount = digitsOnly(v);
+                if (!amount || Number(amount) <= 0) return toast('Nominal tidak valid.', true);
+                try {
+                    const r = await api('approveTopup', { id: t.id, amount });
+                    toast('Top up dikonfirmasi. Saldo member sekarang ' + rp(r.balance) + '.');
+                    await loadTopups();
+                    loadAll().catch(() => {});
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            async function rejectTopup(t) {
+                const note = prompt(`Tolak ${t.id}? Tulis alasan (opsional):`, '');
+                if (note === null) return;
+                try {
+                    await api('rejectTopup', { id: t.id, note });
+                    toast('Permintaan ditolak.');
+                    await loadTopups();
+                    loadAll().catch(() => {});
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+
+            // ---------- QRIS ----------
+            function renderQris() {
+                const url = state.settings.qrisImageUrl || '';
+                const prev = $('#qrisPreview');
+                if (url) {
+                    prev.style.backgroundImage = `url('${cssUrl(url)}')`;
+                    prev.textContent = '';
+                } else {
+                    prev.style.backgroundImage = '';
+                    prev.textContent = 'Belum ada QRIS';
+                }
+                $('#qrisDeleteBtn').hidden = !url;
+                const f = $('#qrisForm');
+                if (document.activeElement && f.contains(document.activeElement)) return; // jangan menimpa ketikan admin
+                f.elements.qrisLink.value = state.settings.qrisLink || '';
+                f.elements.minTopup.value = state.settings.minTopup || '';
+                f.elements.qrisNote.value = state.settings.qrisNote || '';
+            }
+            $('#qrisUploadBtn').onclick = () => $('#qrisInput').click();
+            $('#qrisInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                e.target.value = '';
+                if (!file) return;
+                try {
+                    await uploadAssetFile('uploadQris', file, {}, { square: false, maxWidth: 900, quality: 0.95 });
+                    toast('Gambar QRIS diperbarui.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+            $('#qrisDeleteBtn').onclick = async () => {
+                if (!confirm('Hapus gambar QRIS?')) return;
+                try {
+                    await api('deleteQris');
+                    toast('Gambar QRIS dihapus.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            };
+            $('#qrisForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const f = e.currentTarget.elements;
+                try {
+                    await api('updateSettings', {
+                        qrisLink: f.qrisLink.value.trim(),
+                        minTopup: f.minTopup.value.trim(),
+                        qrisNote: f.qrisNote.value.trim(),
+                    });
+                    toast('Pengaturan pembayaran disimpan.');
+                    document.activeElement.blur();
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+
+            // ---------- rekening manual ----------
+            state.payments = [];
+            const PAY_TYPE = { bank: 'Bank', ewallet: 'E-wallet', other: 'Lainnya' };
+            async function loadPayments() {
+                const d = await api('getPaymentMethods');
+                state.payments = d.methods || [];
+                renderPayments();
+            }
+            function renderPayments() {
+                const body = $('#paymentTable');
+                body.replaceChildren();
+                $('#paymentEmpty').hidden = state.payments.length > 0;
+                state.payments.forEach((m) => {
+                    const tr = el('tr');
+                    const td = (v) => {
+                        const x = el('td');
+                        if (v instanceof Node) x.append(v);
+                        else x.textContent = v === undefined || v === '' ? '-' : v;
+                        return x;
+                    };
+                    const st = el(
+                        'span',
+                        'badge ' + (m.active ? 'active' : 'inactive'),
+                        m.active ? 'Aktif' : 'Nonaktif'
+                    );
+                    const w = el('div', 'table-actions');
+                    const edit = el('button', 'small-btn', 'Edit');
+                    edit.onclick = () => openPaymentModal(m);
+                    const tg = el('button', 'small-btn', m.active ? 'Nonaktifkan' : 'Aktifkan');
+                    tg.onclick = () =>
+                        savePaymentRaw(
+                            { ...m, active: m.active ? '0' : '1' },
+                            m.active ? 'Rekening dinonaktifkan.' : 'Rekening diaktifkan.'
+                        );
+                    const del = el('button', 'small-btn danger', 'Hapus');
+                    del.onclick = () => deletePayment(m);
+                    w.append(edit, tg, del);
+                    const act = el('td');
+                    act.append(w);
+                    tr.append(
+                        td(m.sortOrder),
+                        td(PAY_TYPE[m.type] || m.type),
+                        td(m.name),
+                        td(m.accountNumber),
+                        td(m.accountName),
+                        td(m.note),
+                        td(st),
+                        act
+                    );
+                    body.append(tr);
+                });
+            }
+            function openPaymentModal(m) {
+                const f = $('#paymentForm');
+                f.reset();
+                f.elements.id.value = m ? m.id : '';
+                f.elements.type.value = m ? m.type : 'bank';
+                f.elements.name.value = m ? m.name : '';
+                f.elements.accountNumber.value = m ? m.accountNumber : '';
+                f.elements.accountName.value = m ? m.accountName : '';
+                f.elements.note.value = m ? m.note : '';
+                f.elements.sortOrder.value = m ? m.sortOrder : state.payments.length + 1;
+                f.elements.active.value = m ? (m.active ? '1' : '0') : '1';
+                $('#pmTitle').textContent = m ? 'Edit Rekening' : 'Tambah Rekening';
+                openModal('paymentModal');
+            }
+            async function savePaymentRaw(data, okMsg) {
+                try {
+                    await api('savePaymentMethod', {
+                        id: data.id || '',
+                        type: data.type,
+                        name: data.name,
+                        accountNumber: data.accountNumber,
+                        accountName: data.accountName,
+                        note: data.note || '',
+                        sortOrder: data.sortOrder,
+                        active: data.active,
+                    });
+                    toast(okMsg || 'Rekening disimpan.');
+                    closeModal('paymentModal');
+                    await loadPayments();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            $('#paymentForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const f = e.currentTarget.elements;
+                savePaymentRaw({
+                    id: f.id.value,
+                    type: f.type.value,
+                    name: f.name.value.trim(),
+                    accountNumber: f.accountNumber.value.trim(),
+                    accountName: f.accountName.value.trim(),
+                    note: f.note.value.trim(),
+                    sortOrder: f.sortOrder.value,
+                    active: f.active.value,
+                });
+            });
+            async function deletePayment(m) {
+                if (!confirm(`Hapus rekening ${m.name} ${m.accountNumber}?`)) return;
+                try {
+                    await api('deletePaymentMethod', { id: m.id });
+                    toast('Rekening dihapus.');
+                    await loadPayments();
+                } catch (e) {
+                    toast(e.message, true);
+                }
+            }
+            $('#newPaymentBtn').onclick = () => openPaymentModal(null);
+            $('#pmClose').onclick = () => closeModal('paymentModal');
+            $('#pmCancel').onclick = () => closeModal('paymentModal');
 
             function setupNav() {
                 document.querySelectorAll('.side-link[data-view]').forEach(
@@ -1875,10 +2624,12 @@
                             document
                                 .querySelectorAll('.admin-view')
                                 .forEach((x) => (x.hidden = x.dataset.section !== b.dataset.view));
-                            $('#viewTitle').textContent = b.textContent;
+                            $('#viewTitle').textContent = b.dataset.title || b.textContent;
                             b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                             if (b.dataset.view === 'orders') loadOrders().catch((e) => toast(e.message, true));
                             if (b.dataset.view === 'customers') loadCustomers().catch((e) => toast(e.message, true));
+                            if (b.dataset.view === 'topups') loadTopups().catch((e) => toast(e.message, true));
+                            if (b.dataset.view === 'payments') loadPayments().catch((e) => toast(e.message, true));
                         })
                 );
             }
@@ -1900,7 +2651,12 @@
             $('#categoryForm').addEventListener('submit', saveCategory);
             $('#settingsForm').addEventListener('submit', saveSettings);
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !$('#menuModal').hidden) closeMenu();
+                if (e.key === 'Escape') {
+                    if (!$('#menuModal').hidden) closeMenu();
+                    ['customerModal', 'paymentModal'].forEach((id) => {
+                        if (!$('#' + id).hidden) closeModal(id);
+                    });
+                }
             });
             setupNav();
             if (state.token) showApp();
