@@ -4,6 +4,20 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <meta name="theme-color" content="#0b2f1f" />
+        <script>
+            (function () {
+                try {
+                    var t = localStorage.getItem('kb-theme');
+                    if (t !== 'day' && t !== 'night') {
+                        var h = new Date().getHours();
+                        t = h >= 6 && h < 18 ? 'day' : 'night';
+                    }
+                    document.documentElement.setAttribute('data-theme', t);
+                } catch (e) {
+                    document.documentElement.setAttribute('data-theme', 'day');
+                }
+            })();
+        </script>
         <title>KIMBABKU — Kimbab • Risol Mayo • Aneka Jajanan</title>
         <meta
             name="description"
@@ -36,7 +50,7 @@
                 margin: 0;
                 font-family: 'Segoe UI', Arial, system-ui, sans-serif;
                 color: var(--ink);
-                background: var(--bg);
+                background: transparent;
                 overflow-x: hidden;
             }
             img {
@@ -96,7 +110,7 @@
                 padding: 10px 20px;
                 display: flex;
                 align-items: center;
-                gap: 22px;
+                gap: 16px;
             }
             .logo {
                 height: 56px;
@@ -145,7 +159,7 @@
                 background: #fff;
                 border-radius: 30px;
                 overflow: hidden;
-                width: 230px;
+                width: 210px;
                 max-width: 100%;
                 padding-left: 14px;
             }
@@ -1437,7 +1451,8 @@
                 }
                 .search {
                     width: auto;
-                    flex: 1;
+                    flex: 1 1 130px;
+                    min-width: 0;
                 }
                 .hero img {
                     max-height: 30vh;
@@ -1616,9 +1631,630 @@
                     padding-right: 60px;
                 }
             }
+            /* =====================================================================
+               TEMA SIANG / MALAM — gaya Korea
+               Siang : langit cerah, sakura bergerak, kelopak berjatuhan, atap hanok
+               Malam : gedung-gedung Seoul, N Seoul Tower, neon hangul, lampion & bokeh
+               ===================================================================== */
+            html {
+                background: #bfe6ff;
+            }
+            html[data-theme='night'] {
+                background: #0b0820;
+            }
+            main,
+            footer {
+                position: relative;
+                z-index: 1;
+            }
+            .scene {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            .scene .layer {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                visibility: hidden;
+                transition:
+                    opacity 0.9s ease,
+                    visibility 0s linear 0.9s;
+            }
+            html[data-theme='day'] .sc-day,
+            html[data-theme='night'] .sc-night {
+                opacity: 1;
+                visibility: visible;
+                transition:
+                    opacity 0.9s ease,
+                    visibility 0s;
+            }
+            html[data-theme='day'] .sc-night *,
+            html[data-theme='night'] .sc-day *,
+            html[data-theme='day'] .sc-night *::before,
+            html[data-theme='night'] .sc-day *::before {
+                animation-play-state: paused !important;
+            }
+            #fx {
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
+            .themebtn {
+                border: 0;
+                background: #ffffff14;
+                color: #fff;
+                border-radius: 14px;
+                width: 44px;
+                height: 44px;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+            }
+            .themebtn:hover {
+                background: #ffffff26;
+            }
+            .themebtn .icon {
+                width: 20px;
+                height: 20px;
+            }
+            html[data-theme='day'] .themebtn .i-sun,
+            html[data-theme='night'] .themebtn .i-moon {
+                display: none;
+            }
+            header {
+                box-shadow: 0 6px 24px rgba(255, 150, 190, 0.28);
+            }
+            .hero {
+                box-shadow: 0 12px 36px rgba(255, 140, 180, 0.3);
+                border: 3px solid rgba(255, 255, 255, 0.75);
+            }
+
+            .head {
+                background: rgba(255, 255, 255, 0.72);
+                padding: 10px 16px;
+                border-radius: 16px;
+            }
+            html[data-theme='night'] .head {
+                background: rgba(12, 10, 40, 0.78);
+            }
+            @media (max-width: 480px) {
+                .userbtn .bal {
+                    display: none;
+                }
+                .userbtn {
+                    padding: 11px 12px;
+                }
+                /* HP kecil: baris 1 = logo + tombol, baris 2 = pencarian penuh, baris 3 = menu */
+                .nav {
+                    flex-wrap: wrap;
+                    row-gap: 8px;
+                }
+                .logo {
+                    margin-right: auto;
+                }
+                .search {
+                    order: 5;
+                    flex: 1 1 100%;
+                    margin-left: 0;
+                }
+                .links {
+                    order: 10;
+                }
+            }
+
+            /* ----- SIANG ----- */
+            .sc-day {
+                background: linear-gradient(180deg, #78c8ff 0%, #b4e3ff 34%, #ffeaf2 72%, #ffd5e5 100%);
+            }
+            .sun {
+                position: absolute;
+                right: 7%;
+                top: 9%;
+                width: clamp(90px, 14vw, 190px);
+                aspect-ratio: 1;
+                border-radius: 50%;
+                background: radial-gradient(circle, #fffde8 0 40%, #fff3b0 58%, rgba(255, 240, 170, 0) 74%);
+                will-change: transform;
+                animation: sunpulse 6s ease-in-out infinite;
+            }
+            .sun::after {
+                content: '';
+                position: absolute;
+                inset: -85%;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(255, 244, 190, 0.55) 0,
+                    rgba(255, 244, 190, 0.22) 38%,
+                    rgba(255, 244, 190, 0) 66%
+                );
+            }
+            .sun::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 100vmax;
+                height: 100vmax;
+                margin: -50vmax 0 0 -50vmax;
+                will-change: opacity;
+                background: repeating-conic-gradient(
+                    from 0deg,
+                    rgba(255, 255, 255, 0.24) 0 3deg,
+                    transparent 3deg 12deg
+                );
+                -webkit-mask-image: radial-gradient(circle, #000 0, transparent 55%);
+                mask-image: radial-gradient(circle, #000 0, transparent 55%);
+                animation: rays 9s ease-in-out infinite alternate;
+            }
+            @keyframes sunpulse {
+                50% {
+                    transform: scale(1.06);
+                }
+            }
+            @keyframes rays {
+                from {
+                    opacity: 0.55;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            .cloud {
+                position: absolute;
+                left: -300px;
+                width: 200px;
+                height: 58px;
+                background: #fff;
+                border-radius: 60px;
+                opacity: 0.88;
+                filter: blur(0.6px);
+                animation: drift linear infinite;
+            }
+            .cloud::before,
+            .cloud::after {
+                content: '';
+                position: absolute;
+                background: #fff;
+                border-radius: 50%;
+            }
+            .cloud::before {
+                width: 92px;
+                height: 92px;
+                top: -42px;
+                left: 30px;
+            }
+            .cloud::after {
+                width: 70px;
+                height: 70px;
+                top: -28px;
+                right: 28px;
+            }
+            .cloud.c1 {
+                top: 15%;
+                animation-duration: 120s;
+            }
+            .cloud.c2 {
+                top: 27%;
+                scale: 0.7;
+                animation-duration: 160s;
+                animation-delay: -70s;
+            }
+            .cloud.c3 {
+                top: 41%;
+                scale: 0.5;
+                animation-duration: 200s;
+                animation-delay: -130s;
+                opacity: 0.7;
+            }
+            @keyframes drift {
+                from {
+                    translate: 0 0;
+                }
+                to {
+                    translate: calc(100vw + 600px) 0;
+                }
+            }
+            .hills {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 34vh;
+            }
+            .hanok {
+                position: absolute;
+                left: 2%;
+                bottom: 4vh;
+                width: clamp(120px, 15vw, 220px);
+                opacity: 0.8;
+            }
+            .tree {
+                position: absolute;
+                top: calc(var(--hh, 82px) - 60px);
+                width: min(38vw, 440px);
+                height: auto;
+                transform-origin: top left;
+                animation: treesway 7s ease-in-out infinite alternate;
+            }
+            .tree.tl {
+                left: 0;
+            }
+            .tree.tr {
+                right: 0;
+                scale: -1 1;
+                transform-origin: 50% 0;
+                animation-delay: -3.5s;
+            }
+            @keyframes treesway {
+                from {
+                    rotate: -0.9deg;
+                }
+                to {
+                    rotate: 0.9deg;
+                }
+            }
+
+            /* ----- MALAM ----- */
+            .sc-night {
+                background: linear-gradient(180deg, #04061a 0%, #110e3a 36%, #371a60 68%, #8a2f78 91%, #c8498a 100%);
+            }
+            .moon {
+                position: absolute;
+                right: 9%;
+                top: 11%;
+                width: clamp(70px, 9vw, 120px);
+                aspect-ratio: 1;
+                border-radius: 50%;
+                background: radial-gradient(circle at 34% 34%, #fffef2, #f6eec9 55%, #e4d6a2);
+                box-shadow:
+                    0 0 50px 18px rgba(255, 244, 200, 0.35),
+                    0 0 140px 60px rgba(180, 160, 255, 0.25);
+            }
+            .moon::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background:
+                    radial-gradient(circle at 62% 38%, rgba(190, 170, 120, 0.35) 0 9%, transparent 10%),
+                    radial-gradient(circle at 40% 66%, rgba(190, 170, 120, 0.3) 0 12%, transparent 13%),
+                    radial-gradient(circle at 70% 70%, rgba(190, 170, 120, 0.25) 0 6%, transparent 7%);
+            }
+            .city {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 44vh;
+                will-change: transform;
+            }
+            .city.far {
+                height: 50vh;
+                opacity: 0.92;
+            }
+            .lanterns {
+                position: absolute;
+                left: 0;
+                top: calc(var(--hh, 82px) - 12px);
+                width: 100%;
+                height: 150px;
+                will-change: transform;
+            }
+            .lant {
+                transform-box: fill-box;
+                transform-origin: 50% 0;
+                animation: lsway 3.6s ease-in-out infinite alternate;
+            }
+            @keyframes lsway {
+                from {
+                    rotate: -4deg;
+                }
+                to {
+                    rotate: 4deg;
+                }
+            }
+            .blink {
+                animation: blink 3.2s step-end infinite;
+            }
+            @keyframes blink {
+                0%,
+                40% {
+                    opacity: 1;
+                }
+                45%,
+                60% {
+                    opacity: 0.2;
+                }
+                65%,
+                100% {
+                    opacity: 1;
+                }
+            }
+            .neon {
+                animation: flick 6s step-end infinite;
+            }
+            @keyframes flick {
+                0%,
+                91%,
+                100% {
+                    opacity: 1;
+                }
+                92% {
+                    opacity: 0.35;
+                }
+                93% {
+                    opacity: 1;
+                }
+                95% {
+                    opacity: 0.5;
+                }
+                96% {
+                    opacity: 1;
+                }
+            }
+
+            /* ----- komponen saat MALAM ----- */
+            html[data-theme='night'] {
+                --bg: #0b0820;
+                --line: rgba(255, 255, 255, 0.13);
+                --ink: #eef0ff;
+                --muted: #aaa7d2;
+                --dark: #0a0d24;
+                --dark2: #1a1c48;
+            }
+            html[data-theme='night'] header {
+                background: linear-gradient(180deg, #080a20, #11143a);
+                box-shadow:
+                    0 1px 0 rgba(255, 120, 200, 0.4),
+                    0 8px 30px rgba(255, 80, 170, 0.16);
+            }
+            html[data-theme='night'] .search {
+                background: rgba(255, 255, 255, 0.1);
+            }
+            html[data-theme='night'] .search input {
+                color: #fff;
+                background: transparent;
+                border: 0;
+            }
+            html[data-theme='night'] .search input::placeholder {
+                color: #a9a6cf;
+            }
+            html[data-theme='night'] .search .icon {
+                color: #a9a6cf;
+            }
+            html[data-theme='night'] .hero {
+                border-color: rgba(255, 140, 200, 0.45);
+                box-shadow:
+                    0 0 44px rgba(255, 90, 170, 0.3),
+                    0 12px 36px rgba(0, 0, 0, 0.45);
+            }
+            html[data-theme='night'] .dots i {
+                background: rgba(255, 255, 255, 0.28);
+            }
+            html[data-theme='night'] .dots i.on {
+                background: #ff7ab8;
+            }
+            html[data-theme='night'] .cats,
+            html[data-theme='night'] .steps {
+                background: rgba(16, 14, 48, 0.84);
+                border-color: rgba(255, 255, 255, 0.12);
+            }
+            html[data-theme='night'] .cat {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: rgba(255, 255, 255, 0.13);
+                color: #eef0ff;
+            }
+            html[data-theme='night'] .cat.active {
+                background: linear-gradient(120deg, #0f7a45, #1fa65a);
+                border-color: transparent;
+                color: #fff;
+                box-shadow: 0 0 18px rgba(31, 166, 90, 0.5);
+            }
+            html[data-theme='night'] .seeall {
+                background: transparent;
+                color: #8ee66a;
+                border-color: #8ee66a;
+            }
+            html[data-theme='night'] .card {
+                background: rgba(22, 20, 58, 0.86);
+                border-color: rgba(255, 255, 255, 0.13);
+                box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+            }
+            html[data-theme='night'] .card:hover {
+                box-shadow:
+                    0 10px 30px rgba(255, 90, 170, 0.28),
+                    0 0 0 1px rgba(255, 120, 200, 0.4);
+            }
+            html[data-theme='night'] .pic {
+                background: linear-gradient(135deg, #1c1850, #2b2070);
+            }
+            html[data-theme='night'] .num-badge {
+                border-color: #1a1c48;
+            }
+            html[data-theme='night'] .feature .circ {
+                background: rgba(255, 255, 255, 0.1);
+                color: #9be7b9;
+            }
+            html[data-theme='night'] .promo {
+                background: linear-gradient(120deg, #43237a, #b3206a);
+                box-shadow: 0 0 30px rgba(255, 70, 160, 0.3);
+            }
+            html[data-theme='night'] .promo p {
+                color: #ffe2f0;
+            }
+            html[data-theme='night'] .panel,
+            html[data-theme='night'] .box {
+                background: #13102e;
+                color: var(--ink);
+            }
+            html[data-theme='night'] .panelhead {
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .close {
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+            }
+            html[data-theme='night'] .item {
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .qty button {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border-color: var(--line);
+            }
+            html[data-theme='night'] input,
+            html[data-theme='night'] textarea,
+            html[data-theme='night'] select {
+                background: rgba(255, 255, 255, 0.07);
+                color: #fff;
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+            html[data-theme='night'] select option {
+                background: #13102e;
+                color: #fff;
+            }
+            html[data-theme='night'] label {
+                color: #cfd0ff;
+            }
+            html[data-theme='night'] .title,
+            html[data-theme='night'] .whead h2,
+            html[data-theme='night'] h2[style*='00452f'] {
+                color: #fff !important;
+            }
+            html[data-theme='night'] .opt {
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .secondary {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .preview,
+            html[data-theme='night'] .paybox,
+            html[data-theme='night'] .wacct {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .paybox b,
+            html[data-theme='night'] .wacct .num,
+            html[data-theme='night'] .wsec {
+                color: #fff;
+            }
+            html[data-theme='night'] .wrow {
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .wchip,
+            html[data-theme='night'] .wmethod,
+            html[data-theme='night'] .mini {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border-color: var(--line);
+            }
+            html[data-theme='night'] .mini.wa {
+                background: #1fbf5c;
+                border: 0;
+            }
+            html[data-theme='night'] .wsteps {
+                background: rgba(244, 200, 74, 0.12);
+                border-color: rgba(244, 200, 74, 0.35);
+                color: #ffe9a8;
+            }
+            html[data-theme='night'] .pill {
+                background: rgba(255, 255, 255, 0.1);
+                color: #dcdcff;
+            }
+            html[data-theme='night'] .pill.pending {
+                background: rgba(244, 200, 74, 0.18);
+                color: #ffd978;
+            }
+            html[data-theme='night'] .pill.approved {
+                background: rgba(31, 166, 90, 0.25);
+                color: #9be7b9;
+            }
+            html[data-theme='night'] .toast {
+                background: #2b2070;
+            }
+            @media (max-width: 700px) {
+                html[data-theme='night'] .step,
+                html[data-theme='night'] .feature {
+                    background: rgba(255, 255, 255, 0.06);
+                    border-color: rgba(255, 255, 255, 0.12);
+                }
+                .lanterns {
+                    height: 120px;
+                }
+            }
+            @media (max-width: 420px) {
+                .themebtn {
+                    width: 38px;
+                    height: 38px;
+                }
+                .nav {
+                    gap: 8px;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .scene *,
+                .scene *::before {
+                    animation: none !important;
+                }
+            }
         </style>
     </head>
     <body>
+        <div class="scene" aria-hidden="true">
+            <div class="layer sc-day">
+                <div class="sun"></div>
+                <div class="cloud c1"></div>
+                <div class="cloud c2"></div>
+                <div class="cloud c3"></div>
+                <svg class="hills" viewBox="0 0 1600 300" preserveAspectRatio="none">
+                    <path
+                        d="M0 150 Q200 70 420 130 T820 110 T1240 120 T1600 90 V300 H0Z"
+                        fill="#cfe0ff"
+                        opacity="0.75"
+                    />
+                    <path d="M0 200 Q260 120 520 190 T1020 170 T1600 190 V300 H0Z" fill="#ffd4e3" opacity="0.9" />
+                    <path d="M0 250 Q300 190 640 245 T1240 235 T1600 250 V300 H0Z" fill="#bfeacb" />
+                </svg>
+                <svg class="hanok" viewBox="0 0 300 130">
+                    <path
+                        d="M4 58 Q40 62 82 44 Q120 22 150 20 Q180 22 218 44 Q260 62 296 58 Q276 72 252 74 L48 74 Q24 72 4 58Z"
+                        fill="#c9788f"
+                    />
+                    <path d="M40 78 H260 V116 H40Z" fill="#f4dfd0" />
+                    <path d="M40 78 H260 V84 H40Z" fill="#a8576f" />
+                    <g fill="#8a4a52">
+                        <rect x="56" y="84" width="6" height="32" />
+                        <rect x="118" y="84" width="6" height="32" />
+                        <rect x="176" y="84" width="6" height="32" />
+                        <rect x="238" y="84" width="6" height="32" />
+                    </g>
+                    <g fill="#e9c9a9" stroke="#8a4a52" stroke-width="1.5">
+                        <rect x="66" y="88" width="48" height="26" />
+                        <rect x="128" y="88" width="44" height="26" />
+                        <rect x="186" y="88" width="48" height="26" />
+                    </g>
+                    <path d="M20 118 H280" stroke="#9aa890" stroke-width="3" />
+                </svg>
+                <svg class="tree tl" id="treeL" viewBox="0 0 420 460"></svg>
+                <svg class="tree tr" id="treeR" viewBox="0 0 420 460"></svg>
+            </div>
+            <div class="layer sc-night">
+                <div class="moon"></div>
+                <svg class="city far" id="cityFar" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMax slice"></svg>
+                <svg class="city near" id="cityNear" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMax slice"></svg>
+                <svg class="lanterns" id="lanterns" viewBox="0 0 1600 150" preserveAspectRatio="xMidYMin slice"></svg>
+            </div>
+        </div>
+        <canvas id="fx" aria-hidden="true"></canvas>
         <header>
             <nav class="nav">
                 <img class="logo" id="logoImg" src="Logo.png" alt="KIMBABKU" />
@@ -1687,6 +2323,23 @@
                     </svg>
                     <span class="txt">Keranjang</span>
                     <span class="badge" id="badge">0</span>
+                </button>
+                <button
+                    class="themebtn"
+                    id="themeBtn"
+                    onclick="toggleTheme()"
+                    aria-label="Ganti ke tampilan malam"
+                    title="Ganti tampilan siang / malam"
+                >
+                    <svg class="icon i-sun" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4.5" />
+                        <path
+                            d="M12 2v2.5M12 19.5V22M4.2 4.2L6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"
+                        />
+                    </svg>
+                    <svg class="icon i-moon" viewBox="0 0 24 24">
+                        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+                    </svg>
                 </button>
             </nav>
         </header>
@@ -3145,9 +3798,383 @@
                 }
             }
 
+            // ---------- TEMA SIANG / MALAM + PEMANDANGAN ----------
+            const THEME_KEY = 'kb-theme';
+            const autoTheme = () => {
+                const h = new Date().getHours();
+                return h >= 6 && h < 18 ? 'day' : 'night';
+            };
+            const currentTheme = () => {
+                const s = lsGet(THEME_KEY);
+                return s === 'day' || s === 'night' ? s : autoTheme();
+            };
+            const SVGNS = 'http://www.w3.org/2000/svg';
+            function rng(seed) {
+                let s = seed % 2147483647;
+                if (s <= 0) s += 2147483646;
+                return () => (s = (s * 16807) % 2147483647) / 2147483647;
+            }
+
+            // Pohon sakura (digambar lewat kode: batang + dahan + gerombol bunga)
+            function buildTree(svg, seed) {
+                const r = rng(seed);
+                const limbs = [
+                    [
+                        [-20, 30],
+                        [150, 15],
+                        [270, 115],
+                    ],
+                    [
+                        [-20, 130],
+                        [120, 110],
+                        [215, 235],
+                    ],
+                    [
+                        [-20, 235],
+                        [90, 240],
+                        [150, 345],
+                    ],
+                    [
+                        [45, -10],
+                        [130, 90],
+                        [118, 215],
+                    ],
+                    [
+                        [110, -10],
+                        [190, 60],
+                        [300, 70],
+                    ],
+                ];
+                const pink = ['#ffc2d6', '#ffb0ca', '#ff9fbf', '#ffd6e4', '#ffe4ee', '#f98db3'];
+                let wood = '',
+                    bloom = '';
+                limbs.forEach(([a, b, c]) => {
+                    wood += `<path d="M${a[0]} ${a[1]} Q${b[0]} ${b[1]} ${c[0]} ${c[1]}" fill="none" stroke="#6d4a4f" stroke-width="${7 + Math.round(r() * 3)}" stroke-linecap="round"/>`;
+                    for (let i = 0; i <= 14; i++) {
+                        const t = i / 14,
+                            x = (1 - t) * (1 - t) * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0],
+                            y = (1 - t) * (1 - t) * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1];
+                        for (let k = 0; k < 5; k++)
+                            bloom += `<circle cx="${(x + (r() - 0.5) * 56).toFixed(0)}" cy="${(y + (r() - 0.5) * 56).toFixed(0)}" r="${(6 + r() * 11).toFixed(1)}" fill="${pink[Math.floor(r() * pink.length)]}" opacity="${(0.72 + r() * 0.26).toFixed(2)}"/>`;
+                    }
+                });
+                svg.innerHTML = wood + bloom;
+            }
+
+            // Kota Seoul malam hari: gedung acak + jendela menyala (digabung per warna biar ringan)
+            function buildCity(svg, o) {
+                const r = rng(o.seed),
+                    W = 1600,
+                    H = 360;
+                let body = '',
+                    lit = { '#ffd47a': '', '#ff9ad5': '', '#7fe9ff': '' },
+                    blink = '',
+                    x = -20;
+                const cols = Object.keys(lit);
+                while (x < W + 20) {
+                    const w = o.minW + r() * (o.maxW - o.minW),
+                        h = o.minH + r() * (o.maxH - o.minH),
+                        y = H - h;
+                    body += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" fill="${o.fill}"/>`;
+                    if (r() < 0.3)
+                        body += `<rect x="${(x + w / 2 - 1.5).toFixed(0)}" y="${(y - 16).toFixed(0)}" width="3" height="16" fill="${o.fill}"/>`;
+                    for (let wy = y + 10; wy < H - 8; wy += 14)
+                        for (let wx = x + 8; wx < x + w - 10; wx += 12)
+                            if (r() < o.density) {
+                                const c = cols[Math.floor(r() * cols.length)];
+                                lit[c] += `M${wx.toFixed(0)} ${wy.toFixed(0)}h5v7h-5z`;
+                                if (r() < 0.025)
+                                    blink += `<rect class="blink" style="animation-delay:-${(r() * 6).toFixed(1)}s" x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="5" height="7" fill="${c}"/>`;
+                            }
+                    x += w + o.gap * r();
+                }
+                const wins = cols.map((c) => `<path d="${lit[c]}" fill="${c}" opacity="${o.winAlpha}"/>`).join('');
+                svg.innerHTML = body + wins + blink + (o.extra || '');
+            }
+            const SEOUL_EXTRA =
+                `<path d="M960 360 Q1150 248 1340 360Z" fill="#0a0722"/>` +
+                `<path d="M1147 300 L1152 214 L1158 214 L1163 300Z" fill="#0a0722"/><ellipse cx="1155" cy="206" rx="15" ry="8" fill="#241a5c"/><ellipse cx="1155" cy="206" rx="15" ry="8" fill="none" stroke="#ff9ad5" stroke-width="1.5" opacity=".9"/><rect x="1154" y="150" width="2" height="56" fill="#0a0722"/><circle class="blink" cx="1155" cy="148" r="2.6" fill="#ff5b6b"/>` +
+                `<g class="neon" style="filter:drop-shadow(0 0 6px #ff4fa3)"><rect x="470" y="170" width="86" height="46" rx="6" fill="#120a30" stroke="#ff7fc0" stroke-width="2.5"/><text x="513" y="203" text-anchor="middle" font-size="26" font-weight="800" fill="#ffd6ec" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">김밥</text><rect x="509" y="216" width="8" height="150" fill="#120a30"/></g>` +
+                `<g class="neon" style="filter:drop-shadow(0 0 6px #4fe3ff);animation-delay:-2.2s"><rect x="1395" y="195" width="86" height="46" rx="6" fill="#0d1236" stroke="#6ee8ff" stroke-width="2.5"/><text x="1438" y="228" text-anchor="middle" font-size="26" font-weight="800" fill="#d6f7ff" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">한식</text><rect x="1434" y="241" width="8" height="130" fill="#0d1236"/></g>`;
+
+            // Lampion Korea (청사초롱) bergoyang
+            function buildLanterns(svg) {
+                let s =
+                    '<defs><radialGradient id="lg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#ffe29a"/><stop offset=".45" stop-color="#ff7a4d"/><stop offset="1" stop-color="#d11f3d"/></radialGradient><radialGradient id="lh"><stop offset="0" stop-color="rgba(255,110,80,.55)"/><stop offset="1" stop-color="rgba(255,110,80,0)"/></radialGradient></defs>';
+                const n = 14,
+                    pts = [];
+                for (let i = 0; i < n; i++) {
+                    const t = i / (n - 1);
+                    pts.push([60 + t * 1480, 10 + 26 * Math.sin(Math.PI * t)]);
+                }
+                s += `<path d="M0 8 Q800 62 1600 8" fill="none" stroke="#8a5a5a" stroke-width="2" opacity=".8"/>`;
+                pts.forEach(([x, y], i) => {
+                    const yy = y + 12 * Math.sin(Math.PI * (i / (n - 1))) * 0.9;
+                    s += `<g transform="translate(${x.toFixed(0)} ${yy.toFixed(0)})"><g class="lant" style="animation-delay:-${(i * 0.47).toFixed(2)}s"><circle cx="0" cy="34" r="30" fill="url(#lh)"/><line x1="0" y1="0" x2="0" y2="14" stroke="#8a5a5a" stroke-width="2"/><rect x="-7" y="14" width="14" height="5" rx="2" fill="#f4c84a"/><ellipse cx="0" cy="34" rx="12" ry="16" fill="url(#lg)"/><rect x="-7" y="50" width="14" height="4" rx="2" fill="#f4c84a"/><line x1="0" y1="54" x2="0" y2="68" stroke="#ff5b6b" stroke-width="2"/></g></g>`;
+                });
+                svg.innerHTML = s;
+            }
+            function buildScene() {
+                buildTree(document.getElementById('treeL'), 7);
+                buildTree(document.getElementById('treeR'), 21);
+                buildCity(document.getElementById('cityFar'), {
+                    seed: 11,
+                    minW: 38,
+                    maxW: 90,
+                    minH: 90,
+                    maxH: 230,
+                    gap: 8,
+                    fill: '#241b64',
+                    density: 0.28,
+                    winAlpha: 0.55,
+                });
+                buildCity(document.getElementById('cityNear'), {
+                    seed: 5,
+                    minW: 44,
+                    maxW: 110,
+                    minH: 70,
+                    maxH: 190,
+                    gap: 14,
+                    fill: '#0b0826',
+                    density: 0.4,
+                    winAlpha: 0.95,
+                    extra: SEOUL_EXTRA,
+                });
+                buildLanterns(document.getElementById('lanterns'));
+            }
+
+            // Kanvas efek: kelopak sakura (siang) / bintang + bokeh + bintang jatuh (malam)
+            const fx = {
+                c: null,
+                x: null,
+                raf: 0,
+                last: 0,
+                theme: 'day',
+                w: 0,
+                h: 0,
+                items: [],
+                shoot: null,
+                nextShoot: 0,
+            };
+            const reduceMotion = () =>
+                typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const PETAL_COLS = ['#ffd1df', '#ffb7cd', '#ff9fbd', '#ffe3ec', '#ffc2d6'];
+            function fxSeed() {
+                const mobile = fx.w < 700,
+                    R = Math.random;
+                fx.items = [];
+                if (fx.theme === 'day') {
+                    const n = mobile ? 20 : 38;
+                    for (let i = 0; i < n; i++)
+                        fx.items.push({
+                            x: R() * fx.w,
+                            y: R() * fx.h,
+                            s: (5 + R() * 7) * (mobile ? 1.3 : 1),
+                            vy: 22 + R() * 34,
+                            vx: 8 + R() * 16,
+                            sw: 14 + R() * 26,
+                            sp: 0.6 + R() * 1.2,
+                            ph: R() * 6.28,
+                            rot: R() * 6.28,
+                            vr: (R() - 0.5) * 1.6,
+                            tilt: R() * 6.28,
+                            col: PETAL_COLS[Math.floor(R() * PETAL_COLS.length)],
+                        });
+                } else {
+                    const stars = mobile ? 60 : 110,
+                        bok = mobile ? 14 : 26;
+                    for (let i = 0; i < stars; i++)
+                        fx.items.push({
+                            k: 's',
+                            x: R() * fx.w,
+                            y: R() * fx.h * 0.6,
+                            r: 0.5 + R() * 1.3,
+                            ph: R() * 6.28,
+                            sp: 0.8 + R() * 2,
+                        });
+                    const bc = ['255,130,195', '255,214,130', '130,225,255'];
+                    for (let i = 0; i < bok; i++)
+                        fx.items.push({
+                            k: 'b',
+                            x: R() * fx.w,
+                            y: R() * fx.h,
+                            r: 14 + R() * 46,
+                            vy: 6 + R() * 14,
+                            vx: (R() - 0.5) * 6,
+                            a: 0.06 + R() * 0.16,
+                            col: bc[Math.floor(R() * bc.length)],
+                            ph: R() * 6.28,
+                        });
+                    fx.nextShoot = performance.now() + 3000 + R() * 5000;
+                }
+            }
+            function fxResize() {
+                if (!fx.c || !fx.x) return; // kanvas tidak tersedia -> pemandangan SVG/CSS tetap tampil, hanya tanpa kelopak/bintang bergerak
+                const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1 : 1.5);
+                fx.w = window.innerWidth;
+                fx.h = window.innerHeight;
+                fx.c.width = Math.round(fx.w * dpr);
+                fx.c.height = Math.round(fx.h * dpr);
+                fx.x.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const hd = document.querySelector('header');
+                if (hd) document.documentElement.style.setProperty('--hh', hd.offsetHeight + 'px');
+                fxSeed();
+                if (reduceMotion()) fxDraw(0);
+            }
+            function drawPetal(c, p) {
+                const s = p.s;
+                c.save();
+                c.translate(p.x, p.y);
+                c.rotate(p.rot);
+                c.scale(1, Math.cos(p.tilt) * 0.8 + 0.2);
+                c.beginPath();
+                c.moveTo(0, s * 0.9);
+                c.bezierCurveTo(-s, s * 0.2, -s * 0.8, -s * 0.9, -s * 0.12, -s);
+                c.lineTo(0, -s * 0.72);
+                c.lineTo(s * 0.12, -s);
+                c.bezierCurveTo(s * 0.8, -s * 0.9, s, s * 0.2, 0, s * 0.9);
+                c.fillStyle = p.col;
+                c.globalAlpha = 0.88;
+                c.fill();
+                c.restore();
+            }
+            function fxDraw(dt) {
+                const c = fx.x,
+                    now = performance.now() / 1000;
+                c.clearRect(0, 0, fx.w, fx.h);
+                if (fx.theme === 'day') {
+                    fx.items.forEach((p) => {
+                        p.y += p.vy * dt;
+                        p.x += (p.vx + Math.sin(now * p.sp + p.ph) * p.sw * 0.5) * dt;
+                        p.rot += p.vr * dt;
+                        p.tilt += dt * 2;
+                        if (p.y > fx.h + 20) {
+                            p.y = -20;
+                            p.x = Math.random() * fx.w;
+                        }
+                        if (p.x > fx.w + 20) p.x = -20;
+                        drawPetal(c, p);
+                    });
+                } else {
+                    fx.items.forEach((p) => {
+                        if (p.k === 's') {
+                            c.globalAlpha = 0.25 + 0.75 * Math.abs(Math.sin(now * p.sp + p.ph));
+                            c.fillStyle = '#fff';
+                            c.beginPath();
+                            c.arc(p.x, p.y, p.r, 0, 6.283);
+                            c.fill();
+                        } else {
+                            p.y -= p.vy * dt;
+                            p.x += p.vx * dt + Math.sin(now * 0.4 + p.ph) * 4 * dt;
+                            if (p.y < -p.r) {
+                                p.y = fx.h + p.r;
+                                p.x = Math.random() * fx.w;
+                            }
+                            const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+                            g.addColorStop(0, `rgba(${p.col},${p.a * 1.6})`);
+                            g.addColorStop(0.6, `rgba(${p.col},${p.a})`);
+                            g.addColorStop(1, `rgba(${p.col},0)`);
+                            c.globalAlpha = 1;
+                            c.fillStyle = g;
+                            c.beginPath();
+                            c.arc(p.x, p.y, p.r, 0, 6.283);
+                            c.fill();
+                        }
+                    });
+                    const t = performance.now();
+                    if (!fx.shoot && t > fx.nextShoot && !reduceMotion())
+                        fx.shoot = {
+                            x: Math.random() * fx.w * 0.7 + fx.w * 0.1,
+                            y: Math.random() * fx.h * 0.3,
+                            life: 0,
+                        };
+                    if (fx.shoot) {
+                        const s = fx.shoot;
+                        s.life += dt;
+                        s.x += 520 * dt;
+                        s.y += 260 * dt;
+                        const g = c.createLinearGradient(s.x, s.y, s.x - 90, s.y - 45);
+                        g.addColorStop(0, 'rgba(255,255,255,.95)');
+                        g.addColorStop(1, 'rgba(255,255,255,0)');
+                        c.globalAlpha = Math.max(0, 1 - s.life / 1.1);
+                        c.strokeStyle = g;
+                        c.lineWidth = 2;
+                        c.beginPath();
+                        c.moveTo(s.x, s.y);
+                        c.lineTo(s.x - 90, s.y - 45);
+                        c.stroke();
+                        if (s.life > 1.1) {
+                            fx.shoot = null;
+                            fx.nextShoot = t + 7000 + Math.random() * 8000;
+                        }
+                    }
+                }
+                c.globalAlpha = 1;
+            }
+            function fxLoop(t) {
+                fx.raf = 0;
+                if (document.hidden || reduceMotion()) return;
+                const dt = Math.min(0.05, (t - (fx.last || t)) / 1000);
+                fx.last = t;
+                fxDraw(dt);
+                fx.raf = requestAnimationFrame(fxLoop);
+            }
+            function fxStart() {
+                if (!fx.x || fx.raf || document.hidden) return;
+                if (reduceMotion()) {
+                    fxDraw(0);
+                    return;
+                }
+                fx.last = 0;
+                fx.raf = requestAnimationFrame(fxLoop);
+            }
+            function applyTheme(t) {
+                document.documentElement.setAttribute('data-theme', t);
+                const m = document.querySelector('meta[name="theme-color"]');
+                if (m) m.setAttribute('content', t === 'night' ? '#0a0d24' : '#0b2f1f');
+                const b = document.getElementById('themeBtn');
+                if (b)
+                    b.setAttribute('aria-label', t === 'night' ? 'Ganti ke tampilan siang' : 'Ganti ke tampilan malam');
+                fx.theme = t;
+                if (fx.x) {
+                    fxSeed();
+                    if (reduceMotion()) fxDraw(0);
+                }
+                fxStart();
+            }
+            function toggleTheme() {
+                const t = currentTheme() === 'day' ? 'night' : 'day';
+                lsSet(THEME_KEY, t);
+                applyTheme(t);
+            }
+            function initTheme() {
+                buildScene();
+                fx.c = document.getElementById('fx');
+                fx.x = fx.c && fx.c.getContext ? fx.c.getContext('2d') : null;
+                fx.theme = currentTheme();
+                if (fx.x) fxResize();
+                applyTheme(fx.theme);
+                window.addEventListener('resize', () => {
+                    clearTimeout(fx.rt);
+                    fx.rt = setTimeout(fxResize, 150);
+                });
+                window.addEventListener('load', fxResize);
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        cancelAnimationFrame(fx.raf);
+                        fx.raf = 0;
+                    } else fxStart();
+                });
+                // Tanpa pilihan manual, tema berganti otomatis saat jam 06.00 / 18.00
+                setInterval(() => {
+                    if (!lsGet(THEME_KEY) && autoTheme() !== fx.theme) applyTheme(autoTheme());
+                }, 60000);
+            }
+
             renderHero();
             heroAutoplay();
             renderContact();
+            initTheme();
             initAuth();
         </script>
     </body>
