@@ -714,6 +714,19 @@
                 width: 26px;
                 height: 26px;
             }
+            .float.has-icon {
+                background: #fff;
+                padding: 0;
+                overflow: hidden;
+                border: 3px solid #fff;
+            }
+            .float-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+                display: block;
+            }
             .chat-panel {
                 position: fixed;
                 right: 20px;
@@ -2820,6 +2833,16 @@
         </footer>
         <div id="chatPanel" class="chat-panel" role="dialog" aria-label="Live chat" hidden></div>
         <button class="float" id="floatBtn" onclick="floatClick()" aria-label="Chat WhatsApp">
+            <img
+                id="iconCustom"
+                class="float-img"
+                alt=""
+                hidden
+                onerror="
+                    chatIconBad = true;
+                    updateFloat();
+                "
+            />
             <svg id="iconWa" class="icon filled" viewBox="0 0 24 24">
                 <path d="M20.5 3.5a11 11 0 0 0-17 13.3L2 21l4.4-1.4A11 11 0 1 0 20.5 3.5z" />
             </svg>
@@ -2925,6 +2948,7 @@
             // ---------- HERO ----------
             const DEFAULT_BANNERS = ['Baner.jpg', 'Banner-1.jpg', 'Banner-2.jpg', 'Banner-3.jpg'];
             let BANNERS = DEFAULT_BANNERS;
+            let STORE_BANNERS = []; // daftar banner dari admin (kosong = pakai banner bawaan)
             let heroIndex = 0,
                 heroTimer = null;
             function renderHero() {
@@ -2978,7 +3002,15 @@
                         l.href = SETTINGS.faviconUrl;
                     });
                 }
-                BANNERS = SETTINGS.bannerUrl ? [SETTINGS.bannerUrl] : DEFAULT_BANNERS;
+                BANNERS = STORE_BANNERS.length
+                    ? STORE_BANNERS
+                    : SETTINGS.bannerUrl
+                      ? [SETTINGS.bannerUrl]
+                      : DEFAULT_BANNERS;
+                BANNERS.slice(1).forEach((u) => {
+                    const im = new Image();
+                    im.src = u;
+                }); // muat duluan agar pergantian banner mulus
                 heroIndex = 0;
                 renderHero();
                 heroAutoplay();
@@ -3051,6 +3083,7 @@
                 SETTINGS = d.settings || {};
                 const w = waClean(SETTINGS.whatsappNumber);
                 if (w) CONFIG.waAdmin = w;
+                STORE_BANNERS = Array.isArray(d.banners) ? d.banners.filter((u) => /^https:\/\//i.test(String(u))) : [];
                 applyBrandAssets();
                 syncChat();
                 cart = cart.filter((x) => MENUS.some((p) => p.id === x.id));
@@ -3440,10 +3473,23 @@
             // Kalau kosong -> gelembung tetap membuka WhatsApp seperti biasa.
             let chatOpen = false;
             const chatUrl = () => (/^https:\/\//i.test(SETTINGS.chatUrl || '') ? SETTINGS.chatUrl : '');
+            let chatIconBad = false,
+                lastChatIcon = '';
             function updateFloat() {
                 const has = !!chatUrl();
-                document.getElementById('iconWa').hidden = has || chatOpen;
-                document.getElementById('iconChat').hidden = !has || chatOpen;
+                // Ikon kustom dari admin (foto / GIF). Gagal dimuat -> otomatis kembali ke ikon bawaan.
+                const raw = String(SETTINGS.chatIconUrl || '');
+                if (raw !== lastChatIcon) {
+                    lastChatIcon = raw;
+                    chatIconBad = false;
+                }
+                const showCustom = /^https:\/\//i.test(raw) && !chatIconBad && !chatOpen;
+                const img = document.getElementById('iconCustom');
+                if (showCustom && img.getAttribute('src') !== raw) img.src = raw;
+                img.hidden = !showCustom;
+                document.getElementById('floatBtn').classList.toggle('has-icon', showCustom);
+                document.getElementById('iconWa').hidden = showCustom || has || chatOpen;
+                document.getElementById('iconChat').hidden = showCustom || !has || chatOpen;
                 document.getElementById('iconClose').hidden = !chatOpen;
                 document
                     .getElementById('floatBtn')

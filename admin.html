@@ -613,6 +613,63 @@
                 color: #777;
                 font-size: 13px;
             }
+            .banner-item {
+                display: flex;
+                gap: 14px;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 12px;
+                border: 1px solid #eee;
+                border-radius: 14px;
+                margin-bottom: 12px;
+                background: #fff;
+            }
+            .banner-no {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #171717;
+                color: #f4c84a;
+                display: grid;
+                place-items: center;
+                font-weight: 800;
+                flex-shrink: 0;
+            }
+            .banner-thumb {
+                width: 240px;
+                height: 90px;
+                border-radius: 10px;
+                object-fit: cover;
+                background: #eee;
+                flex-shrink: 0;
+            }
+            .banner-actions {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                margin-left: auto;
+            }
+            .small-btn:disabled {
+                opacity: 0.4;
+                cursor: not-allowed;
+            }
+            @media (max-width: 600px) {
+                .banner-thumb {
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 8 / 3;
+                }
+                .banner-actions {
+                    width: 100%;
+                    margin-left: 0;
+                }
+                .banner-actions button {
+                    flex: 1;
+                    padding: 9px 6px;
+                    font-size: 13px;
+                    white-space: nowrap;
+                }
+            }
             @media (max-width: 600px) {
                 .kv {
                     grid-template-columns: 1fr;
@@ -1133,8 +1190,11 @@
                     <div class="panel">
                         <div class="panel-head">
                             <div>
-                                <h2>Logo, Favicon &amp; Banner</h2>
-                                <p>Tampil di halaman pelanggan. Maksimal 2 MB, format JPG/PNG/WEBP.</p>
+                                <h2>Logo, Favicon &amp; Ikon Livechat</h2>
+                                <p>
+                                    Tampil di halaman pelanggan. Maksimal 2 MB, format JPG/PNG/WEBP (ikon livechat boleh
+                                    GIF).
+                                </p>
                             </div>
                         </div>
                         <div class="asset-card">
@@ -1149,22 +1209,6 @@
                                     Upload / Ganti
                                 </button>
                                 <button type="button" class="small-btn danger" id="logoDeleteBtn" hidden>Hapus</button>
-                            </div>
-                        </div>
-                        <div class="asset-card">
-                            <div class="asset-preview" id="bannerPreview">Belum ada banner</div>
-                            <div class="asset-info">
-                                <strong>Banner Hero</strong>
-                                <small>Gambar besar di bagian atas halaman pelanggan.</small>
-                            </div>
-                            <div class="asset-actions">
-                                <input type="file" id="bannerInput" accept="image/jpeg,image/png,image/webp" hidden />
-                                <button type="button" class="btn btn-secondary" id="bannerUploadBtn">
-                                    Upload / Ganti
-                                </button>
-                                <button type="button" class="small-btn danger" id="bannerDeleteBtn" hidden>
-                                    Hapus
-                                </button>
                             </div>
                         </div>
                         <div class="asset-card">
@@ -1186,6 +1230,47 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="asset-card">
+                            <div class="asset-preview logo-preview" id="chatIconPreview" style="border-radius: 50%">
+                                Bawaan
+                            </div>
+                            <div class="asset-info">
+                                <strong>Ikon Gelembung Livechat</strong>
+                                <small
+                                    >Foto atau GIF untuk tombol bulat di pojok kanan bawah. Kosongkan untuk memakai ikon
+                                    bawaan. GIF maks. 2 MB (tetap bergerak).</small
+                                >
+                            </div>
+                            <div class="asset-actions">
+                                <input
+                                    type="file"
+                                    id="chatIconInput"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
+                                    hidden
+                                />
+                                <button type="button" class="btn btn-secondary" id="chatIconUploadBtn">
+                                    Upload / Ganti
+                                </button>
+                                <button type="button" class="small-btn danger" id="chatIconDeleteBtn" hidden>
+                                    Pakai Bawaan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Banner Hero</h2>
+                                <p id="bannerCount">Gambar besar di bagian atas halaman pelanggan.</p>
+                            </div>
+                            <button class="btn btn-primary" id="bannerAddBtn">+ Tambah Banner</button>
+                        </div>
+                        <input type="file" id="bannerInput" accept="image/jpeg,image/png,image/webp" hidden />
+                        <div id="bannerList"></div>
+                        <p class="muted">
+                            Banner tampil bergantian otomatis. Pakai gambar lebar (disarankan rasio sekitar 8:3, mis.
+                            1600×600). Gunakan tombol ↑ ↓ untuk mengatur urutan.
+                        </p>
                     </div>
                     <div class="panel">
                         <div class="panel-head">
@@ -1402,12 +1487,14 @@
                 state.categories = d.categories || [];
                 state.settings = d.settings || {};
                 state.stats = d.stats || {};
+                state.banners = d.banners || [];
                 renderDashboard();
                 renderMenus();
                 renderCategories();
                 renderSettings();
                 renderBrandAssets();
                 renderQris();
+                renderBanners();
                 populateCategorySelect();
             }
             function renderDashboard() {
@@ -1558,7 +1645,6 @@
             }
             function renderBrandAssets() {
                 const logoUrl = state.settings.logoUrl || '';
-                const bannerUrl = state.settings.bannerUrl || '';
                 const logoPrev = $('#logoPreview');
                 if (logoUrl) {
                     logoPrev.style.backgroundImage = `url('${cssUrl(logoUrl)}')`;
@@ -1568,15 +1654,6 @@
                     logoPrev.textContent = 'Belum ada logo';
                 }
                 $('#logoDeleteBtn').hidden = !logoUrl;
-                const bannerPrev = $('#bannerPreview');
-                if (bannerUrl) {
-                    bannerPrev.style.backgroundImage = `url('${cssUrl(bannerUrl)}')`;
-                    bannerPrev.textContent = '';
-                } else {
-                    bannerPrev.style.backgroundImage = '';
-                    bannerPrev.textContent = 'Belum ada banner';
-                }
-                $('#bannerDeleteBtn').hidden = !bannerUrl;
                 const faviconUrl = state.settings.faviconUrl || '';
                 const favPrev = $('#faviconPreview');
                 if (faviconUrl) {
@@ -1594,6 +1671,17 @@
                     favPrev.textContent = 'Belum ada favicon';
                 }
                 $('#faviconDeleteBtn').hidden = !faviconUrl;
+                const ciUrl = state.settings.chatIconUrl || '';
+                const ciPrev = $('#chatIconPreview');
+                if (ciUrl) {
+                    ciPrev.style.backgroundImage = `url('${cssUrl(ciUrl)}')`;
+                    ciPrev.style.backgroundSize = 'cover';
+                    ciPrev.textContent = '';
+                } else {
+                    ciPrev.style.backgroundImage = '';
+                    ciPrev.textContent = 'Bawaan';
+                }
+                $('#chatIconDeleteBtn').hidden = !ciUrl;
             }
             function renderSettings() {
                 const f = $('#settingsForm');
@@ -1701,7 +1789,8 @@
                     throw new Error('Gambar masih lebih dari 2 MB setelah diproses. Pakai gambar yang lebih kecil.');
                 return blob;
             }
-            const extFor = (type) => (type === 'image/webp' ? 'webp' : type === 'image/png' ? 'png' : 'jpg');
+            const extFor = (type) =>
+                type === 'image/webp' ? 'webp' : type === 'image/png' ? 'png' : type === 'image/gif' ? 'gif' : 'jpg';
             function blobToBase64(blob) {
                 return fileToBase64(blob);
             }
@@ -1858,24 +1947,35 @@
                     toast(err.message, true);
                 }
             };
-            $('#bannerUploadBtn').onclick = () => $('#bannerInput').click();
-            $('#bannerInput').addEventListener('change', async (e) => {
+            $('#chatIconUploadBtn').onclick = () => $('#chatIconInput').click();
+            $('#chatIconInput').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 e.target.value = '';
                 if (!file) return;
                 try {
-                    await uploadAssetFile('uploadBanner', file, {}, { square: false, maxWidth: 1600, quality: 0.82 });
-                    toast('Banner berhasil diperbarui.');
+                    let blob = file;
+                    // GIF dikirim apa adanya supaya tetap bergerak; foto biasa dipotong persegi & dikecilkan.
+                    if (file.type === 'image/gif') {
+                        if (file.size > MAX_UPLOAD_BYTES)
+                            throw new Error('GIF maksimal 2 MB. Kecilkan ukurannya dulu.');
+                    } else blob = await toWebp_(file, { square: true, size: 192, quality: 0.9 });
+                    const imageBase64 = await blobToBase64(blob);
+                    await api('uploadChatIcon', {
+                        imageBase64,
+                        mimeType: blob.type,
+                        imageName: 'chat-icon.' + extFor(blob.type),
+                    });
+                    toast('Ikon livechat diperbarui.');
                     await loadAll();
                 } catch (err) {
                     toast(err.message, true);
                 }
             });
-            $('#bannerDeleteBtn').onclick = async () => {
-                if (!confirm('Hapus banner saat ini? Halaman pelanggan akan memakai banner bawaan.')) return;
+            $('#chatIconDeleteBtn').onclick = async () => {
+                if (!confirm('Kembali memakai ikon livechat bawaan?')) return;
                 try {
-                    await api('deleteBanner');
-                    toast('Banner dihapus.');
+                    await api('deleteChatIcon');
+                    toast('Ikon livechat kembali ke bawaan.');
                     await loadAll();
                 } catch (err) {
                     toast(err.message, true);
@@ -2614,6 +2714,82 @@
             $('#newPaymentBtn').onclick = () => openPaymentModal(null);
             $('#pmClose').onclick = () => closeModal('paymentModal');
             $('#pmCancel').onclick = () => closeModal('paymentModal');
+
+            // ==================== Banner Hero: ganti foto, ganti posisi, hapus ====================
+            const MAX_BANNERS = 10;
+            let bannerTarget = '';
+            state.banners = [];
+            function renderBanners() {
+                const box = $('#bannerList');
+                box.replaceChildren();
+                const n = state.banners.length;
+                $('#bannerCount').textContent = n
+                    ? `${n} dari ${MAX_BANNERS} banner. Tampil bergantian di halaman pelanggan; nomor 1 tampil paling awal.`
+                    : 'Belum ada banner. Halaman pelanggan memakai banner bawaan.';
+                $('#bannerAddBtn').disabled = n >= MAX_BANNERS;
+                state.banners.forEach((b, i) => {
+                    const row = el('div', 'banner-item');
+                    const img = el('img', 'banner-thumb');
+                    img.src = b.url;
+                    img.alt = 'Banner ' + (i + 1);
+                    const acts = el('div', 'banner-actions');
+                    const mk = (label, cls, fn, disabled) => {
+                        const x = el('button', cls, label);
+                        x.type = 'button';
+                        x.disabled = !!disabled;
+                        x.onclick = fn;
+                        acts.append(x);
+                        return x;
+                    };
+                    mk('↑ Naik', 'small-btn', () => bannerMove(b, 'up'), i === 0);
+                    mk('↓ Turun', 'small-btn', () => bannerMove(b, 'down'), i === n - 1);
+                    mk('Ganti Foto', 'btn btn-secondary', () => bannerPick(b.id));
+                    mk('Hapus', 'small-btn danger', () => bannerDelete(b, i));
+                    row.append(el('div', 'banner-no', String(i + 1)), img, acts);
+                    box.append(row);
+                });
+            }
+            function bannerPick(id) {
+                bannerTarget = id || '';
+                $('#bannerInput').click();
+            }
+            async function bannerMove(b, direction) {
+                try {
+                    await api('moveBanner', { id: b.id, direction });
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            }
+            async function bannerDelete(b, i) {
+                if (!confirm(`Hapus Banner ${i + 1}? Fotonya ikut dihapus.`)) return;
+                try {
+                    await api('removeBanner', { id: b.id });
+                    toast('Banner dihapus.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            }
+            $('#bannerAddBtn').onclick = () => bannerPick('');
+            $('#bannerInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                e.target.value = '';
+                if (!file) return;
+                const id = bannerTarget;
+                try {
+                    // Foto banner: proporsi asli dipertahankan, lebar maks. 1600px, otomatis jadi WebP.
+                    await uploadAssetFile(id ? 'replaceBanner' : 'addBanner', file, id ? { id } : {}, {
+                        square: false,
+                        maxWidth: 1600,
+                        quality: 0.82,
+                    });
+                    toast(id ? 'Foto banner diganti.' : 'Banner ditambahkan.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
 
             function setupNav() {
                 document.querySelectorAll('.side-link[data-view]').forEach(
