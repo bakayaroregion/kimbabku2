@@ -1642,6 +1642,9 @@
             html[data-theme='night'] {
                 background: #0b0820;
             }
+            html {
+                scroll-padding-top: calc(var(--hh, 82px) + 14px);
+            }
             main,
             footer {
                 position: relative;
@@ -4363,10 +4366,82 @@
                 }, 60000);
             }
 
+            // ---------- NAVIGASI: offset header + penanda menu aktif ----------
+            let navLock = 0,
+                lastNav = '',
+                spyRaf = 0;
+            function syncHeaderHeight() {
+                const hd = document.querySelector('header');
+                if (hd) document.documentElement.style.setProperty('--hh', hd.offsetHeight + 'px');
+            }
+            function centerNavLink(a) {
+                const box = a.parentElement;
+                if (!box || box.scrollWidth <= box.clientWidth + 2) return;
+                box.scrollTo({ left: a.offsetLeft - (box.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+            }
+            function setNavActive(id) {
+                document.querySelectorAll('.links a').forEach((a) => {
+                    const on = a.getAttribute('href') === '#' + id;
+                    const was = a.classList.contains('active');
+                    a.classList.toggle('active', on);
+                    if (on && !was) centerNavLink(a);
+                });
+            }
+            function spy() {
+                spyRaf = 0;
+                if (Date.now() < navLock) return; // sedang menggulir karena klik menu
+                const hd = document.querySelector('header'),
+                    probe = (hd ? hd.offsetHeight : 82) + 40;
+                const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+                let cur = 'beranda';
+                ['kategori', 'menu', 'tentang', 'kontak'].forEach((id) => {
+                    const e = document.getElementById(id);
+                    if (e && e.getBoundingClientRect().top <= probe) cur = id;
+                });
+                if (atBottom) cur = lastNav === 'tentang' || lastNav === 'kontak' ? lastNav : 'kontak';
+                else lastNav = '';
+                setNavActive(cur);
+            }
+            function initNav() {
+                syncHeaderHeight();
+                const links = document.querySelector('.links');
+                if (links)
+                    links.addEventListener('click', (e) => {
+                        const a = e.target.closest('a[href^="#"]');
+                        if (!a) return;
+                        lastNav = a.getAttribute('href').slice(1);
+                        navLock = Date.now() + 1400;
+                        setNavActive(lastNav);
+                        clearTimeout(initNav.t);
+                        initNav.t = setTimeout(spy, 1450);
+                    });
+                window.addEventListener(
+                    'scroll',
+                    () => {
+                        if (!spyRaf) spyRaf = requestAnimationFrame(spy);
+                    },
+                    { passive: true }
+                );
+                window.addEventListener('resize', () => {
+                    syncHeaderHeight();
+                    spy();
+                });
+                window.addEventListener('load', () => {
+                    syncHeaderHeight();
+                    spy();
+                });
+                if (typeof ResizeObserver === 'function')
+                    new ResizeObserver(() => {
+                        syncHeaderHeight();
+                    }).observe(document.querySelector('header'));
+                spy();
+            }
+
             renderHero();
             heroAutoplay();
             renderContact();
             initTheme();
+            initNav();
             initAuth();
         </script>
     </body>
