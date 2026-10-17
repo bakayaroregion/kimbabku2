@@ -727,6 +727,84 @@
                 border-radius: 50%;
                 display: block;
             }
+            /* Gaya "Timbul / Maskot": bentuk asli PNG transparan, tanpa lingkaran, bayangan mengikuti siluet, mengambang */
+            .float.mascot {
+                width: 104px;
+                height: 104px;
+                right: 14px;
+                bottom: 14px;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                border-radius: 0;
+                overflow: visible;
+            }
+            .float.mascot .float-img {
+                object-fit: contain;
+                border-radius: 0;
+                filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 12px rgba(255, 196, 0, 0.35));
+                animation: mascotBob 3.2s ease-in-out infinite;
+                transform-origin: 50% 90%;
+                transition: transform 0.25s ease;
+            }
+            .float.mascot::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: -4px;
+                width: 62%;
+                height: 10px;
+                background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3), transparent 70%);
+                transform: translateX(-50%);
+                animation: mascotShadow 3.2s ease-in-out infinite;
+                pointer-events: none;
+            }
+            .float.mascot:hover .float-img {
+                transform: scale(1.1) rotate(-3deg);
+            }
+            .float.mascot:active .float-img {
+                transform: scale(0.95);
+            }
+            @keyframes mascotBob {
+                0%,
+                100% {
+                    translate: 0 0;
+                }
+                50% {
+                    translate: 0 -8px;
+                }
+            }
+            @keyframes mascotShadow {
+                0%,
+                100% {
+                    transform: translateX(-50%) scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translateX(-50%) scale(0.8);
+                    opacity: 0.6;
+                }
+            }
+            @media (max-width: 700px) {
+                .float.mascot {
+                    width: 80px;
+                    height: 80px;
+                    right: 8px;
+                    bottom: 10px;
+                }
+                body.has-mascot .foot {
+                    padding-right: 96px;
+                }
+                body.has-mascot footer {
+                    padding-bottom: 120px;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .float.mascot .float-img,
+                .float.mascot::after {
+                    animation: none;
+                }
+            }
             .chat-panel {
                 position: fixed;
                 right: 20px;
@@ -3488,9 +3566,13 @@
                 if (showCustom && img.getAttribute('src') !== raw) img.src = raw;
                 img.hidden = !showCustom;
                 document.getElementById('floatBtn').classList.toggle('has-icon', showCustom);
-                document.getElementById('iconWa').hidden = showCustom || has || chatOpen;
-                document.getElementById('iconChat').hidden = showCustom || !has || chatOpen;
-                document.getElementById('iconClose').hidden = !chatOpen;
+                const mascot = showCustom && SETTINGS.chatIconStyle === 'mascot';
+                document.getElementById('floatBtn').classList.toggle('mascot', mascot);
+                document.body.classList.toggle('has-mascot', mascot);
+                // Ikon-ikon ini adalah SVG: properti .hidden TIDAK berlaku untuk SVG, jadi pakai atribut langsung.
+                document.getElementById('iconWa').toggleAttribute('hidden', showCustom || has || chatOpen);
+                document.getElementById('iconChat').toggleAttribute('hidden', showCustom || !has || chatOpen);
+                document.getElementById('iconClose').toggleAttribute('hidden', !chatOpen);
                 document
                     .getElementById('floatBtn')
                     .setAttribute('aria-label', chatOpen ? 'Tutup chat' : has ? 'Buka live chat' : 'Chat WhatsApp');

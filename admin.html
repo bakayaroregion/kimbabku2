@@ -1237,9 +1237,33 @@
                             <div class="asset-info">
                                 <strong>Ikon Gelembung Livechat</strong>
                                 <small
-                                    >Foto atau GIF untuk tombol bulat di pojok kanan bawah. Kosongkan untuk memakai ikon
-                                    bawaan. GIF maks. 2 MB (tetap bergerak).</small
+                                    >Foto, PNG transparan, atau GIF untuk tombol di pojok kanan bawah. Kosongkan untuk
+                                    memakai ikon bawaan. GIF maks. 2 MB (tetap bergerak).</small
                                 >
+                                <label
+                                    style="display: grid; gap: 4px; margin-top: 10px; font-size: 13px; font-weight: 700"
+                                >
+                                    Gaya tampilan
+                                    <select
+                                        id="chatIconStyle"
+                                        style="
+                                            border: 1px solid #ddd9d1;
+                                            border-radius: 10px;
+                                            padding: 9px;
+                                            background: #fff;
+                                            font-size: 14px;
+                                        "
+                                    >
+                                        <option value="circle">Bulat — foto dipotong lingkaran</option>
+                                        <option value="mascot">
+                                            Timbul / Maskot — bentuk asli, tanpa bingkai, mengambang
+                                        </option>
+                                    </select>
+                                    <small style="font-weight: 400"
+                                        >Pilih "Timbul / Maskot" untuk PNG transparan (seperti gambar maskot). Pilih
+                                        gayanya dulu, baru upload gambarnya.</small
+                                    >
+                                </label>
                             </div>
                             <div class="asset-actions">
                                 <input
@@ -1675,13 +1699,16 @@
                 const ciPrev = $('#chatIconPreview');
                 if (ciUrl) {
                     ciPrev.style.backgroundImage = `url('${cssUrl(ciUrl)}')`;
-                    ciPrev.style.backgroundSize = 'cover';
+                    const mascot = state.settings.chatIconStyle === 'mascot';
+                    ciPrev.style.backgroundSize = mascot ? 'contain' : 'cover';
+                    ciPrev.style.borderRadius = mascot ? '12px' : '50%';
                     ciPrev.textContent = '';
                 } else {
                     ciPrev.style.backgroundImage = '';
                     ciPrev.textContent = 'Bawaan';
                 }
                 $('#chatIconDeleteBtn').hidden = !ciUrl;
+                $('#chatIconStyle').value = state.settings.chatIconStyle === 'mascot' ? 'mascot' : 'circle';
             }
             function renderSettings() {
                 const f = $('#settingsForm');
@@ -1752,7 +1779,10 @@
                     img.src = URL.createObjectURL(file);
                 });
             }
-            async function toWebp_(file, { square = false, size = 1000, maxWidth = 1600, quality = 0.85 } = {}) {
+            async function toWebp_(
+                file,
+                { square = false, size = 1000, maxWidth = 1600, quality = 0.85, alpha = false } = {}
+            ) {
                 const img = await loadImageEl_(file);
                 let sx = 0,
                     sy = 0,
@@ -1783,7 +1813,8 @@
                 // Sebagian Safari diam-diam menghasilkan PNG saat diminta WebP -> fallback ke JPEG.
                 const tryType = (type, q) => new Promise((res) => canvas.toBlob(res, type, q));
                 let blob = await tryType('image/webp', quality);
-                if (!blob || blob.type !== 'image/webp') blob = await tryType('image/jpeg', quality);
+                if (!blob || blob.type !== 'image/webp')
+                    blob = alpha ? await tryType('image/png') : await tryType('image/jpeg', quality); // alpha: PNG supaya latar transparan tidak jadi hitam
                 if (!blob) throw new Error('Gagal memproses gambar.');
                 if (blob.size > MAX_UPLOAD_BYTES)
                     throw new Error('Gambar masih lebih dari 2 MB setelah diproses. Pakai gambar yang lebih kecil.');
@@ -1958,7 +1989,10 @@
                     if (file.type === 'image/gif') {
                         if (file.size > MAX_UPLOAD_BYTES)
                             throw new Error('GIF maksimal 2 MB. Kecilkan ukurannya dulu.');
-                    } else blob = await toWebp_(file, { square: true, size: 192, quality: 0.9 });
+                    } else if ($('#chatIconStyle').value === 'mascot') {
+                        // Maskot: bentuk asli (tidak dipotong), latar transparan dipertahankan, lebar 384px agar tajam.
+                        blob = await toWebp_(file, { square: false, maxWidth: 384, quality: 0.92, alpha: true });
+                    } else blob = await toWebp_(file, { square: true, size: 256, quality: 0.9 });
                     const imageBase64 = await blobToBase64(blob);
                     await api('uploadChatIcon', {
                         imageBase64,
@@ -1966,6 +2000,15 @@
                         imageName: 'chat-icon.' + extFor(blob.type),
                     });
                     toast('Ikon livechat diperbarui.');
+                    await loadAll();
+                } catch (err) {
+                    toast(err.message, true);
+                }
+            });
+            $('#chatIconStyle').addEventListener('change', async (e) => {
+                try {
+                    await api('updateSettings', { chatIconStyle: e.target.value });
+                    toast(e.target.value === 'mascot' ? 'Gaya Timbul / Maskot dipakai.' : 'Gaya Bulat dipakai.');
                     await loadAll();
                 } catch (err) {
                     toast(err.message, true);
