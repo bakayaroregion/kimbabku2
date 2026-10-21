@@ -536,7 +536,8 @@
                 display: flex;
                 align-items: stretch;
                 gap: 14px;
-                margin: 0 0 36px;
+                margin: 44px 0 36px;
+                padding-bottom: 6px;
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
@@ -1065,6 +1066,20 @@
                 width: min(440px, 100%);
                 margin: auto;
                 text-align: center;
+            }
+            .auth-close {
+                display: block;
+                margin: 0 0 14px auto;
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+                border-radius: 999px;
+                padding: 8px 14px;
+                font-weight: 800;
+                font-size: 13px;
+            }
+            .auth-close:hover {
+                background: rgba(255, 255, 255, 0.16);
             }
             .auth-logo {
                 height: 64px;
@@ -2492,6 +2507,135 @@
                     animation: none !important;
                 }
             }
+            /* Footer & link "Kontak" hanya tampil di desktop */
+            @media (max-width: 980px) {
+                footer#kontak,
+                .links a[href='#kontak'] {
+                    display: none !important;
+                }
+                main {
+                    padding-bottom: 96px;
+                }
+            }
+            /* Garis arah antar langkah Cara Pesan */
+            .steparrow {
+                flex: 0 0 44px;
+                height: 52px;
+                padding: 0;
+                font-size: 0;
+                position: relative;
+            }
+            .steparrow::before {
+                content: '';
+                position: absolute;
+                left: 4px;
+                right: 8px;
+                top: 50%;
+                border-top: 2px dashed var(--g);
+                opacity: 0.55;
+                transform: translateY(-50%);
+            }
+            .steparrow::after {
+                content: '';
+                position: absolute;
+                right: 4px;
+                top: 50%;
+                width: 8px;
+                height: 8px;
+                border-top: 2px solid var(--g);
+                border-right: 2px solid var(--g);
+                opacity: 0.85;
+                transform: translateY(-50%) rotate(45deg);
+            }
+            html[data-theme='night'] .steparrow::before,
+            html[data-theme='night'] .steparrow::after {
+                border-color: #8ee66a;
+            }
+            /* Cara Pesan versi HP: ringkas, satu baris, 4 langkah langsung terlihat */
+            @media (max-width: 700px) {
+                .steps {
+                    padding: 10px 10px 14px;
+                    margin: 14px 0 16px;
+                    border-radius: 16px;
+                }
+                .steps .head {
+                    margin: 0 0 10px !important;
+                    padding: 6px 10px;
+                }
+                .steps .head h2 {
+                    font-size: 15px;
+                }
+                .steps .head p {
+                    display: none;
+                }
+                .steps .head .titlewrap {
+                    align-items: center;
+                }
+                .steps .head .leaf {
+                    width: 16px;
+                    height: 16px;
+                    margin-top: 0;
+                }
+                .stepsgrid {
+                    display: flex;
+                    gap: 0;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    min-width: 0;
+                }
+                .steparrow {
+                    display: block;
+                    flex: 1 1 8px;
+                    min-width: 8px;
+                    max-width: 30px;
+                    height: 34px;
+                }
+                .steparrow::before {
+                    left: 2px;
+                    right: 6px;
+                }
+                .steparrow::after {
+                    right: 2px;
+                    width: 6px;
+                    height: 6px;
+                }
+                html[data-theme] .steps .step {
+                    background: transparent;
+                    border: 0;
+                    box-shadow: none;
+                    border-radius: 0;
+                    padding: 0 2px;
+                }
+                .num-wrap {
+                    width: 34px;
+                    height: 34px;
+                    margin-bottom: 6px;
+                }
+                .num-circle {
+                    width: 34px;
+                    height: 34px;
+                }
+                .num-circle .icon {
+                    width: 16px;
+                    height: 16px;
+                }
+                .num-badge {
+                    width: 15px;
+                    height: 15px;
+                    font-size: 9px;
+                    top: -3px;
+                    left: -3px;
+                    border-width: 1.5px;
+                }
+                .step h3 {
+                    font-size: 11px;
+                    line-height: 1.25;
+                    margin: 0;
+                }
+                .step p {
+                    display: none;
+                }
+            }
         </style>
     </head>
     <body>
@@ -2592,6 +2736,13 @@
                         </svg>
                     </button>
                 </div>
+                <button class="cart loginbtn" id="loginBtn" onclick="showAuth()" aria-label="Masuk atau daftar" hidden>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+                    </svg>
+                    <span class="txt">Masuk</span>
+                </button>
                 <button class="cart userbtn" id="userBtn" onclick="openWallet()" aria-label="Dompet saya" hidden>
                     <svg class="icon" viewBox="0 0 24 24">
                         <path d="M3 7a2 2 0 0 1 2-2h13v4" />
@@ -2646,49 +2797,6 @@
             </section>
             <div class="container">
                 <div class="dots" id="heroDots"></div>
-                <section id="kategori" class="cats">
-                    <button class="cat active" data-cat="Semua"><span>🍽️</span>Semua</button
-                    ><button class="cat" data-cat="Kimbab">
-                        <img class="cat-ico" src="Kategori-Kimbab.png" alt="Kimbab" />Kimbab</button
-                    ><button class="cat" data-cat="Risol Mayo">
-                        <img class="cat-ico" src="Kategori-RisolMayo.png" alt="Risol Mayo" />Risol Mayo</button
-                    ><button class="cat" data-cat="Aneka Jajanan">
-                        <img class="cat-ico" src="Kategori-AnekaJajanan.png" alt="Aneka Jajanan" />Aneka Jajanan</button
-                    ><button class="cat" data-cat="Minuman">
-                        <img class="cat-ico" src="Kategori-Minuman.png" alt="Minuman" />Minuman
-                    </button>
-                </section>
-                <section id="menu">
-                    <div class="head">
-                        <div class="titlewrap">
-                            <svg
-                                class="icon leaf"
-                                viewBox="0 0 24 24"
-                                style="width: 20px; height: 20px; margin-top: 3px"
-                            >
-                                <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
-                                <path d="M5 21c3-6 6-9 12-12" />
-                            </svg>
-                            <div>
-                                <h2>Produk Unggulan</h2>
-                                <p>Pilihan terbaik dengan rasa yang selalu bikin ketagihan</p>
-                            </div>
-                        </div>
-                        <a
-                            href="#menu"
-                            class="seeall"
-                            onclick="
-                                showAll();
-                                return true;
-                            "
-                            >Lihat Semua
-                            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px">
-                                <path d="M9 6l6 6-6 6" />
-                            </svg>
-                        </a>
-                    </div>
-                    <div id="products" class="grid"></div>
-                </section>
                 <section id="cara" class="steps">
                     <div class="head" style="margin-bottom: 20px">
                         <div class="titlewrap">
@@ -2768,6 +2876,49 @@
                             <p>Pesanan langsung<br />masuk ke admin</p>
                         </div>
                     </div>
+                </section>
+                <section id="kategori" class="cats">
+                    <button class="cat active" data-cat="Semua"><span>🍽️</span>Semua</button
+                    ><button class="cat" data-cat="Kimbab">
+                        <img class="cat-ico" src="Kategori-Kimbab.png" alt="Kimbab" />Kimbab</button
+                    ><button class="cat" data-cat="Risol Mayo">
+                        <img class="cat-ico" src="Kategori-RisolMayo.png" alt="Risol Mayo" />Risol Mayo</button
+                    ><button class="cat" data-cat="Aneka Jajanan">
+                        <img class="cat-ico" src="Kategori-AnekaJajanan.png" alt="Aneka Jajanan" />Aneka Jajanan</button
+                    ><button class="cat" data-cat="Minuman">
+                        <img class="cat-ico" src="Kategori-Minuman.png" alt="Minuman" />Minuman
+                    </button>
+                </section>
+                <section id="menu">
+                    <div class="head">
+                        <div class="titlewrap">
+                            <svg
+                                class="icon leaf"
+                                viewBox="0 0 24 24"
+                                style="width: 20px; height: 20px; margin-top: 3px"
+                            >
+                                <path d="M5 21c9 0 14-5 14-14 0-1 0-2-.2-3C10 4 5 9 5 18v3z" />
+                                <path d="M5 21c3-6 6-9 12-12" />
+                            </svg>
+                            <div>
+                                <h2>Produk Unggulan</h2>
+                                <p>Pilihan terbaik dengan rasa yang selalu bikin ketagihan</p>
+                            </div>
+                        </div>
+                        <a
+                            href="#menu"
+                            class="seeall"
+                            onclick="
+                                showAll();
+                                return true;
+                            "
+                            >Lihat Semua
+                            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px">
+                                <path d="M9 6l6 6-6 6" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div id="products" class="grid"></div>
                 </section>
                 <section id="tentang" class="promowrap">
                     <div class="promo">
@@ -2967,8 +3118,11 @@
         <div id="walletModal" class="modal" onclick="if (event.target === this) closeWallet();">
             <div class="box" role="dialog" aria-modal="true" aria-label="Dompet saya"><div id="walletBody"></div></div>
         </div>
-        <div id="auth" class="auth">
+        <div id="auth" class="auth" hidden role="dialog" aria-modal="true" aria-label="Masuk atau daftar">
             <div class="auth-wrap">
+                <button type="button" class="auth-close" onclick="hideAuth()" aria-label="Tutup">
+                    ✕ Kembali ke menu
+                </button>
                 <img class="auth-logo" id="authLogo" src="Logo.png" alt="KIMBABKU" />
                 <div class="auth-title" role="heading" aria-level="1">
                     <span id="authBrand">KIMBABKU</span> — Masuk atau Daftar
@@ -3185,11 +3339,7 @@
                 try {
                     if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf('PASTE_URL') === 0)
                         throw new Error('API_URL belum dikonfigurasi.');
-                    const r = await fetch(
-                        CONFIG.apiUrl +
-                            '?action=getStoreData&userToken=' +
-                            encodeURIComponent(session ? session.token : '')
-                    );
+                    const r = await fetch(CONFIG.apiUrl + '?action=getStoreData');
                     const j = await r.json();
                     if (!j.success) throw new Error(j.error || 'Gagal memuat data toko.');
                     applyStoreData(j.data);
@@ -3197,7 +3347,13 @@
                 } catch (err) {
                     console.error('loadStoreData:', err.message);
                     if (/LOGIN_REQUIRED/.test(err.message)) {
-                        doLogout('Sesi berakhir, silakan masuk lagi.');
+                        if (session) {
+                            doLogout('Sesi berakhir, silakan masuk lagi.');
+                            return;
+                        }
+                        if (!hadCache)
+                            grid.innerHTML =
+                                '<div class="empty" style="grid-column:1/-1">Server belum diperbarui. Deploy ulang Code.gs (New version), lalu muat ulang halaman.</div>';
                         return;
                     }
                     if (!hadCache) {
@@ -3255,6 +3411,15 @@
             }
 
             // ---------- PRODUK ----------
+            function defaultDesc(cat) {
+                const m = {
+                    Kimbab: 'Nasi, nori, telur, wortel & timun.',
+                    'Risol Mayo': 'Kulit renyah dengan isian mayo yang gurih.',
+                    'Aneka Jajanan': 'Jajanan lezat, dibuat fresh setiap hari.',
+                    Minuman: 'Minuman segar, pas untuk menemani makan.',
+                };
+                return m[cat] || 'Dibuat fresh dengan bahan pilihan.';
+            }
             function render() {
                 const q = document.getElementById('search').value.toLowerCase();
                 const a = MENUS.filter(
@@ -3273,7 +3438,7 @@
       </div>
       <div class="body">
         <h3>${esc(p.n)}</h3>
-        <p class="desc">${esc(p.d || 'Nasi, nori, telur, wortel & timun.')}</p>
+        <p class="desc">${esc(p.d || defaultDesc(p.c))}</p>
         <div class="price">${money(p.p)}</div>
         <button class="add" data-id="${esc(p.id)}">
           <svg class="icon" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:#fff"><circle cx="9" cy="21" r="1.2" fill="#fff" stroke="none"/><circle cx="18" cy="21" r="1.2" fill="#fff" stroke="none"/><path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6"/></svg>
@@ -3337,6 +3502,14 @@
             // ---------- CHECKOUT ----------
             function openCheckout() {
                 if (!cart.length) return toast('Keranjang masih kosong');
+                if (!session) {
+                    closeCart();
+                    authView = 'login';
+                    return showAuth(
+                        'Masuk atau daftar dulu untuk checkout. Isi keranjangmu tetap tersimpan.',
+                        openCheckout
+                    );
+                }
                 closeCart();
                 step = 1;
                 document.getElementById('modal').classList.add('open');
@@ -3637,6 +3810,7 @@
                 session = null;
             }
             if (session && !(session.token && Number(session.exp) > Date.now())) session = null;
+            let afterAuth = null;
             let authView = 'login',
                 authEmail = '',
                 authBusy = false,
@@ -3749,12 +3923,15 @@
                 const i = $a(id);
                 if (i) i.type = i.type === 'password' ? 'text' : 'password';
             }
-            function showAuth() {
+            function showAuth(notice, then) {
+                if (typeof notice === 'string') authNotice = notice;
+                afterAuth = typeof then === 'function' ? then : null;
                 $a('auth').hidden = false;
                 document.body.style.overflow = 'hidden';
                 renderAuth();
             }
             function hideAuth() {
+                afterAuth = null;
                 $a('auth').hidden = true;
                 document.body.style.overflow = '';
             }
@@ -3832,6 +4009,8 @@
                 }
             }
             function onAuthSuccess(d, isNew) {
+                const resume = afterAuth; // mis. lanjut ke checkout
+                if (resume) setTimeout(resume, 400);
                 session = { token: d.token, user: d.user, exp: d.expiresAt };
                 lsSet(SESSION_KEY, JSON.stringify(session));
                 if (d.user.name) order.n = d.user.name;
@@ -3869,6 +4048,8 @@
                 const b = $a('userBtn');
                 if (!b) return;
                 b.hidden = !session;
+                const lb = $a('loginBtn');
+                if (lb) lb.hidden = !!session;
                 $a('userBal').textContent = session ? 'Rp' + compactRp(balNow()) : '';
                 if (session) b.title = session.user.email + ' · Saldo ' + money(balNow());
             }
@@ -3880,19 +4061,16 @@
                 wallet = null;
                 walletPay = null;
                 lsDel(SESSION_KEY);
-                lsDel('kb-store-cache');
-                MENUS = [];
-                CATEGORIES = [];
+                // Menu bersifat publik, jadi tetap tampil. Yang dihapus hanya data pribadi di perangkat ini.
+                ['kb-name', 'kb-phone', 'kb-address', 'kimbabku-last-order'].forEach(lsDel);
+                order = { n: '', p: '', a: '', type: 'Delivery', time: 'Secepatnya', note: '' };
                 closeCart();
                 closeWallet();
                 document.getElementById('modal').classList.remove('open');
                 if (chatOpen) toggleChat(false);
                 updateUserBtn();
-                render();
-                renderCart();
                 authView = 'login';
-                authNotice = msg || '';
-                showAuth();
+                toast(msg || 'Kamu sudah keluar dari akun.');
             }
             async function loadBrand() {
                 try {
@@ -3928,15 +4106,14 @@
             const walletIsOpen = () => $a('walletModal').classList.contains('open');
             async function loadWallet() {
                 if (!session) return;
-                const r = await fetch(
-                    CONFIG.apiUrl + '?action=getWallet&userToken=' + encodeURIComponent(session.token)
-                );
-                const j = await r.json();
-                if (!j.success) {
-                    if (/LOGIN_REQUIRED/.test(j.error)) doLogout('Sesi berakhir, silakan masuk lagi.');
-                    throw new Error(j.error);
+                let d;
+                try {
+                    d = await authApi('getWallet', { userToken: session.token });
+                } catch (err) {
+                    if (/LOGIN_REQUIRED/.test(err.message)) doLogout('Sesi berakhir, silakan masuk lagi.');
+                    throw err;
                 }
-                wallet = j.data;
+                wallet = d;
                 setBalance(wallet.balance);
                 if (walletIsOpen() && walletView !== 'topup') renderWallet();
                 if (document.getElementById('preview')) fill();
@@ -4116,7 +4293,8 @@
                     loadStoreData();
                     loadWallet().catch(() => {});
                 } else {
-                    showAuth();
+                    updateUserBtn();
+                    loadStoreData();
                     loadBrand();
                 }
             }
@@ -4454,7 +4632,7 @@
             function applyTheme(t) {
                 document.documentElement.setAttribute('data-theme', t);
                 const m = document.querySelector('meta[name="theme-color"]');
-                if (m) m.setAttribute('content', t === 'night' ? '#0a0d24' : '#0b2f1f');
+                if (m) m.setAttribute('content', t === 'night' ? '#0a0d24' : '#ffe9f1');
                 const b = document.getElementById('themeBtn');
                 if (b)
                     b.setAttribute('aria-label', t === 'night' ? 'Ganti ke tampilan siang' : 'Ganti ke tampilan malam');
@@ -4524,9 +4702,10 @@
                 let cur = 'beranda';
                 ['kategori', 'menu', 'tentang', 'kontak'].forEach((id) => {
                     const e = document.getElementById(id);
-                    if (e && e.getBoundingClientRect().top <= probe) cur = id;
+                    if (e && e.offsetParent !== null && e.getBoundingClientRect().top <= probe) cur = id;
                 });
-                if (atBottom) cur = lastNav === 'tentang' || lastNav === 'kontak' ? lastNav : 'kontak';
+                if (atBottom && document.getElementById('kontak').offsetParent !== null)
+                    cur = lastNav === 'tentang' || lastNav === 'kontak' ? lastNav : 'kontak';
                 else lastNav = '';
                 setNavActive(cur);
             }
@@ -4568,6 +4747,9 @@
             renderHero();
             heroAutoplay();
             renderContact();
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !$a('auth').hidden) hideAuth();
+            });
             initTheme();
             initNav();
             initAuth();
