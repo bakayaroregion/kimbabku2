@@ -2507,6 +2507,368 @@
                     animation: none !important;
                 }
             }
+            /* ===== KATEGORI: kartu seperti "Terlaris" ===== */
+            .catsec {
+                margin: 6px 0 30px;
+            }
+            .catsec .head {
+                margin-bottom: 14px;
+            }
+            .catsec .catgrid {
+                margin-bottom: 8px;
+            }
+            .catgrid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+            @media (min-width: 900px) {
+                .catgrid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+            }
+            .ccard {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                min-width: 0;
+                padding: 14px;
+                text-align: left;
+                color: #fff;
+                background:
+                    radial-gradient(160px 90px at 88% 10%, rgba(126, 217, 87, 0.12), transparent 70%),
+                    rgba(11, 47, 31, 0.92);
+                border: 1px solid rgba(255, 255, 255, 0.13);
+                border-radius: 20px;
+                box-shadow: 0 8px 22px rgba(10, 40, 25, 0.18);
+                -webkit-tap-highlight-color: transparent;
+                transition:
+                    transform 0.18s ease,
+                    border-color 0.18s ease,
+                    box-shadow 0.18s ease;
+            }
+            html[data-theme='night'] .ccard {
+                background:
+                    radial-gradient(160px 90px at 88% 10%, rgba(255, 122, 184, 0.14), transparent 70%),
+                    rgba(16, 14, 48, 0.86);
+            }
+            .ccard:hover {
+                transform: translateY(-2px);
+                border-color: rgba(126, 217, 87, 0.5);
+            }
+            .ccard:active {
+                transform: scale(0.985);
+            }
+            .ccard.active {
+                border-color: rgba(126, 217, 87, 0.75);
+                box-shadow:
+                    0 0 0 1px rgba(126, 217, 87, 0.35),
+                    0 10px 26px rgba(31, 166, 90, 0.3);
+            }
+            .cc-ico {
+                flex: 0 0 auto;
+                width: 64px;
+                height: 64px;
+                border-radius: 16px;
+                overflow: hidden;
+                display: grid;
+                place-items: center;
+                background: rgba(255, 255, 255, 0.1);
+            }
+            .cc-ico img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .cc-emo {
+                font-size: 30px;
+                line-height: 1;
+            }
+            .cc-txt {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .cc-txt b {
+                font-size: 16px;
+                line-height: 1.25;
+                font-weight: 800;
+                color: #fff;
+            }
+            .cc-txt small {
+                font-size: 13px;
+                color: #a9c7b8;
+            }
+            .cc-go {
+                flex: 0 0 auto;
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                color: #e6f2ea;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.14);
+            }
+            .cc-go .icon {
+                width: 16px;
+                height: 16px;
+            }
+            .ccard.active .cc-go {
+                background: #1fa65a;
+                border-color: #1fa65a;
+                color: #fff;
+            }
+            @media (max-width: 700px) {
+                .catsec {
+                    margin-bottom: 22px;
+                }
+                .catgrid {
+                    gap: 10px;
+                }
+                .ccard {
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 16px;
+                }
+                .cc-ico {
+                    width: 46px;
+                    height: 46px;
+                    border-radius: 12px;
+                }
+                .cc-emo {
+                    font-size: 24px;
+                }
+                .cc-txt b {
+                    font-size: 13.5px;
+                }
+                .cc-txt small {
+                    font-size: 11.5px;
+                }
+                .cc-go {
+                    display: none;
+                }
+            }
+            /* ===== PRODUK DIPISAH PER KATEGORI ===== */
+            .plist {
+                display: block;
+            }
+            .psec {
+                margin: 0 0 28px;
+            }
+            .psec-head {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px 10px;
+                margin: 0 0 14px;
+                padding: 10px 16px;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.72);
+            }
+            html[data-theme='night'] .psec-head {
+                background: rgba(12, 10, 40, 0.78);
+            }
+            .psec-ico {
+                flex: 0 0 auto;
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                overflow: hidden;
+                display: grid;
+                place-items: center;
+                background: rgba(15, 122, 69, 0.1);
+            }
+            .psec-ico img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .psec-ico .cc-emo {
+                font-size: 19px;
+            }
+            .psec-head h3 {
+                margin: 0;
+                font-size: clamp(16px, 4.2vw, 20px);
+                font-weight: 900;
+                color: var(--ink);
+            }
+            html[data-theme='night'] .psec-head h3 {
+                color: #fff;
+            }
+            .psec-count {
+                padding: 3px 10px;
+                border-radius: 999px;
+                font-size: 11px;
+                font-weight: 800;
+                color: #fff;
+                background: var(--g);
+            }
+            .psec-head p {
+                flex: 0 0 100%;
+                margin: 0;
+                font-size: 12.5px;
+                color: var(--muted);
+            }
+            html[data-theme='night'] .psec-head p {
+                color: #b6bfd9;
+            }
+            .morebtn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 7px;
+                margin: 16px auto 0;
+                padding: 9px 18px;
+                border-radius: 999px;
+                border: 1px solid var(--line);
+                background: #fff;
+                color: var(--ink);
+                font-weight: 800;
+                font-size: 13px;
+                box-shadow: 0 4px 14px rgba(10, 40, 25, 0.08);
+            }
+            html[data-theme='night'] .morebtn {
+                background: rgba(12, 10, 40, 0.88);
+                color: #fff;
+                border-color: rgba(255, 255, 255, 0.18);
+            }
+            .morebtn b {
+                min-width: 22px;
+                padding: 1px 7px;
+                border-radius: 999px;
+                background: var(--g);
+                color: #fff;
+                font-size: 11.5px;
+                text-align: center;
+            }
+            .morebtn .icon {
+                width: 15px;
+                height: 15px;
+                transition: transform 0.2s ease;
+            }
+            .morebtn.open .icon {
+                transform: rotate(180deg);
+            }
+            @media (max-width: 700px) {
+                .psec {
+                    margin-bottom: 22px;
+                }
+                .psec-head {
+                    padding: 8px 12px;
+                }
+            }
+            /* ===== BAR KATEGORI DI HEADER ===== */
+            .catwrap {
+                flex: 1;
+                min-width: 0;
+            }
+            .catbar {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                max-width: 100%;
+                padding: 5px;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 18px;
+            }
+            .catbar[hidden] {
+                display: none !important;
+            }
+            .cat-track {
+                position: relative;
+                display: flex;
+                gap: 6px;
+                flex: 1;
+                min-width: 0;
+                overflow-x: auto;
+                overscroll-behavior-x: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .cat-track::-webkit-scrollbar {
+                display: none;
+            }
+            .cb-arrow {
+                flex: 0 0 32px;
+                height: 36px;
+                border: 0;
+                background: transparent;
+                color: #cfe3d7;
+                border-radius: 12px;
+                display: grid;
+                place-items: center;
+            }
+            .cb-arrow:hover:not(:disabled) {
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+            }
+            .cb-arrow:disabled {
+                opacity: 0.3;
+                cursor: default;
+            }
+            .cb-arrow[hidden] {
+                display: none !important;
+            }
+            .cpill {
+                flex: 0 0 auto;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 9px 15px;
+                border: 1px solid transparent;
+                border-radius: 14px;
+                background: transparent;
+                color: #cfe3d7;
+                font-weight: 700;
+                font-size: 14px;
+                white-space: nowrap;
+                -webkit-tap-highlight-color: transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    box-shadow 0.15s ease;
+            }
+            .cpill:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.07);
+            }
+            .cpill.active {
+                color: #7ed957;
+                background: rgba(126, 217, 87, 0.14);
+                border-color: rgba(126, 217, 87, 0.55);
+                box-shadow: 0 0 14px rgba(126, 217, 87, 0.28);
+            }
+            .cpill .cico {
+                width: 18px;
+                height: 18px;
+                object-fit: contain;
+                font-size: 16px;
+                line-height: 18px;
+                text-align: center;
+            }
+            @media (max-width: 980px) {
+                .catwrap {
+                    order: 10;
+                    flex: 0 0 100%;
+                }
+            }
+            @media (max-width: 700px) {
+                .cpill {
+                    padding: 8px 12px;
+                    font-size: 13px;
+                }
+                .cb-arrow {
+                    flex-basis: 28px;
+                    height: 34px;
+                }
+            }
             /* ===== BAR MENU BAWAH (HP & tablet) ===== */
             .bottomnav {
                 display: none;
@@ -2772,40 +3134,28 @@
         <header>
             <nav class="nav">
                 <img class="logo" id="logoImg" src="Logo.png" alt="KIMBABKU" />
-                <div class="links">
-                    <a href="#beranda" class="active">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <path d="M3 11l9-7 9 7" />
-                            <path d="M5 10v10h14V10" />
-                        </svg>
-                        Beranda</a
-                    ><a href="#menu">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-                        </svg>
-                        Menu</a
-                    ><a href="#kategori">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
-                        </svg>
-                        Kategori</a
-                    ><a href="#tentang">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9" />
-                            <path d="M12 11v5" />
-                            <circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none" />
-                        </svg>
-                        Tentang Kami</a
-                    ><a href="#kontak">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <rect x="3" y="5" width="18" height="14" rx="2" />
-                            <path d="M3 7l9 6 9-6" />
-                        </svg>
-                        Kontak</a
-                    >
+                <div class="catwrap">
+                    <div class="catbar" id="catBar" hidden>
+                        <button
+                            type="button"
+                            class="cb-arrow"
+                            id="catPrev"
+                            aria-label="Geser kategori ke kiri"
+                            onclick="catScroll(-1)"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg>
+                        </button>
+                        <div class="cat-track" id="catTrack" role="tablist" aria-label="Kategori menu"></div>
+                        <button
+                            type="button"
+                            class="cb-arrow"
+                            id="catNext"
+                            aria-label="Geser kategori ke kanan"
+                            onclick="catScroll(1)"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="search">
                     <svg class="icon" viewBox="0 0 24 24">
@@ -2961,19 +3311,7 @@
                         </div>
                     </div>
                 </section>
-                <section id="kategori" class="cats">
-                    <button class="cat active" data-cat="Semua"><span>🍽️</span>Semua</button
-                    ><button class="cat" data-cat="Kimbab">
-                        <img class="cat-ico" src="Kategori-Kimbab.png" alt="Kimbab" />Kimbab</button
-                    ><button class="cat" data-cat="Risol Mayo">
-                        <img class="cat-ico" src="Kategori-RisolMayo.png" alt="Risol Mayo" />Risol Mayo</button
-                    ><button class="cat" data-cat="Aneka Jajanan">
-                        <img class="cat-ico" src="Kategori-AnekaJajanan.png" alt="Aneka Jajanan" />Aneka Jajanan</button
-                    ><button class="cat" data-cat="Minuman">
-                        <img class="cat-ico" src="Kategori-Minuman.png" alt="Minuman" />Minuman
-                    </button>
-                </section>
-                <section id="menu">
+                <section id="menu" class="catsec" aria-labelledby="catTitle">
                     <div class="head">
                         <div class="titlewrap">
                             <svg
@@ -2985,8 +3323,8 @@
                                 <path d="M5 21c3-6 6-9 12-12" />
                             </svg>
                             <div>
-                                <h2>Produk Unggulan</h2>
-                                <p>Pilihan terbaik dengan rasa yang selalu bikin ketagihan</p>
+                                <h2 id="catTitle">Produk Unggulan</h2>
+                                <p>Pilih kategori favoritmu, lalu lihat menu terbaiknya</p>
                             </div>
                         </div>
                         <a
@@ -3002,7 +3340,54 @@
                             </svg>
                         </a>
                     </div>
-                    <div id="products" class="grid"></div>
+                    <div id="kategori" class="catgrid">
+                        <button type="button" class="ccard active" data-cat="Semua">
+                            <span class="cc-ico"><span class="cc-emo">🍽️</span></span>
+                            <span class="cc-txt"><b>Semua</b><small>Lihat semua menu</small></span>
+                            <span class="cc-go"
+                                ><svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7" />
+                                    <path d="M8 7h9v9" /></svg
+                            ></span>
+                        </button>
+                        <button type="button" class="ccard" data-cat="Kimbab">
+                            <span class="cc-ico"><span class="cc-emo">🍙</span></span>
+                            <span class="cc-txt"><b>Kimbab</b><small>Lihat menu</small></span>
+                            <span class="cc-go"
+                                ><svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7" />
+                                    <path d="M8 7h9v9" /></svg
+                            ></span>
+                        </button>
+                        <button type="button" class="ccard" data-cat="Risol Mayo">
+                            <span class="cc-ico"><span class="cc-emo">🥟</span></span>
+                            <span class="cc-txt"><b>Risol Mayo</b><small>Lihat menu</small></span>
+                            <span class="cc-go"
+                                ><svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7" />
+                                    <path d="M8 7h9v9" /></svg
+                            ></span>
+                        </button>
+                        <button type="button" class="ccard" data-cat="Aneka Jajanan">
+                            <span class="cc-ico"><span class="cc-emo">🍗</span></span>
+                            <span class="cc-txt"><b>Aneka Jajanan</b><small>Lihat menu</small></span>
+                            <span class="cc-go"
+                                ><svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7" />
+                                    <path d="M8 7h9v9" /></svg
+                            ></span>
+                        </button>
+                        <button type="button" class="ccard" data-cat="Minuman">
+                            <span class="cc-ico"><span class="cc-emo">🥤</span></span>
+                            <span class="cc-txt"><b>Minuman</b><small>Lihat menu</small></span>
+                            <span class="cc-go"
+                                ><svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7" />
+                                    <path d="M8 7h9v9" /></svg
+                            ></span>
+                        </button>
+                    </div>
+                    <div id="products" class="plist"></div>
                 </section>
                 <section id="tentang" class="promowrap">
                     <div class="promo">
@@ -3270,12 +3655,6 @@
                 Paket: '🎁',
                 Snack: '🍪',
             };
-            const CAT_IMAGES = {
-                Kimbab: 'Kategori-Kimbab.png',
-                'Risol Mayo': 'Kategori-RisolMayo.png',
-                'Aneka Jajanan': 'Kategori-AnekaJajanan.png',
-                Minuman: 'Kategori-Minuman.png',
-            };
             const TIME_OPTIONS = ['Secepatnya', '11:00 - 13:00', '13:00 - 15:00', '17:00 - 19:00', '19:00 - 21:00'];
 
             // ---------- localStorage aman (mode privat Safari bisa melempar error) ----------
@@ -3485,6 +3864,22 @@
             }
 
             // ---------- KATEGORI ----------
+            // Ikon kategori; kalau foto gagal dimuat, otomatis pakai emoji
+            function catImgFail(el) {
+                el.hidden = true;
+                const n = el.nextElementSibling;
+                if (n) n.hidden = false;
+            }
+            function catIconHtml(n, cls) {
+                const emo = n.name === 'Semua' ? '🍽️' : CAT_ICONS[n.name] || '🍽️';
+                const src = n.imageUrl || ''; // hanya foto yang diatur di admin; tanpa foto -> emoji
+                return src
+                    ? `<img class="${cls}" src="${esc(src)}" alt="" onerror="catImgFail(this)"><span class="${cls} cc-emo" hidden>${emo}</span>`
+                    : `<span class="${cls} cc-emo">${emo}</span>`;
+            }
+            function catCount(name) {
+                return name === 'Semua' ? MENUS.length : MENUS.filter((p) => p.c === name).length;
+            }
             function renderCategories() {
                 const box = document.getElementById('kategori');
                 if (!box || !CATEGORIES.length) return;
@@ -3492,29 +3887,76 @@
                 if (!names.some((n) => n.name === active)) active = 'Semua';
                 box.innerHTML = names
                     .map((n) => {
-                        const icon = n.imageUrl
-                            ? `<img class="cat-ico" src="${esc(n.imageUrl)}" alt="${esc(n.name)}">`
-                            : n.name !== 'Semua' && CAT_IMAGES[n.name]
-                              ? `<img class="cat-ico" src="${esc(CAT_IMAGES[n.name])}" alt="${esc(n.name)}">`
-                              : `<span>${n.name === 'Semua' ? '🍽️' : CAT_ICONS[n.name] || '🍽️'}</span>`;
-                        return `<button class="cat${n.name === active ? ' active' : ''}" data-cat="${esc(n.name)}">${icon}${esc(n.name)}</button>`;
+                        const c = catCount(n.name);
+                        const sub = n.name === 'Semua' ? `${c} menu tersedia` : c ? `${c} menu` : 'Segera hadir';
+                        return `<button type="button" class="ccard${n.name === active ? ' active' : ''}" data-cat="${esc(n.name)}"><span class="cc-ico">${catIconHtml(n, 'cc-i')}</span><span class="cc-txt"><b>${esc(n.name)}</b><small>${sub}</small></span><span class="cc-go"><svg class="icon" viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></span></button>`;
                     })
                     .join('');
+                // Bar kategori di header
+                const track = document.getElementById('catTrack');
+                if (track) {
+                    track.innerHTML = names
+                        .map(
+                            (n) =>
+                                `<button type="button" role="tab" class="cpill${n.name === active ? ' active' : ''}" data-cat="${esc(n.name)}" aria-selected="${n.name === active}">${catIconHtml(n, 'cico')}<span>${esc(n.name)}</span></button>`
+                        )
+                        .join('');
+                    document.getElementById('catBar').hidden = false;
+                    updateCatArrows();
+                }
             }
-            document.getElementById('kategori').addEventListener('click', (e) => {
-                const btn = e.target.closest('.cat');
+            function updateCatArrows() {
+                const t = document.getElementById('catTrack');
+                if (!t) return;
+                const overflow = t.scrollWidth > t.clientWidth + 2;
+                const p = document.getElementById('catPrev'),
+                    n = document.getElementById('catNext');
+                p.hidden = n.hidden = !overflow;
+                p.disabled = t.scrollLeft <= 2;
+                n.disabled = t.scrollLeft + t.clientWidth >= t.scrollWidth - 2;
+            }
+            function catScroll(dir) {
+                const t = document.getElementById('catTrack');
+                if (t) t.scrollBy({ left: dir * Math.max(120, t.clientWidth * 0.7), behavior: 'smooth' });
+            }
+            // Samakan penanda aktif di bar header dan kartu kategori
+            function syncCatActive(center) {
+                document.querySelectorAll('.ccard, .cpill').forEach((x) => {
+                    const on = x.dataset.cat === active;
+                    x.classList.toggle('active', on);
+                    if (x.classList.contains('cpill')) x.setAttribute('aria-selected', on);
+                });
+                const t = document.getElementById('catTrack'),
+                    a = t && t.querySelector('.cpill.active');
+                if (center && a && t.scrollWidth > t.clientWidth + 2)
+                    t.scrollTo({ left: a.offsetLeft - (t.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+            }
+            document.getElementById('catTrack').addEventListener('click', (e) => {
+                const btn = e.target.closest('.cpill');
                 if (!btn) return;
                 active = btn.dataset.cat;
-                document.querySelectorAll('.cat').forEach((x) => x.classList.remove('active'));
-                btn.classList.add('active');
+                syncCatActive(true);
                 render();
+                goProducts();
             });
+            document.getElementById('catTrack').addEventListener('scroll', updateCatArrows, { passive: true });
+            window.addEventListener('resize', updateCatArrows);
+            document.getElementById('kategori').addEventListener('click', (e) => {
+                const btn = e.target.closest('.ccard');
+                if (!btn) return;
+                active = btn.dataset.cat;
+                syncCatActive(true);
+                render();
+                goProducts();
+            });
+            function goProducts() {
+                const m = document.getElementById('products');
+                if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
             function showAll() {
                 active = 'Semua';
                 document.getElementById('search').value = '';
-                document
-                    .querySelectorAll('.cat')
-                    .forEach((x) => x.classList.toggle('active', x.dataset.cat === 'Semua'));
+                syncCatActive(true);
                 render();
             }
 
@@ -3540,17 +3982,10 @@
                 };
                 return m[cat] || 'Dibuat fresh dengan bahan pilihan.';
             }
-            function render() {
-                const q = document.getElementById('search').value.toLowerCase();
-                const a = MENUS.filter(
-                    (p) =>
-                        (active === 'Semua' || p.c === active) &&
-                        (!q || p.n.toLowerCase().includes(q) || p.c.toLowerCase().includes(q))
-                );
-                document.getElementById('products').innerHTML =
-                    a
-                        .map(
-                            (p) => `
+            const SEC_LIMIT = 6; // menu yang tampil per kategori sebelum "Lihat lainnya"
+            const expandedCats = new Set();
+            function cardHtml(p) {
+                return `
     <article class="card">
       <div class="pic">
         ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">` : `<span>${CAT_ICONS[p.c] || '🍙'}</span>`}
@@ -3565,11 +4000,65 @@
           Tambah
         </button>
       </div>
-    </article>`
-                        )
-                        .join('') || '<div class="empty" style="grid-column:1/-1">Menu tidak ditemukan.</div>';
+    </article>`;
+            }
+            function render() {
+                const q = document.getElementById('search').value.trim().toLowerCase();
+                const list = MENUS.filter(
+                    (p) =>
+                        (active === 'Semua' || p.c === active) &&
+                        (!q || p.n.toLowerCase().includes(q) || p.c.toLowerCase().includes(q))
+                );
+                // Kelompokkan per kategori sesuai urutan di admin; kategori tak dikenal ditaruh paling akhir
+                const order = CATEGORIES.map((c) => c.name);
+                list.forEach((p) => {
+                    if (!order.includes(p.c)) order.push(p.c);
+                });
+                const groups = order
+                    .map((name) => ({
+                        name,
+                        cat: CATEGORIES.find((c) => c.name === name) || { name, imageUrl: '' },
+                        items: list.filter((p) => p.c === name),
+                    }))
+                    .filter((g) => g.items.length);
+                const showAllItems = !!q || active !== 'Semua'; // sedang mencari / memilih satu kategori
+                document.getElementById('products').innerHTML = groups.length
+                    ? groups
+                          .map((g) => {
+                              const open = showAllItems || expandedCats.has(g.name);
+                              const shown = open ? g.items : g.items.slice(0, SEC_LIMIT);
+                              const rest = g.items.length - SEC_LIMIT;
+                              const more =
+                                  !showAllItems && rest > 0
+                                      ? `<button type="button" class="morebtn${open ? ' open' : ''}" data-more="${esc(g.name)}">${open ? 'Tampilkan lebih sedikit' : `Lihat lainnya <b>${rest}</b>`}<svg class="icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg></button>`
+                                      : '';
+                              return `<section class="psec" data-cat="${esc(g.name)}">
+      <div class="psec-head">
+        <span class="psec-ico">${catIconHtml(g.cat, 'psec-i')}</span>
+        <h3>${esc(g.name)}</h3>
+        <span class="psec-count">${g.items.length} menu</span>
+        <p>Pilih menu ${esc(g.name)} favoritmu</p>
+      </div>
+      <div class="grid">${shown.map(cardHtml).join('')}</div>
+      ${more}
+    </section>`;
+                          })
+                          .join('')
+                    : '<div class="empty">Menu tidak ditemukan.</div>';
             }
             document.getElementById('products').addEventListener('click', (e) => {
+                const mb = e.target.closest('.morebtn');
+                if (mb) {
+                    const name = mb.dataset.more;
+                    const wasOpen = expandedCats.has(name);
+                    wasOpen ? expandedCats.delete(name) : expandedCats.add(name);
+                    render();
+                    if (wasOpen) {
+                        const sec = [...document.querySelectorAll('.psec')].find((x) => x.dataset.cat === name);
+                        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    return;
+                }
                 const btn = e.target.closest('.add');
                 if (!btn) return;
                 add(btn.dataset.id);
