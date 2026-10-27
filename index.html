@@ -154,6 +154,7 @@
                 border-radius: 2px;
             }
             .search {
+                margin-left: auto;
                 display: flex;
                 align-items: center;
                 background: #fff;
@@ -2654,6 +2655,10 @@
                 }
             }
             /* ===== PRODUK DIPISAH PER KATEGORI ===== */
+            .plist,
+            .psec {
+                scroll-margin-top: 66px;
+            }
             .plist {
                 display: block;
             }
@@ -2765,8 +2770,13 @@
             }
             /* ===== BAR KATEGORI DI HEADER ===== */
             .catwrap {
-                flex: 1;
-                min-width: 0;
+                position: sticky;
+                top: calc(var(--hh, 82px) + 8px);
+                z-index: 28;
+                margin: 4px 0 14px;
+            }
+            .catwrap[hidden] {
+                display: none !important;
             }
             .catbar {
                 display: flex;
@@ -2774,9 +2784,17 @@
                 gap: 4px;
                 max-width: 100%;
                 padding: 5px;
-                background: rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(11, 47, 31, 0.95);
+                border: 1px solid rgba(255, 255, 255, 0.12);
                 border-radius: 18px;
+                box-shadow: 0 6px 18px rgba(10, 40, 25, 0.18);
+                transition: box-shadow 0.2s ease;
+            }
+            html[data-theme='night'] .catbar {
+                background: rgba(16, 14, 48, 0.95);
+            }
+            .catwrap.stuck .catbar {
+                box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
             }
             .catbar[hidden] {
                 display: none !important;
@@ -2852,12 +2870,6 @@
                 font-size: 16px;
                 line-height: 18px;
                 text-align: center;
-            }
-            @media (max-width: 980px) {
-                .catwrap {
-                    order: 10;
-                    flex: 0 0 100%;
-                }
             }
             @media (max-width: 700px) {
                 .cpill {
@@ -3082,6 +3094,107 @@
                     display: none;
                 }
             }
+            /* ===== NAVBAR: logo kiri, pencarian lebar di tengah, tombol Masuk di kanan ===== */
+            .nav {
+                min-height: 68px;
+                padding: 9px 20px;
+                gap: 14px;
+            }
+            .logo {
+                height: 48px;
+            }
+            .search {
+                min-height: 44px;
+                border-radius: 12px;
+                padding-left: 14px;
+                transition: box-shadow 0.15s ease;
+            }
+            .search input {
+                padding: 12px 10px;
+                font-size: 14.5px;
+            }
+            .search input::-webkit-search-cancel-button {
+                -webkit-appearance: none;
+            }
+            html[data-theme='night'] .search {
+                box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+            }
+            .search:focus-within,
+            html[data-theme='night'] .search:focus-within,
+            html[data-theme='day'] .search:focus-within {
+                box-shadow: 0 0 0 2px var(--g);
+            }
+            @media (min-width: 981px) {
+                .search {
+                    flex: 1 1 auto;
+                    width: auto;
+                    max-width: 560px;
+                    margin: 0 auto;
+                }
+            }
+            @media (min-width: 701px) and (max-width: 980px) {
+                .search {
+                    flex: 1 1 200px;
+                    width: auto;
+                    max-width: none;
+                    margin-left: 0;
+                }
+            }
+            html[data-theme] .cart.loginbtn {
+                background: var(--g);
+                color: #fff;
+                border: 0;
+                border-radius: 12px;
+                padding: 11px 18px;
+                font-weight: 800;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+            }
+            html[data-theme='day'] .cart.loginbtn {
+                background: #e0527f;
+                box-shadow: 0 6px 16px rgba(224, 82, 127, 0.35);
+            }
+            html[data-theme] .cart.loginbtn:hover {
+                filter: brightness(1.08);
+            }
+            .cart.loginbtn span.txt {
+                display: inline !important;
+            }
+            @media (max-width: 480px) {
+                html[data-theme] .cart.loginbtn {
+                    padding: 10px 14px;
+                }
+            }
+            /* Tombol kanan dibungkus supaya pencarian benar-benar di tengah (desktop) */
+            .navright {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+            @media (min-width: 1280px) {
+                .nav {
+                    display: grid;
+                    grid-template-columns: 1fr minmax(0, 560px) 1fr;
+                    align-items: center;
+                }
+                .nav .logo {
+                    justify-self: start;
+                }
+                .nav .search {
+                    margin: 0;
+                    width: auto;
+                    max-width: none;
+                }
+                .navright {
+                    justify-self: end;
+                }
+            }
+            @media (max-width: 420px) {
+                .navright {
+                    gap: 8px;
+                }
+            }
         </style>
     </head>
     <body>
@@ -3134,84 +3247,71 @@
         <header>
             <nav class="nav">
                 <img class="logo" id="logoImg" src="Logo.png" alt="KIMBABKU" />
-                <div class="catwrap">
-                    <div class="catbar" id="catBar" hidden>
-                        <button
-                            type="button"
-                            class="cb-arrow"
-                            id="catPrev"
-                            aria-label="Geser kategori ke kiri"
-                            onclick="catScroll(-1)"
-                        >
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg>
-                        </button>
-                        <div class="cat-track" id="catTrack" role="tablist" aria-label="Kategori menu"></div>
-                        <button
-                            type="button"
-                            class="cb-arrow"
-                            id="catNext"
-                            aria-label="Geser kategori ke kanan"
-                            onclick="catScroll(1)"
-                        >
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-                        </button>
-                    </div>
-                </div>
                 <div class="search">
                     <svg class="icon" viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="7" />
                         <path d="M21 21l-4.3-4.3" />
                     </svg>
-                    <input id="search" placeholder="Cari menu..." aria-label="Cari menu" oninput="render()" />
-                    <button type="button" onclick="render()" aria-label="Cari">
-                        <svg class="icon" viewBox="0 0 24 24" style="stroke: #fff">
-                            <circle cx="11" cy="11" r="7" />
-                            <path d="M21 21l-4.3-4.3" />
+                    <input
+                        id="search"
+                        type="search"
+                        placeholder="Mau pesan apa? Cari menu atau kategori"
+                        aria-label="Cari menu"
+                        autocomplete="off"
+                        oninput="render()"
+                    />
+                </div>
+                <div class="navright">
+                    <button
+                        class="cart loginbtn"
+                        id="loginBtn"
+                        onclick="showAuth()"
+                        aria-label="Masuk atau daftar"
+                        hidden
+                    >
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <path d="M10 17l5-5-5-5" />
+                            <path d="M15 12H3" />
+                        </svg>
+                        <span class="txt">Masuk</span>
+                    </button>
+                    <button class="cart userbtn" id="userBtn" onclick="openWallet()" aria-label="Dompet saya" hidden>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 7a2 2 0 0 1 2-2h13v4" />
+                            <path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3" />
+                            <path d="M21 9H6a3 3 0 0 0 0 6h15V9z" />
+                            <circle cx="16.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
+                        </svg>
+                        <span class="bal" id="userBal"></span>
+                    </button>
+                    <button class="cart" onclick="openCart()" aria-label="Buka keranjang">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none" />
+                            <circle cx="18" cy="21" r="1.4" fill="currentColor" stroke="none" />
+                            <path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6" />
+                        </svg>
+                        <span class="txt">Keranjang</span>
+                        <span class="badge" id="badge">0</span>
+                    </button>
+                    <button
+                        class="themebtn"
+                        id="themeBtn"
+                        onclick="toggleTheme()"
+                        aria-label="Ganti ke tampilan malam"
+                        title="Ganti tampilan siang / malam"
+                    >
+                        <svg class="icon i-sun" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="4.5" />
+                            <path
+                                d="M12 2v2.5M12 19.5V22M4.2 4.2L6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"
+                            />
+                        </svg>
+                        <svg class="icon i-moon" viewBox="0 0 24 24">
+                            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
                         </svg>
                     </button>
                 </div>
-                <button class="cart loginbtn" id="loginBtn" onclick="showAuth()" aria-label="Masuk atau daftar" hidden>
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-                    </svg>
-                    <span class="txt">Masuk</span>
-                </button>
-                <button class="cart userbtn" id="userBtn" onclick="openWallet()" aria-label="Dompet saya" hidden>
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M3 7a2 2 0 0 1 2-2h13v4" />
-                        <path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3" />
-                        <path d="M21 9H6a3 3 0 0 0 0 6h15V9z" />
-                        <circle cx="16.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
-                    </svg>
-                    <span class="bal" id="userBal"></span>
-                </button>
-                <button class="cart" onclick="openCart()" aria-label="Buka keranjang">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none" />
-                        <circle cx="18" cy="21" r="1.4" fill="currentColor" stroke="none" />
-                        <path d="M2.5 3h2l2.4 12.3a2 2 0 0 0 2 1.7h7.7a2 2 0 0 0 2-1.6L21 8H6" />
-                    </svg>
-                    <span class="txt">Keranjang</span>
-                    <span class="badge" id="badge">0</span>
-                </button>
-                <button
-                    class="themebtn"
-                    id="themeBtn"
-                    onclick="toggleTheme()"
-                    aria-label="Ganti ke tampilan malam"
-                    title="Ganti tampilan siang / malam"
-                >
-                    <svg class="icon i-sun" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="4.5" />
-                        <path
-                            d="M12 2v2.5M12 19.5V22M4.2 4.2L6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"
-                        />
-                    </svg>
-                    <svg class="icon i-moon" viewBox="0 0 24 24">
-                        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
-                    </svg>
-                </button>
             </nav>
         </header>
         <main id="beranda">
@@ -3411,6 +3511,29 @@
                             ></span>
                         </button>
                     </div>
+                    <div class="catwrap" id="catWrap" hidden>
+                        <div class="catbar" id="catBar" hidden>
+                            <button
+                                type="button"
+                                class="cb-arrow"
+                                id="catPrev"
+                                aria-label="Geser kategori ke kiri"
+                                onclick="catScroll(-1)"
+                            >
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg>
+                            </button>
+                            <div class="cat-track" id="catTrack" role="tablist" aria-label="Kategori menu"></div>
+                            <button
+                                type="button"
+                                class="cb-arrow"
+                                id="catNext"
+                                aria-label="Geser kategori ke kanan"
+                                onclick="catScroll(1)"
+                            >
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        </div>
+                    </div>
                     <div id="products" class="plist"></div>
                 </section>
                 <section id="tentang" class="promowrap">
@@ -3476,14 +3599,7 @@
             <div class="foot">
                 <div>
                     <img class="flogo" id="footerLogoImg" src="Logo.png" alt="Toko KIMBABKU" />
-                    <p>
-                        <b>KIMBABKU – Camilan Lezat, Harga Bersahabat</b>
-                        <br />
-                        KIMBABKU menyediakan aneka kimbab, risol mayo, Minuman Segar, Dan Aneka Cemilan Lain dengan
-                        pilihan rasa yang lezat dan harga terjangkau. Cocok untuk menemani waktu santai, belajar,
-                        bekerja, atau berkumpul bersama keluarga dan teman. Pesan camilan favoritmu dengan mudah dan
-                        nikmati kelezatannya kapan saja!
-                    </p>
+                    <p>KIMBABKU hadir untuk memberikan camilan lezat, sehat dan berkualitas dengan harga terjangkau.</p>
                 </div>
                 <div>
                     <h3>Kontak Kami</h3>
@@ -3940,6 +4056,7 @@
                         )
                         .join('');
                     document.getElementById('catBar').hidden = false;
+                    document.getElementById('catWrap').hidden = false;
                     updateCatArrows();
                 }
             }
@@ -3979,6 +4096,20 @@
             });
             document.getElementById('catTrack').addEventListener('scroll', updateCatArrows, { passive: true });
             window.addEventListener('resize', updateCatArrows);
+            let stuckRaf = 0;
+            window.addEventListener(
+                'scroll',
+                () => {
+                    if (stuckRaf) return;
+                    stuckRaf = requestAnimationFrame(() => {
+                        stuckRaf = 0;
+                        const w = document.getElementById('catWrap');
+                        const hd = document.querySelector('header');
+                        if (w && hd) w.classList.toggle('stuck', w.getBoundingClientRect().top <= hd.offsetHeight + 10);
+                    });
+                },
+                { passive: true }
+            );
             document.getElementById('kategori').addEventListener('click', (e) => {
                 const btn = e.target.closest('.ccard');
                 if (!btn) return;
