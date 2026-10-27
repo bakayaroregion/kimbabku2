@@ -3351,7 +3351,13 @@
                             ></span>
                         </button>
                         <button type="button" class="ccard" data-cat="Kimbab">
-                            <span class="cc-ico"><span class="cc-emo">🍙</span></span>
+                            <span class="cc-ico"
+                                ><img src="Kategori-Kimbab.png" alt="" onerror="catImgFail(this)" /><span
+                                    class="cc-emo"
+                                    hidden
+                                    >🍙</span
+                                ></span
+                            >
                             <span class="cc-txt"><b>Kimbab</b><small>Lihat menu</small></span>
                             <span class="cc-go"
                                 ><svg class="icon" viewBox="0 0 24 24">
@@ -3360,7 +3366,13 @@
                             ></span>
                         </button>
                         <button type="button" class="ccard" data-cat="Risol Mayo">
-                            <span class="cc-ico"><span class="cc-emo">🥟</span></span>
+                            <span class="cc-ico"
+                                ><img src="Kategori-RisolMayo.png" alt="" onerror="catImgFail(this)" /><span
+                                    class="cc-emo"
+                                    hidden
+                                    >🥟</span
+                                ></span
+                            >
                             <span class="cc-txt"><b>Risol Mayo</b><small>Lihat menu</small></span>
                             <span class="cc-go"
                                 ><svg class="icon" viewBox="0 0 24 24">
@@ -3369,7 +3381,13 @@
                             ></span>
                         </button>
                         <button type="button" class="ccard" data-cat="Aneka Jajanan">
-                            <span class="cc-ico"><span class="cc-emo">🍗</span></span>
+                            <span class="cc-ico"
+                                ><img src="Kategori-AnekaJajanan.png" alt="" onerror="catImgFail(this)" /><span
+                                    class="cc-emo"
+                                    hidden
+                                    >🍗</span
+                                ></span
+                            >
                             <span class="cc-txt"><b>Aneka Jajanan</b><small>Lihat menu</small></span>
                             <span class="cc-go"
                                 ><svg class="icon" viewBox="0 0 24 24">
@@ -3378,7 +3396,13 @@
                             ></span>
                         </button>
                         <button type="button" class="ccard" data-cat="Minuman">
-                            <span class="cc-ico"><span class="cc-emo">🥤</span></span>
+                            <span class="cc-ico"
+                                ><img src="Kategori-Minuman.png" alt="" onerror="catImgFail(this)" /><span
+                                    class="cc-emo"
+                                    hidden
+                                    >🥤</span
+                                ></span
+                            >
                             <span class="cc-txt"><b>Minuman</b><small>Lihat menu</small></span>
                             <span class="cc-go"
                                 ><svg class="icon" viewBox="0 0 24 24">
@@ -3655,6 +3679,13 @@
                 Paket: '🎁',
                 Snack: '🍪',
             };
+            // Gambar bawaan kategori (dipakai kalau belum ada foto yang diunggah di admin)
+            const CAT_IMAGES = {
+                Kimbab: 'Kategori-Kimbab.png',
+                'Risol Mayo': 'Kategori-RisolMayo.png',
+                'Aneka Jajanan': 'Kategori-AnekaJajanan.png',
+                Minuman: 'Kategori-Minuman.png',
+            };
             const TIME_OPTIONS = ['Secepatnya', '11:00 - 13:00', '13:00 - 15:00', '17:00 - 19:00', '19:00 - 21:00'];
 
             // ---------- localStorage aman (mode privat Safari bisa melempar error) ----------
@@ -3872,7 +3903,7 @@
             }
             function catIconHtml(n, cls) {
                 const emo = n.name === 'Semua' ? '🍽️' : CAT_ICONS[n.name] || '🍽️';
-                const src = n.imageUrl || ''; // hanya foto yang diatur di admin; tanpa foto -> emoji
+                const src = n.imageUrl || (n.name !== 'Semua' && CAT_IMAGES[n.name]) || ''; // foto admin -> gambar bawaan -> emoji
                 return src
                     ? `<img class="${cls}" src="${esc(src)}" alt="" onerror="catImgFail(this)"><span class="${cls} cc-emo" hidden>${emo}</span>`
                     : `<span class="${cls} cc-emo">${emo}</span>`;
