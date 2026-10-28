@@ -3195,6 +3195,154 @@
                     gap: 8px;
                 }
             }
+            /* ===== NAVBAR HP: logo + tombol cari + menu (hamburger) ===== */
+            .navmobile,
+            .navmenu {
+                display: none;
+            }
+            .nm-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: grid;
+                place-items: center;
+                color: inherit;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.16);
+                -webkit-tap-highlight-color: transparent;
+            }
+            html[data-theme='day'] .nm-btn {
+                background: rgba(224, 82, 127, 0.1);
+                border-color: rgba(224, 82, 127, 0.28);
+            }
+            .nm-btn .icon {
+                width: 21px;
+                height: 21px;
+            }
+            .nm-btn .i-close,
+            .nm-btn.open .i-burger {
+                display: none;
+            }
+            .nm-btn.open .i-close {
+                display: block;
+            }
+            .nm-btn[aria-expanded='true'] {
+                border-color: var(--g);
+            }
+            @media (max-width: 700px) {
+                .navright {
+                    display: none;
+                }
+                .navmobile {
+                    display: flex;
+                    gap: 8px;
+                    margin-left: auto;
+                }
+                .nav {
+                    flex-wrap: wrap;
+                    min-height: 62px;
+                    padding: 9px 12px;
+                    row-gap: 8px;
+                }
+                .logo {
+                    height: 38px;
+                    margin-right: auto;
+                }
+                .search {
+                    display: none;
+                    order: 5;
+                    flex: 1 1 100%;
+                    width: auto;
+                    margin: 0 0 4px;
+                }
+                .nav.search-open .search {
+                    display: flex;
+                }
+                header {
+                    position: sticky;
+                }
+                .navmenu {
+                    position: absolute;
+                    left: 12px;
+                    right: 12px;
+                    top: calc(100% + 6px);
+                    z-index: 60;
+                    display: block;
+                    padding: 14px;
+                    border-radius: 20px;
+                    color: #3a2433;
+                    background: #fff;
+                    border: 1px solid rgba(224, 82, 127, 0.22);
+                    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+                    max-height: calc(100dvh - 140px);
+                    overflow-y: auto;
+                }
+                .navmenu[hidden] {
+                    display: none;
+                }
+                html[data-theme='night'] .navmenu {
+                    color: #e9e7ff;
+                    background: #14142b;
+                    border-color: rgba(255, 255, 255, 0.14);
+                }
+                .nm-primary {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 9px;
+                    padding: 14px;
+                    border: 0;
+                    border-radius: 12px;
+                    background: var(--g);
+                    color: #fff;
+                    font-weight: 800;
+                    font-size: 15px;
+                }
+                html[data-theme='day'] .nm-primary {
+                    background: #e0527f;
+                }
+                .nm-primary .icon {
+                    width: 18px;
+                    height: 18px;
+                }
+                .nm-sep {
+                    margin: 12px 0 4px;
+                    border-top: 1px solid rgba(128, 128, 150, 0.25);
+                }
+                .nm-link {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 13px 6px;
+                    border: 0;
+                    background: transparent;
+                    color: inherit;
+                    text-align: left;
+                    text-decoration: none;
+                    font-size: 15px;
+                    font-weight: 600;
+                    opacity: 0.88;
+                }
+                .nm-link[hidden] {
+                    display: none;
+                }
+                .nm-link:active {
+                    opacity: 1;
+                }
+                .nm-link .icon {
+                    width: 19px;
+                    height: 19px;
+                    opacity: 0.8;
+                }
+                .nm-out {
+                    color: #c0392b;
+                }
+                html[data-theme='night'] .nm-out {
+                    color: #ff8f84;
+                }
+            }
         </style>
     </head>
     <body>
@@ -3312,7 +3460,97 @@
                         </svg>
                     </button>
                 </div>
+                <div class="navmobile">
+                    <button
+                        type="button"
+                        class="nm-btn"
+                        id="navSearchBtn"
+                        onclick="navToggleSearch()"
+                        aria-label="Cari menu"
+                        aria-expanded="false"
+                    >
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="M21 21l-4.3-4.3" />
+                        </svg>
+                    </button>
+                    <button
+                        type="button"
+                        class="nm-btn"
+                        id="navMenuBtn"
+                        onclick="navToggleMenu()"
+                        aria-label="Buka menu"
+                        aria-expanded="false"
+                        aria-controls="navMenu"
+                    >
+                        <svg class="icon i-burger" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+                        <svg class="icon i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                    </button>
+                </div>
             </nav>
+            <div class="navmenu" id="navMenu" hidden>
+                <button type="button" class="nm-primary" id="nmPrimary" onclick="nmPrimary()"></button>
+                <div class="nm-sep"></div>
+                <a class="nm-link" href="#cara" onclick="navToggleMenu(false)">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9 6h11M9 12h11M9 18h11" />
+                        <path d="M4 6h.01M4 12h.01M4 18h.01" />
+                    </svg>
+                    <span>Cara Pesan</span>
+                </a>
+                <a class="nm-link" href="#tentang" onclick="navToggleMenu(false)">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 11v5" />
+                        <circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>Tentang Kami</span>
+                </a>
+                <button
+                    type="button"
+                    class="nm-link"
+                    onclick="
+                        navToggleMenu(false);
+                        floatClick();
+                    "
+                >
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.1-4.7A8 8 0 1 1 21 12z" />
+                    </svg>
+                    <span>Chat dengan Kami</span>
+                </button>
+                <button
+                    type="button"
+                    class="nm-link"
+                    id="nmTheme"
+                    onclick="
+                        toggleTheme();
+                        updateNavMenu();
+                    "
+                >
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+                    </svg>
+                    <span>Tampilan Malam</span>
+                </button>
+                <button
+                    type="button"
+                    class="nm-link nm-out"
+                    id="nmLogout"
+                    onclick="
+                        navToggleMenu(false);
+                        logoutPrompt();
+                    "
+                    hidden
+                >
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4" />
+                        <path d="M16 17l5-5-5-5" />
+                        <path d="M21 12H9" />
+                    </svg>
+                    <span>Keluar</span>
+                </button>
+            </div>
         </header>
         <main id="beranda">
             <h1 class="sr-only">KIMBABKU — Kimbab, Risol Mayo &amp; Aneka Jajanan</h1>
@@ -4818,7 +5056,7 @@
                 return String(n);
             }
             const balNow = () =>
-                wallet ? wallet.balance : session && session.user ? Number(session.user.balance) || 0 : 0;
+                wallet ? Number(wallet.balance) || 0 : session && session.user ? Number(session.user.balance) || 0 : 0;
             function setBalance(b) {
                 if (session) {
                     session.user.balance = b;
@@ -4836,6 +5074,7 @@
                 $a('userBal').textContent = session ? 'Rp' + compactRp(balNow()) : '';
                 if (session) b.title = session.user.email + ' · Saldo ' + money(balNow());
                 updateBottomNav();
+                updateNavMenu();
             }
             function bnHome() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4847,6 +5086,73 @@
                     showAuth();
                 }
             }
+            // ---------- NAVBAR HP: cari + menu ----------
+            function navToggleMenu(force) {
+                const m = $a('navMenu'),
+                    b = $a('navMenuBtn');
+                if (!m || !b) return;
+                const open = typeof force === 'boolean' ? force : m.hidden;
+                if (open) {
+                    navToggleSearch(false);
+                    updateNavMenu();
+                }
+                m.hidden = !open;
+                b.classList.toggle('open', open);
+                b.setAttribute('aria-expanded', String(open));
+                b.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+            }
+            function navToggleSearch(force) {
+                const nav = document.querySelector('.nav'),
+                    b = $a('navSearchBtn');
+                if (!nav || !b) return;
+                const open = typeof force === 'boolean' ? force : !nav.classList.contains('search-open');
+                if (open) navToggleMenu(false);
+                nav.classList.toggle('search-open', open);
+                b.setAttribute('aria-expanded', String(open));
+                if (open) setTimeout(() => $a('search').focus(), 60);
+            }
+            function nmPrimary() {
+                navToggleMenu(false);
+                if (session) openWallet();
+                else {
+                    authView = 'login';
+                    showAuth();
+                }
+            }
+            function updateNavMenu() {
+                const p = $a('nmPrimary');
+                if (!p) return;
+                p.innerHTML = session
+                    ? '<svg class="icon" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4" /><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3" /><path d="M21 9H6a3 3 0 0 0 0 6h15V9z" /></svg>Dompet · ' +
+                      money(balNow())
+                    : '<svg class="icon" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /></svg>Masuk';
+                $a('nmLogout').hidden = !session;
+                const t = $a('nmTheme');
+                if (t)
+                    t.querySelector('span').textContent =
+                        document.documentElement.getAttribute('data-theme') === 'night'
+                            ? 'Tampilan Siang'
+                            : 'Tampilan Malam';
+            }
+            document.addEventListener('click', (e) => {
+                const hd = document.querySelector('header');
+                if (hd && !hd.contains(e.target)) {
+                    navToggleMenu(false);
+                    navToggleSearch(false);
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    navToggleMenu(false);
+                    navToggleSearch(false);
+                }
+            });
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 700) {
+                    navToggleMenu(false);
+                    navToggleSearch(false);
+                }
+            });
             function updateBottomNav() {
                 const l = $a('bnAccLabel');
                 if (l) l.textContent = session ? 'Keluar' : 'Masuk';
